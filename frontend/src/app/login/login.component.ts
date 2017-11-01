@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { environment } from '../../environments/environment';
+import { LoginRequestModel } from '../auth.models';
 
 @Component({
   selector: 'volontulo-login',
@@ -8,7 +9,6 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
   loginModel: LoginRequestModel = {
     username: '',
     password: '',
@@ -18,7 +18,7 @@ export class LoginComponent {
   constructor(private authService: AuthService,
   ) { }
 
-  login(username: string, password: string): void {
+  login(): void {
     this.authService.login(this.loginModel.username, this.loginModel.password);
   }
 
