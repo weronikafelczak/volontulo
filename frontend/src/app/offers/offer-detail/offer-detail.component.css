@@ -1,0 +1,24 @@
+.join-offer {
+    background: rgb(233, 60, 100) !important;
+    padding: 20px;
+    margin: 20px 0px 0px 0px;
+    color: #fff;
+    border: 2px solid;
+    border-radius: 5px;
+    text-align: center;
+}
+
+ngb-accordion {
+    padding: 20px !important;
+}
+
+#recruitment{
+    padding: 0px 0px 20px 0px !important;
+}
+
+#join-button {
+    background: #fff !important;
+    border-radius: 5px;
+    border: 2px solid #fff;
+    color: #000;
+}

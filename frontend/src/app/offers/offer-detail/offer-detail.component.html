@@ -1,0 +1,72 @@
+<div class="container">
+    <h1>{{ offer?.title }}</h1>
+    <ngb-carousel>
+        <ng-template ngbSlide>
+            <img src="{{ offers?.image }}" alt="{{ offer?.title }}">
+            <div class="carousel-caption">
+                <h3>{{ offer?.title }}</h3>
+                <p>{{ offer?.description }}</p>
+            </div>
+        </ng-template>
+    </ngb-carousel>
+    <div class="row ">
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <ngb-accordion activeIds="title">
+            <ngb-panel id="title" title="{{ offer?.title }}">
+                <ng-template ngbPanelContent>
+                    <!-- TODO: restore the link for users who can edit the offer when permission check implemented in the frontend <a href="{% url 'offers_edit' offer.title|slugify offer.id %}" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edytuj ofertę</a> -->
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+        <ngb-accordion activeIds="location">
+            <ngb-panel id="location" title="Lokalizacja">
+                <ng-template ngbPanelContent>
+                    <span aria-hidden="true" class="glyphicon glyphicon-map-marker"></span>{{ offer?.location }}
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+        <ngb-accordion activeIds="date">
+            <ngb-panel id="date" title="Data">
+                <ng-template ngbPanelContent>
+                    <span aria-hidden="true" class="glyphicon glyphicon-time"></span> {{ offer?.started_at }} - {{ offer?.finished_at }}
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+        <ngb-accordion activeIds="benefits">
+            <ngb-panel id="benefits" title="Korzyści dla wolontariusza">
+                <ng-template ngbPanelContent>{{ offer?.benefits}}</ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+        <ngb-accordion activeIds="requirements">
+            <ngb-panel id="requirements" title="Wymagania wobec wolontariusza">
+                <ng-template ngbPanelContent>{{ offer?.requirements }}</ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+        <ngb-accordion activeIds="time_commitment">
+            <ngb-panel id="time_commitment" title="Zaangażowanie czasowe">
+                <ng-template ngbPanelContent>{{ offer?.time_commitment }}</ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">  
+        <div class="join-offer">   
+        <h3>Możesz pomóc?</h3>
+        <p>Twoja pomoc jest ważna.</p>
+        <p><b>Potrzebujemy Ciebie!</b></p>
+        <p> <a href="{{ djangoRoot }}/offers/{{ offer.slug }}/{{offer.id}}/join" class="btn-primary" id="join-button" ngbButtonLabel>Zgłoś się na ten wolontariat</a></p>
+        </div>  
+        <ngb-accordion  id="recruitment">
+                <ngb-panel title="Rekrutacja trwa {{ offer?.recruitment_end_date }}"></ngb-panel>
+                <ng-template></ng-template>
+        </ngb-accordion>  
+        <ngb-accordion activeIds="organization">
+            <ngb-panel id="organization" title="Organizator">
+                <ng-template ngbPanelContent> {{ offer?.organization.name }}</ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+    </div>
+</div>
