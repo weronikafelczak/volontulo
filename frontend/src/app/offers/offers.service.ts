@@ -12,7 +12,6 @@ export class OffersService {
   private url = `${environment.apiRoot}/offers/`;
   // Why this doesn't work, while same code in component.html works?
   // public joinOffer = `${environment.djangoRoot}/offers/{{offer.slug}}/{{offer.id}}/join`;
-
   constructor (private http: Http) { }
 
   getOffers() {
