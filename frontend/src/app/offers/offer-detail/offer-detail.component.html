@@ -1,48 +1,42 @@
-<div class="container">
+<div class="container" *ngIf="offer$ | async as offer">
     <h1>{{ offer?.title }}</h1>
-    <ngb-carousel>
-        <ng-template ngbSlide>
-            <img src="{{ offers?.image }}" alt="{{ offer?.title }}">
-            <div class="carousel-caption">
-                <h3>{{ offer?.title }}</h3>
-                <p>{{ offer?.description }}</p>
-            </div>
-        </ng-template>
-    </ngb-carousel>
+    <div>
+        <img class="d-block img-fluid" src="{{ offer.image }}" alt="{{ offer.title }}">
+    </div>
     <div class="row ">
     <div class="col-xs-12 col-sm-6 col-md-4">
         <div class="card">
-            <h3 class="card-header">{{ offer?.title }}</h3>
+            <h3 class="card-header">{{ offer.title }}</h3>
             <div class="card-block">
-                <p class="card-text">Opis oferty
-                    <!-- TODO: restore the link for users who can edit the offer when permission check implemented in the frontend <a href="{% url 'offers_edit' offer.title|slugify offer.id %}" class="btn btn-default btn-sm">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edytuj ofertę</a> -->
+                <p class="card-text">{{ offer.description }}
+                    <!-- TODO: restore the link for users who can edit the offer when permission check implemented in the frontend <a href="{% url 'offers_edit' offer.title|slugify offer.id %}" class="btn btn-default btn-sm">-->
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edytuj ofertę
                 </p>
             </div>
         </div>
         <div class="card">
             <h3 class="card-header">Lokalizacja</h3>
             <div class="card-block">
-                <p class="card-text"><span aria-hidden="true" class="glyphicon glyphicon-map-marker"></span> {{ offer?.location }}</p>
+                <p class="card-text"><span aria-hidden="true" class="glyphicon glyphicon-map-marker"></span> {{ offer.location }}</p>
             </div>
         </div>
         <div class ="card">
             <h3 class="card-header">Data</h3>
-                <p class="card-text"><span aria-hidden="true" class="glyphicon glyphicon-time"></span> {{ offer?.started_at }} - {{ offer?.finished_at }}</p>
+                <p class="card-text"><span aria-hidden="true" class="glyphicon glyphicon-time"></span> {{ offer.startedAt | date:'shortDate' }} - {{ offer.finishedAt | date:'shortDate' }}</p>
         </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">
         <div class="card">
             <h3 class="card-header">Korzyści dla wolontariusza</h3>
-            <p class="card-text">{{ offer?.benefits }}</p>
+            <p class="card-text">{{ offer.benefits }}</p>
         </div>
         <div class="card">
                 <h3 class="card-header">Wymagania wobec wolontariusza</h3>
-                <p class="card-text">{{ offer?.requirements }}</p>
+                <p class="card-text">{{ offer.requirements }}</p>
         </div>
         <div class="card">
                 <h3 class="card-header">Zaangażowanie czasowe</h3>
-                <p class="card-text">{{ offer?.time_commitment }}</p>
+                <p class="card-text">{{ offer.timeCommitment }}</p>
         </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">  
@@ -54,11 +48,11 @@
         </div>
         <div class="card">
                 <h3 class="card-header">Rekrutacja trwa</h3>
-                <p class="card-text">Rekrutacja trwa do: {{ offer?.recruitment_end_date }}</p>
+                <p class="card-text">Rekrutacja trwa do: {{ offer.recruitmentEndDate | date:'shortDate' }}</p>
         </div>
         <div class="card">
                 <h3 class="card-header">Organizator</h3>
-                <p class="card-text">{{ offer?.organization.name }}</p>
+                <p class="card-text">{{ offer.organization }}</p>
         </div>
     </div>
     </div>

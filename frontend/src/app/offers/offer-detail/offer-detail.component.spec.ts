@@ -1,6 +1,9 @@
+import { OffersService } from '../offers.service';
+import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OfferDetailComponent } from './offer-detail.component';
+import { Subject } from 'rxjs/Subject';
 
 describe('OfferDetailComponent', () => {
   let component: OfferDetailComponent;
@@ -8,7 +11,20 @@ describe('OfferDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OfferDetailComponent ]
+      declarations: [ OfferDetailComponent ],
+      providers: [
+        {
+          provide: OffersService,
+          useValue: {
+          },
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: new Subject()
+          },
+        }
+      ],
     })
     .compileComponents();
   }));
