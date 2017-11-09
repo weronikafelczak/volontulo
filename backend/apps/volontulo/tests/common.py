@@ -168,3 +168,23 @@ def initialize_administrator(
     administrator_profile.is_administrator = True
     administrator_profile.save()
     return administrator1
+
+
+def test_offer_list_fields(self, offer):
+    """Test read's fields of offers REST API endpoint."""
+    self.assertIsInstance(offer.pop('finished_at'), str)
+    self.assertIsInstance(offer.pop('id'), int)
+    self.assertIsInstance(offer.pop('image'), (str, type(None)))
+    self.assertIsInstance(offer.pop('location'), str)
+    self.assertIsInstance(offer.pop('organization'), str)
+    self.assertIsInstance(offer.pop('slug'), str)
+    self.assertIsInstance(offer.pop('started_at'), str)
+    self.assertIsInstance(offer.pop('title'), str)
+    self.assertIsInstance(offer.pop('url'), str)
+    self.assertIsInstance(offer.pop('description'), str)
+    self.assertIsInstance(offer.pop('benefits'), str)
+    self.assertIsInstance(offer.pop('requirements'), str)
+    self.assertIsInstance(offer.pop('time_commitment'), str)
+    self.assertIsInstance(offer.pop('time_period'), str)
+    self.assertIsInstance(offer.pop('recruitment_end_date'), (str, type(None)))
+    self.assertEqual(len(offer), 0)

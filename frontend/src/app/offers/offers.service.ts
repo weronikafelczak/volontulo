@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 import { environment } from '../../environments/environment';
-import { Offer } from './offers.model';
+
 
 @Injectable()
 export class OffersService {

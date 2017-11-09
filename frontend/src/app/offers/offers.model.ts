@@ -8,7 +8,7 @@ export class Offer {
     finishedAt: string | null;
     title: string;
     url: string;
-    recruitmentEndDate: string;
+    recruitmentEndDate: string | null;
     timeCommitment: string;
     requirements: string;
     benefits: string;
