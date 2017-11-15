@@ -1,9 +1,9 @@
 <div class="container" *ngIf="offer$ | async as offer">
-    <h1>{{ offer?.title }}</h1>
-    <div>
+    <h1>{{ offer.title }}</h1>
+    <div class="heading-wrapper">
         <img class="d-block img-fluid" src="{{ offer.image }}" alt="{{ offer.title }}">
     </div>
-    <div class="row ">
+    <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-4">
         <div class="card">
             <h3 class="card-header">{{ offer.title }}</h3>
@@ -41,10 +41,12 @@
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">  
         <div class="card">
-            <h3 class="card-header"><b>Możesz pomóc?</b></h3>
-            <p class="text-center">Twoja pomoc jest ważna.<br>
-            <b>Potrzebujemy Ciebie!</b><br>
-            <a class="btn btn-secondary" href="{{ djangoRoot }}/offers/{{ offer.slug }}/{{offer.id}}/join">Zgłoś się na ten wolontariat</a></p>
+            <div class="help">
+                <h2>Możesz pomóc?</h2><br>
+                Twoja pomoc jest ważna.<br>
+                <b><h3>Potrzebujemy Ciebie!</h3></b><br>
+                <a class="btn btn-lg btn-block" href="{{ getDjangoViewUrl(offer) }}">Zgłoś się na ten wolontariat</a>
+            </div>
         </div>
         <div class="card">
                 <h3 class="card-header">Rekrutacja trwa</h3>

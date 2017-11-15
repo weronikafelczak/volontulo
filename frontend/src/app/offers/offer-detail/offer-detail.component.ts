@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { observable } from 'rxjs/symbol/observable';
 import { Offer } from '../offers.model';
 import { OffersService } from '../offers.service';
@@ -13,6 +14,8 @@ import 'rxjs/add/operator/switchMap';
 })
 export class OfferDetailComponent implements OnInit {
   public offer$: Observable<Offer>;
+  public djangoRoot = environment.djangoRoot;
+  public getDjangoViewUrl = this.offersService.getDjangoViewUrl; 
 
   constructor(
     private activatedRoute: ActivatedRoute,
