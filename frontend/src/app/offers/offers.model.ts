@@ -2,7 +2,12 @@ export class Offer {
     id: number;
     image: string;
     location: string;
-    organization: string;
+    organization: {
+        id: number,
+        slug: string,
+        nume: string,
+        url: string,
+    },
     slug: string;
     startedAt: string | null;
     finishedAt: string | null;
