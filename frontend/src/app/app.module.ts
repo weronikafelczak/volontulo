@@ -83,9 +83,9 @@ const appRoutes: Routes = [
   ],
   providers: [
     AuthService,
+    OffersService,
     { provide: WindowService, useFactory: WindowFactory },
     { provide: ErrorHandler, useClass: RavenErrorHandler },
-    OffersService,
   ],
   bootstrap: [AppComponent]
 })
