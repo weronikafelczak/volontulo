@@ -15,7 +15,7 @@ import 'rxjs/add/operator/switchMap';
 export class OfferDetailComponent implements OnInit {
   public offer$: Observable<Offer>;
   public djangoRoot = environment.djangoRoot;
-  public getDjangoViewUrl = this.offersService.getDjangoViewUrl; 
+  public getDjangoViewUrl = this.offersService.getDjangoViewUrl;
 
   constructor(
     private activatedRoute: ActivatedRoute,
