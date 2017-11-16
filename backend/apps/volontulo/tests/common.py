@@ -176,7 +176,6 @@ def test_offer_list_fields(self, offer):
     self.assertIsInstance(offer.pop('id'), int)
     self.assertIsInstance(offer.pop('image'), (str, type(None)))
     self.assertIsInstance(offer.pop('location'), str)
-    self.assertIsInstance(offer.pop('organization'), str)
     self.assertIsInstance(offer.pop('slug'), str)
     self.assertIsInstance(offer.pop('started_at'), str)
     self.assertIsInstance(offer.pop('title'), str)

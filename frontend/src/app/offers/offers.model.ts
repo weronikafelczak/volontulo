@@ -7,7 +7,7 @@ export class Offer {
         slug: string,
         nume: string,
         url: string,
-    },
+    };
     slug: string;
     startedAt: string | null;
     finishedAt: string | null;
