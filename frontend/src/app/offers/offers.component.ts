@@ -23,7 +23,7 @@ export class OffersComponent implements OnInit {
     );
   }
 
-  getDjangoViewUrl(offer: Offer): string {
-    return this.offersService.getDjangoViewUrl(offer);
+  getDjangoDetailViewUrl(offer: Offer): string {
+    return this.offersService.getDjangoDetailViewUrl(offer);
   }
 }

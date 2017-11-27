@@ -22,7 +22,7 @@ export class OffersService {
       .map((res: Response) => res.json());
   }
 
-  getDjangoViewUrl(offer: Offer): string {
+  getDjangoDetailViewUrl(offer: Offer): string {
     return `${environment.djangoRoot}/offers/${offer.slug}/${offer.id}`;
  }
 }

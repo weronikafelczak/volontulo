@@ -1,21 +1,14 @@
-.jumbotron{
-    background-image: url({{offer.image}});
-}
-.card{
-    margin: 15px;
-    box-shadow: 5px 5px 5px #f0f4f8;
-    border-radius: 5px;
+.header{
+    position: relative;
+    overflow: hidden;
+    height: 300px;
 }
 
-.btn{
-    background: #fff;
-    color: #242424;
-    padding: 10px 16px;
-    font-size: 18px;
-    border-radius: 3px;
+.header img{
+    position: absolute;
 }
 
-.offer-title {
+.header-panel {
     margin: 15px;
     float: left;
     padding: 5px;
@@ -24,12 +17,18 @@
     background-color: rgba(67, 74, 84, 0.2);
 }
 
-.offer-title p{
+.header-panel p{
     padding: 5px;
     line-height: 29px;
     font-size: 24px;
     font-weight: 700;
     color: #F5F7FA;
-    display: inline-block;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.2), 0 0px 1px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(0, 0, 0, 0.6);
 }
+
+.card{
+    margin: 15px;
+    box-shadow: 5px 5px 5px #f0f4f8;
+    border-radius: 5px;
+  }
+  
