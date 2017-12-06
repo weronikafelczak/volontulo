@@ -1,11 +1,11 @@
-import { IconComponent } from '../../icon/icon.component';
-import { IconLabelComponent } from '../../icon-label/icon-label.component';
-import { OffersService } from '../../homepage-offer/offers.service';
 import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { OfferDetailComponent } from './offer-detail.component';
 import { Subject } from 'rxjs/Subject';
+
+import { IconComponent } from '../../icon/icon.component';
+import { IconLabelComponent } from '../../icon-label/icon-label.component';
+import { OfferDetailComponent } from './offer-detail.component';
+import { OffersService } from '../../homepage-offer/offers.service';
 
 describe('OfferDetailComponent', () => {
   let component: OfferDetailComponent;

@@ -1,10 +1,11 @@
-import { environment } from '../../../environments/environment';
-import { Offer } from '../../homepage-offer/offers.model';
-import { OffersService } from '../../homepage-offer/offers.service';
+import 'rxjs/add/operator/switchMap';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
+
+import { environment } from '../../../environments/environment';
+import { Offer } from '../../homepage-offer/offers.model';
+import { OffersService } from '../../homepage-offer/offers.service';
 
 @Component({
   selector: 'volontulo-offer-detail',

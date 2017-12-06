@@ -1,23 +1,23 @@
 .header-panels-box {
-    position: relative;
     height: 100%;
+    position: relative;
 }
 .header-panels {
-    position: absolute;
     bottom: 0;
+    position: absolute;
 }
 .header-panel {
-    font-size: 24px;
-    font-weight: 700;
-    color: #F5F7FA;
-    margin: 10px;
-    line-height: 16px;
-    font-size: 24px;
-    float: left;
-    padding: 10px;
+    background-color: rgba(67, 74, 84, 0.2);
     border-radius: 3px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    background-color: rgba(67, 74, 84, 0.2);
+    color: #F5F7FA;
+    float: left;
+    font-size: 24px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 16px;
+    margin: 10px;
+    padding: 10px;
 }
 
 .header-panel h2 {
@@ -33,7 +33,7 @@
     display: flex;
     flex-wrap: nowrap;
 }
-.card{
+.card {
     margin: 15px;
   }
   

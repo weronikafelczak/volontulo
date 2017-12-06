@@ -1,6 +1,6 @@
-import { IconComponent } from '../icon/icon.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { IconComponent } from '../icon/icon.component';
 import { IconLabelComponent } from './icon-label.component';
 
 describe('IconLabelComponent', () => {
@@ -10,8 +10,8 @@ describe('IconLabelComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        IconLabelComponent,
         IconComponent,
+        IconLabelComponent,
       ]
     })
     .compileComponents();
