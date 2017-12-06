@@ -22,6 +22,8 @@ import { RegulationsComponent } from './static/regulations.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './auth.service';
 import { OfferDetailComponent } from './offers/offer-detail/offer-detail.component';
+import { HeaderPanelComponent } from './offers/offer-detail/header-panel/header-panel.component';
+import { IconComponent } from './icon/icon.component';
 
 Raven.config(environment.sentryDSN).install();
 
@@ -71,6 +73,8 @@ const appRoutes: Routes = [
     RegulationsComponent,
     LoginComponent,
     OfferDetailComponent,
+    HeaderPanelComponent,
+    IconComponent,
   ],
   imports: [
     BrowserModule,
