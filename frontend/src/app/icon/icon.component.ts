@@ -7,6 +7,6 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/c
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconComponent {
-  @Input() name: string;
+  @Input() content: string;
 
 }
