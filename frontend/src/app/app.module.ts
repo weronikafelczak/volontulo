@@ -70,7 +70,7 @@ const appRoutes: Routes = [
     AboutUsComponent,
     RegulationsComponent,
     LoginComponent,
-    OfferDetailComponent
+    OfferDetailComponent,
   ],
   imports: [
     BrowserModule,
