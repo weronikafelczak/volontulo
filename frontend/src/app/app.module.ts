@@ -73,13 +73,10 @@ const appRoutes: Routes = [
     AboutUsComponent,
     RegulationsComponent,
     LoginComponent,
-<<<<<<< HEAD
     OfferDetailComponent,
     IconComponent,
     IconLabelComponent,
-=======
     BannerComponent
->>>>>>> f20be7ae2c74de807c5d2468767f9aca345d2178
   ],
   imports: [
     BrowserModule,
