@@ -1,17 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'volontulo-icon-label',
   templateUrl: './icon-label.component.html',
   styleUrls: ['./icon-label.component.css']
 })
-export class IconLabelComponent implements OnInit {
+export class IconLabelComponent {
   @Input() icon: string;
-  @Input() content: string;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }
