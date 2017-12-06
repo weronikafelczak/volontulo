@@ -1,4 +1,4 @@
-import { OffersService } from '../offers.service';
+import { OffersService } from '../../homepage-offer/offers.service';
 import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
