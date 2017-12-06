@@ -4,10 +4,15 @@
         <div class="card-img-overlay">
             <div class="col-md-12 header-panels-box">
                 <div class="header-panels">
-                    <div class="header-panel"><h2>{{ offer.title }}</h2></div>
+                    <div class="header-panel">{{ offer.title }}</div>
                     <div class="clearfix"></div>
-                   <volontulo-icon-label icon="place">{{ offer.location }}</volontulo-icon-label>
-                   <volontulo-icon-label icon="access_time">{{ offer.startedAt | date:'shortDate' }} - {{ offer.finishedAt | date:'shortDate' }}</volontulo-icon-label>
+                    <div class="header-labels">
+                        <volontulo-icon-label icon="place">{{ offer.location }}</volontulo-icon-label>
+                        <volontulo-icon-label icon="access_time">{{ offer.startedAt | date:'shortDate' }} - {{ offer.finishedAt | date:'shortDate' }}</volontulo-icon-label>
+<!-- TODO: restore the link for users who can edit the offer when permission check implemented in the frontend 
+<a href="{{ djangoRoot }}/offers/{{ offer.slug }}/{{ offer.id }}/edit" class="btn btn-sm">
+<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edytuj ofertę</a>-->
+                    </div>
                 </div>
             </div>
         </div>
