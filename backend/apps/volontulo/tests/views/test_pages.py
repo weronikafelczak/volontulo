@@ -68,4 +68,3 @@ class TestPages(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/faq-volunteers.html')
         self.assertContains(response, 'Często zadawane pytania')
-
