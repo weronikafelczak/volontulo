@@ -131,7 +131,7 @@ class OffersCreate(View):
             )
             messages.success(request, "Dziękujemy za dodanie oferty.")
             return redirect(
-                'offers_view',
+                '{{ ANGULAR_ROOT }}',
                 slug=slugify(offer.title),
                 id_=offer.id,
             )
