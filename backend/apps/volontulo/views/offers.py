@@ -114,7 +114,6 @@ class OffersCreate(View):
     @staticmethod
     def post(request):
         """Method responsible for saving new offer.
-
         :param request: WSGIRequest instance
         """
         form = CreateOfferForm(request.POST)
@@ -278,7 +277,7 @@ class OffersEdit(View):
             offer.close_offer()
             return redirect(
                 reverse(
-                    'offers_view',
+                    '{{ ANGULAR_ROOT }}',
                     args=[slugify(offer.title), offer.id]
                 )
             )
@@ -346,7 +345,6 @@ class OffersDelete(View):
             return redirect('homepage')
 
         return HttpResponseForbidden()
-
 
 class OffersAccept(View):
     """ Class view responsible for acceptance of offers """
@@ -476,7 +474,7 @@ class OffersJoin(View):
                 "Zgłoszenie chęci uczestnictwa zostało wysłane."
             )
             return redirect(
-                'offers_view',
+                '{{ ANGULAR_ROOT }}',
                 slug=slugify(offer.title),
                 id_=offer.id,
             )
