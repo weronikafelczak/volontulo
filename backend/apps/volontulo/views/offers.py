@@ -274,7 +274,7 @@ class OffersEdit(View):
         elif request.POST.get('close_offer') == 'close':
             offer.close_offer()
             return redirect(
-                    'offers_list'
+                'offers_list'
             )
         elif request.POST.get('status_flag') == 'change_status':
             if request.POST.get('status') == 'published':
