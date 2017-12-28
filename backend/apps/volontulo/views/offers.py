@@ -346,6 +346,7 @@ class OffersDelete(View):
 
         return HttpResponseForbidden()
 
+
 class OffersAccept(View):
     """ Class view responsible for acceptance of offers """
 
