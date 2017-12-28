@@ -144,7 +144,7 @@ class TestOffersCreate(TestCase):
             offer = Offer.objects.get(description=str(i))
             self.assertRedirects(
                 response,
-                '/o/offers/volontulo-offer/{}'.format(offer.id),
+                '/o/offers',
                 302,
                 200,
             )

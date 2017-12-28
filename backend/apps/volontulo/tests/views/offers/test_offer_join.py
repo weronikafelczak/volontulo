@@ -129,7 +129,7 @@ class TestOffersJoin(TestCase):
         }, follow=True)
         self.assertRedirects(
             response,
-            '/o/offers/volontulo-offer/{}'.format(self.offer.id),
+            '/o/offers',
             302,
             200,
         )
