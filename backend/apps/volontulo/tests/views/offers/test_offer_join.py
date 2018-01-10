@@ -131,9 +131,9 @@ class TestOffersJoin(TestCase):
         self.assertRedirects(
             response,
             '{ANGULAR_ROOT}/{slug}/{id}'.format(
-                ANGULAR_ROOT = settings.ANGULAR_ROOT, 
-                slug = slugify(offer.title),
-                id = str(offer.id),
+                ANGULAR_ROOT=settings.ANGULAR_ROOT,
+                slug=slugify(offer.title),
+                id=str(offer.id),
                 ),
             302,
             200,

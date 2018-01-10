@@ -131,9 +131,9 @@ class OffersCreate(View):
             messages.success(request, "Dziękujemy za dodanie oferty.")
             return redirect(
                 '{ANGULAR_ROOT}/{slug}/{id}'.format(
-                    ANGULAR_ROOT = settings.ANGULAR_ROOT, 
-                    slug = slugify(offer.title),
-                    id = str(offer.id),
+                    ANGULAR_ROOT=settings.ANGULAR_ROOT,
+                    slug=slugify(offer.title),
+                    id=str(offer.id),
                     )
             )
         messages.error(
@@ -279,9 +279,9 @@ class OffersEdit(View):
             offer.close_offer()
             return redirect(
                 '{ANGULAR_ROOT}/{slug}/{id}'.format(
-                    ANGULAR_ROOT = settings.ANGULAR_ROOT, 
-                    slug = slugify(offer.title),
-                    id = str(offer.id),
+                    ANGULAR_ROOT=settings.ANGULAR_ROOT,
+                    slug=slugify(offer.title),
+                    id=str(offer.id),
                     )
             )
         elif request.POST.get('status_flag') == 'change_status':
@@ -479,9 +479,9 @@ class OffersJoin(View):
             )
             return redirect(
                 '{ANGULAR_ROOT}/{slug}/{id}'.format(
-                    ANGULAR_ROOT = settings.ANGULAR_ROOT, 
-                    slug = slugify(offer.title),
-                    id = str(offer.id),
+                    ANGULAR_ROOT=settings.ANGULAR_ROOT,
+                    slug=slugify(offer.title),
+                    id=str(offer.id),
                     )
             )
         else:
