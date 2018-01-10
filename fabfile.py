@@ -8,8 +8,10 @@ particular script using Python 2.
 """
 
 import contextlib
+import os
 import random
 import string
+import sys
 
 from fabric.api import cd
 from fabric.api import env
@@ -18,11 +20,6 @@ from fabric.api import prefix
 from fabric.api import run
 from fabric.contrib import files
 
-try:
-    from secrets import VOLONTULO_SENTRY_DSN
-except ImportError:
-    print("Missing secrets")
-    raise
 
 NODE_VERSION = '9.3.0'
 
@@ -91,6 +88,14 @@ def update():
 
 def install():
     u"""Function defining all steps required to install application."""
+
+    # ensure that we have secrets configured:
+    sys.path.insert(0, os.path.dirname(__file__))
+    try:
+        from secrets import VOLONTULO_SENTRY_DSN
+    except ImportError:
+        print("Missing secrets")
+        raise
 
     # Sytem upgrade:
     run('apt-get update -y')
@@ -258,7 +263,7 @@ server {{
     run('add-apt-repository -y ppa:certbot/certbot')
     run('apt-get update -y')
     run('apt-get install -y python-certbot-nginx ')
-    run('certbot --nginx -m hello@codeforpoznan.pl --agree-tos --no-eff-email -d {} --redirect'.format(env.host_string))
+    run('certbot --authenticator standalone --installer nginx -m hello@codeforpoznan.pl --agree-tos --no-eff-email -d {} --redirect --pre-hook "service nginx stop" --post-hook "service nginx start"'.format(env.host_string))
     run('(crontab -l 2>/dev/null; echo \'0 0 * * * certbot renew --post-hook "systemctl reload nginx"\') | crontab -')
 
     execute(update)
