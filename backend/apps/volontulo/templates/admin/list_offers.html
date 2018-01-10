@@ -20,12 +20,12 @@
         {% for offer in offers %}
             <tr>
                 <td>
-                    <a class="crop-circle" href="{% url 'offers_view' offer.title|slugify offer.id  %}">
+                    <a class="crop-circle" href="">
                         <img src="/media/{{ offer.images.all|main_image }}" alt="{{offer.images.all|main_image|slugify|default:''}}" />
                     </a>
                 </td>
                 <td>
-                    <a class="btn btn-link" href="{% url 'offers_view' offer.title|slugify offer.id  %}">{{ offer.title }}</a>
+                    <a class="btn btn-link" href="">{{ offer.title }}</a>
                 </td>
                 <td>
                     <div class="form-control-static">{{ offer.location }}</div>
