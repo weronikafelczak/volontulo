@@ -114,7 +114,6 @@ class OffersCreate(View):
     @staticmethod
     def post(request):
         """Method responsible for saving new offer.
-
         :param request: WSGIRequest instance
         """
         form = CreateOfferForm(request.POST)
@@ -131,9 +130,7 @@ class OffersCreate(View):
             )
             messages.success(request, "Dziękujemy za dodanie oferty.")
             return redirect(
-                'offers_view',
-                slug=slugify(offer.title),
-                id_=offer.id,
+                'offers_list'
             )
         messages.error(
             request,
@@ -277,10 +274,7 @@ class OffersEdit(View):
         elif request.POST.get('close_offer') == 'close':
             offer.close_offer()
             return redirect(
-                reverse(
-                    'offers_view',
-                    args=[slugify(offer.title), offer.id]
-                )
+                'offers_list'
             )
         elif request.POST.get('status_flag') == 'change_status':
             if request.POST.get('status') == 'published':
@@ -368,56 +362,6 @@ class OffersAccept(View):
             return redirect('homepage')
 
         return HttpResponseForbidden()
-
-
-class OffersView(View):
-    """Class view supporting offer preview."""
-
-    @staticmethod
-    @correct_slug(Offer, 'offers_view', 'title')
-    def get(request, slug, id_):
-        """View responsible for showing details of particular offer."""
-        offer = get_object_or_404(Offer, id=id_)
-        try:
-            main_image = OfferImage.objects.get(offer=offer, is_main=True)
-        except OfferImage.DoesNotExist:
-            main_image = ''
-
-        volunteers = None
-        users = [u.user.id for u in offer.organization.userprofiles.all()]
-        if (
-                request.user.is_authenticated() and (
-                    request.user.userprofile.is_administrator or
-                    request.user.userprofile.id in users
-                )
-        ):
-            volunteers = offer.volunteers.all()
-
-        context = {
-            'offer': offer,
-            'volunteers': volunteers,
-            'MEDIA_URL': settings.MEDIA_URL,
-            'main_image': main_image,
-        }
-        return render(request, "offers/show_offer.html", context=context)
-
-    @staticmethod
-    def post(request, slug, id_):
-        """View responsible for submitting volunteers awarding."""
-        offer = get_object_or_404(Offer, id=id_)
-        post_data = request.POST
-        if post_data.get('csrfmiddlewaretoken'):
-            del post_data['csrfmiddlewaretoken']
-        if post_data.get('submit'):
-            del post_data['submit']
-
-        offer.votes = True
-        offer.save()
-
-        context = {
-            'offer': offer,
-        }
-        return render(request, "offers/show_offer.html", context=context)
 
 
 class OffersJoin(View):
@@ -526,9 +470,7 @@ class OffersJoin(View):
                 "Zgłoszenie chęci uczestnictwa zostało wysłane."
             )
             return redirect(
-                'offers_view',
-                slug=slugify(offer.title),
-                id_=offer.id,
+                'offers_list'
             )
         else:
             errors = "<br />".join(form.errors)
