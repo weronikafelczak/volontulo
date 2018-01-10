@@ -130,7 +130,11 @@ class OffersCreate(View):
             )
             messages.success(request, "Dziękujemy za dodanie oferty.")
             return redirect(
-                'offers_list'
+                '{ANGULAR_ROOT}/{slug}/{id}'.format(
+                    ANGULAR_ROOT = settings.ANGULAR_ROOT, 
+                    slug = slugify(offer.title),
+                    id = str(offer.id),
+                    )
             )
         messages.error(
             request,
@@ -274,7 +278,11 @@ class OffersEdit(View):
         elif request.POST.get('close_offer') == 'close':
             offer.close_offer()
             return redirect(
-                'offers_list'
+                '{ANGULAR_ROOT}/{slug}/{id}'.format(
+                    ANGULAR_ROOT = settings.ANGULAR_ROOT, 
+                    slug = slugify(offer.title),
+                    id = str(offer.id),
+                    )
             )
         elif request.POST.get('status_flag') == 'change_status':
             if request.POST.get('status') == 'published':
@@ -470,7 +478,11 @@ class OffersJoin(View):
                 "Zgłoszenie chęci uczestnictwa zostało wysłane."
             )
             return redirect(
-                'offers_list'
+                '{ANGULAR_ROOT}/{slug}/{id}'.format(
+                    ANGULAR_ROOT = settings.ANGULAR_ROOT, 
+                    slug = slugify(offer.title),
+                    id = str(offer.id),
+                    )
             )
         else:
             errors = "<br />".join(form.errors)

@@ -6,7 +6,9 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.localhost',
+]
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 

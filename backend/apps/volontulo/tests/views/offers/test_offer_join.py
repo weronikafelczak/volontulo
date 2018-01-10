@@ -4,6 +4,7 @@
 .. module:: test_offer_join
 """
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import Client
 from django.test import TestCase
@@ -129,7 +130,11 @@ class TestOffersJoin(TestCase):
         }, follow=True)
         self.assertRedirects(
             response,
-            '/o/offers',
+            '{ANGULAR_ROOT}/{slug}/{id}'.format(
+                ANGULAR_ROOT = settings.ANGULAR_ROOT, 
+                slug = slugify(offer.title),
+                id = str(offer.id),
+                ),
             302,
             200,
         )

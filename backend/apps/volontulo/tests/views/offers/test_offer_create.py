@@ -3,7 +3,7 @@
 """
 .. module:: test_offer_create
 """
-
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import Client
 from django.test import TestCase
@@ -144,7 +144,11 @@ class TestOffersCreate(TestCase):
             offer = Offer.objects.get(description=str(i))
             self.assertRedirects(
                 response,
-                '/o/offers',
+                '{ANGULAR_ROOT}/{slug}/{id}'.format(
+                    ANGULAR_ROOT = settings.ANGULAR_ROOT, 
+                    slug = slugify(offer.title),
+                    id = str(offer.id),
+                    ),
                 302,
                 200,
             )
