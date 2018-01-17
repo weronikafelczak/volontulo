@@ -5,6 +5,7 @@
 """
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from django.test import Client
 from django.test import TestCase
 
@@ -144,7 +145,7 @@ class TestOffersCreate(TestCase):
             offer = Offer.objects.get(description=str(i))
             self.assertRedirects(
                 response,
-                '{ANGULAR_ROOT}/{slug}/{id}'.format(
+                '{ANGULAR_ROOT}/offers/{slug}/{id}'.format(
                     ANGULAR_ROOT=settings.ANGULAR_ROOT,
                     slug=slugify(offer.title),
                     id=str(offer.id),

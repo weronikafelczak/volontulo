@@ -130,7 +130,7 @@ class OffersCreate(View):
             )
             messages.success(request, "Dziękujemy za dodanie oferty.")
             return redirect(
-                '{ANGULAR_ROOT}/{slug}/{id}'.format(
+                '{ANGULAR_ROOT}/offers/{slug}/{id}'.format(
                     ANGULAR_ROOT=settings.ANGULAR_ROOT,
                     slug=slugify(offer.title),
                     id=str(offer.id),
@@ -278,7 +278,7 @@ class OffersEdit(View):
         elif request.POST.get('close_offer') == 'close':
             offer.close_offer()
             return redirect(
-                '{ANGULAR_ROOT}/{slug}/{id}'.format(
+                '{ANGULAR_ROOT}/offers/{slug}/{id}'.format(
                     ANGULAR_ROOT=settings.ANGULAR_ROOT,
                     slug=slugify(offer.title),
                     id=str(offer.id),
@@ -478,7 +478,7 @@ class OffersJoin(View):
                 "Zgłoszenie chęci uczestnictwa zostało wysłane."
             )
             return redirect(
-                '{ANGULAR_ROOT}/{slug}/{id}'.format(
+                '{ANGULAR_ROOT}/offers/{slug}/{id}'.format(
                     ANGULAR_ROOT=settings.ANGULAR_ROOT,
                     slug=slugify(offer.title),
                     id=str(offer.id),

@@ -6,6 +6,7 @@
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from django.test import Client
 from django.test import TestCase
 
@@ -130,10 +131,10 @@ class TestOffersJoin(TestCase):
         }, follow=True)
         self.assertRedirects(
             response,
-            '{ANGULAR_ROOT}/{slug}/{id}'.format(
+            '{ANGULAR_ROOT}/offers/{slug}/{id}'.format(
                 ANGULAR_ROOT=settings.ANGULAR_ROOT,
-                slug=slugify(offer.title),
-                id=str(offer.id),
+                slug=slugify(self.offer.title),
+                id=str(self.offer.id),
                 ),
             302,
             200,
