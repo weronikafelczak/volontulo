@@ -105,6 +105,19 @@ class TestOffersCreate(TestCase):
             'password': '123org',
         })
 
+        self.client.post('/o/offers/create', {
+            'organization': self.organization.id,
+            'description': 'desc',
+            'requirements': 'required requirements',
+            'time_commitment': 'required time_commitment',
+            'benefits': 'required benefits',
+            'location': 'required location',
+            'title': 'volontulo offer',
+            'time_period': 'required time_period',
+            'started_at': '',
+            'finished_at': '',
+        }, follow=True)
+
         offer = Offer.objects.get(description='desc')
         self.assertEqual(offer.action_status, 'ongoing')
 
@@ -115,8 +128,20 @@ class TestOffersCreate(TestCase):
             'password': '123org',
         })
         for i in range(1, 4):
-            offer = Offer.objects.get(description=str(i))
+            self.client.post('/o/offers/create', {
+                'organization': self.organization.id,
+                'description': str(i),
+                'requirements': 'required requirements',
+                'time_commitment': 'required time_commitment',
+                'benefits': 'required benefits',
+                'location': 'required location',
+                'title': 'volontulo offer',
+                'time_period': 'required time_period',
+                'started_at': '2015-11-01 11:11:11',
+                'finished_at': '2015-11-01 11:11:11',
+            }, follow=True)
 
+            offer = Offer.objects.get(description=str(i))
             self.assertEqual(
                 offer.organization,
                 self.organization_profile.organizations.all()[0],
