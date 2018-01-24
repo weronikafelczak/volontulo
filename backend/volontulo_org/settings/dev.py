@@ -7,7 +7,8 @@ from .base import *
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '.localhost',
+    'localhost',
+    'backend',
 ]
 
 DEBUG_TOOLBAR_PATCH_SETTINGS = False

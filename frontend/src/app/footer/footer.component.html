@@ -9,7 +9,7 @@
             <a class="nav-link" href="{{ djangoRoot }}">Strona główna</a>
             <a class="nav-link" href="{{ djangoRoot }}/register">Załóż konto</a>
             <a class="nav-link" href="{{ djangoRoot }}/contact">Kontakt z administratorem</a>
-            <a class="nav-link" [routerLink]="['/o-nas']">O nas</a>
+            <a class="nav-link" [routerLink]="['/about-us']">O nas</a>
             <a class="nav-link" [routerLink]="['/regulations']">Regulamin</a>
           </li>
         </ul>
@@ -34,7 +34,7 @@
             <a class="nav-link" href="{{ djangoRoot }}/offers">Lista aktualnych ofert</a>
             <a class="nav-link" href="{{ djangoRoot }}/offers/archived">Archiwum ofert</a>
             <a class="nav-link" href="{{ djangoRoot }}/organizations">Lista organizacji i instytucji</a>
-            <a class="nav-link" href="{{ djangoRoot }}/faq-volunteers">FAQ dla wolontariuszy</a>
+            <a class="nav-link" [routerLink]="['/faq-volunteers']">FAQ dla wolontariuszy</a>
             <a class="nav-link" [routerLink]="['/office']">Przyjdź na dyżur</a>
           </li>
         </ul>
