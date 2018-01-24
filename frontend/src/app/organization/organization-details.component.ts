@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
 @Component({
   selector: 'volontulo-organization-details',
   templateUrl: './organization-details.component.html',
-  styleUrls: ['./organization-details.component.css'],
+  styleUrls: ['./organization-details.component.scss'],
 })
 
 export class OrganizationDetailsComponent implements OnInit {
@@ -35,8 +35,8 @@ export class OrganizationDetailsComponent implements OnInit {
       .switchMap(params => this.organizationService.getOrganization(params.organizationId));
 
     this.isUserOrgMember$ = this.organization$
-      .combineLatest(this.user$, (org, user) => {
-        return user.organizations.filter(organ => org.id === organ.id).length > 0;
+      .combineLatest(this.user$, (org, user): boolean => {
+        return user !== null && user.organizations.filter(organ => org.id === organ.id).length > 0;
       });
   }
 }
