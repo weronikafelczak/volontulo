@@ -114,6 +114,7 @@ class OffersCreate(View):
     @staticmethod
     def post(request):
         """Method responsible for saving new offer.
+
         :param request: WSGIRequest instance
         """
         form = CreateOfferForm(request.POST)
