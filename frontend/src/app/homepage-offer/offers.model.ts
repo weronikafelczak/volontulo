@@ -15,4 +15,12 @@ export class Offer {
     requirements: string;
     benefits: string;
     description: string;
+    recruitmentStartDate: string | null;
+    reserveRecruitment: boolean;
+    reserveRecruitmentStartDate: string | null;
+    reserveRecruitmentEndDate: string | null;
+    actionOngoing: boolean;
+    constantCoop: boolean;
+    volunteersLimit: number;
+    reserveVolunteersLimit: number;
 }

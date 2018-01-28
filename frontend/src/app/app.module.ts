@@ -32,6 +32,7 @@ import { OrganizationContactComponent } from './organization/organization-contac
 import { OrganizationComponent } from './organization/organization.component';
 import { OfficeComponent } from './static/office/office.component';
 import { FaqVolunteersComponent } from './static/faq-volunteers.component';
+import { CreateOfferComponent } from './offers/create-offer/create-offer.component';
 
 Raven.config(environment.sentryDSN).install();
 
@@ -79,6 +80,14 @@ const appRoutes: Routes = [
     component: OfferDetailComponent,
   },
   {
+    path: 'offers/create',
+    component: CreateOfferComponent,
+  },
+  {
+    path: 'offers/:offerSlug/:offerId/edit',
+    component: CreateOfferComponent,
+  },
+  {
     path: '**',
     component: RedirectComponent
   }
@@ -106,6 +115,7 @@ const appRoutes: Routes = [
     OrganizationComponent,
     OfficeComponent,
     FaqVolunteersComponent,
+    CreateOfferComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'volontulo' }),

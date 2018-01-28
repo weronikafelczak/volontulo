@@ -5,6 +5,7 @@
 """
 
 from django.contrib.auth.models import User
+from django.db.models.fields import DateField, IntegerField
 from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework.fields import CharField, EmailField
@@ -61,6 +62,14 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
             'time_commitment',
             'time_period',
             'recruitment_end_date',
+            'recruitment_start_date',
+            'reserve_recruitment',
+            'reserve_recruitment_start_date',
+            'reserve_recruitment_end_date',
+            'action_ongoing',
+            'constant_coop',
+            'volunteers_limit',
+            'reserve_volunteers_limit',
         )
 
     def get_image(self, obj):
@@ -115,3 +124,29 @@ class OrganizationContact(serializers.Serializer):
                          trim_whitespace=True)
     message = CharField(required=True, min_length=2, max_length=500,
                         trim_whitespace=True)
+
+class CreateOffer(serializers.Serializer):
+    """Serializer for creating a new offer"""
+    organization =CharField(required=True, min_length=2, max_length=150,
+                     trim_whitespace=True)
+    description = CharField(required=True, min_length=2, max_length=150,
+                     trim_whitespace=True)
+    requirements = CharField(required=True, min_length=2, max_length=150,
+                     trim_whitespace=True)
+    time_commitment = CharField(required=True, min_length=2, max_length=150,
+                     trim_whitespace=True)
+    benefits = CharField(required=True, min_length=2, max_length=150,
+                     trim_whitespace=True)
+    location = CharField(required=True, min_length=2, max_length=150,
+                     trim_whitespace=True)
+    title = CharField(required=True, min_length=2, max_length=150,
+                     trim_whitespace=True)
+    # started_at = DateField()
+    # finished_at = CharField(required=True, min_length=2, max_length=150,
+    #                  trim_whitespace=True)
+    # recruitment_start_date = CharField(required=True, min_length=2, max_length=150,
+    #                  trim_whitespace=True)
+    # recruitment_end_date =CharField(required=True, min_length=2, max_length=150,
+    #                  trim_whitespace=True)
+    # volunteers_limit = CharField(required=True, min_length=1, max_length=150,
+    #                  trim_whitespace=True)

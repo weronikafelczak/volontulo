@@ -1,0 +1,308 @@
+<h2>{{ createOrEdit }} oferty:</h2>
+<!-- OPCJE ADMINA -->
+<form #offerForm="ngForm" (ngSubmit)="onSubmit(offer)" ngNativeValidate>
+  <div class="form-group row">
+    <label for="title" class="col-sm-3 col-form-label">Tytuł oferty:</label>
+    <div class="col-sm-6">
+      <input 
+        type="text"
+        class="form-control"
+        placeholder="Tytuł oferty..." 
+        minlength="3"
+        maxlength="150"
+        id="title" name="title"
+        [(ngModel)]="offer.title"
+        #title="ngModel"
+        required>
+      <span class="form-text text-muted" *ngIf="!title.valid &&title.touched">To pole jest obowiązkowe.</span>
+    </div>
+    <div class="col-sm-3">Określ, jak oferta będzie nazywać się w systemie, staraj się być dokładnym.</div>
+  </div>
+  <div class="form-group row">
+    <label for="location" class="col-sm-3 col-form-label">Miejsce odbywania wolontariatu:</label>
+    <div class="col-sm-6">
+      <input 
+        type="text"
+        class="form-control"
+        placeholder="Miejsce odbywania wolontariatu..." 
+        minlength="3"
+        maxlength="150"
+        id="location" name="location"
+        [(ngModel)]="offer.location"
+        #location="ngModel"
+        required>
+      <span class="form-text text-muted" *ngIf="!location.valid &&location.touched">To pole jest obowiązkowe.</span>
+    </div>
+    <div class="col-sm-3">Określ, w jakim miejscu odbywać się będzie wolontariat.</div>
+  </div>
+  <div class="form-group row">
+    <label for="organization" class="col-sm-3 col-form-label">Z ramienia organizacji:</label>
+    <div class="col-sm-6">
+      <select class="form-control"
+        id="organization" name="organization"
+        [(ngModel)]="offer.organization"
+        #organization="ngModel"
+        required>
+        <option  *ngFor="let organization of user['organizations']" >
+          {{ organization.name }}</option>
+      </select>
+      <span class="form-text text-muted" *ngIf="!organization.valid &&organization.touched">To pole jest obowiązkowe.</span>
+    </div>
+    <div class="col-sm-3">Określ organizację odpowiedzialną za wolontariat.</div>
+  </div>
+  <h3>Realizacja akcji:</h3>
+  <div class="form-group row">
+    <label for="startedAt" class="col-sm-3 col-form-label">Dzień rozpoczęcia:</label>
+    <div class="col-sm-3">
+      <div class="form-check form-check-inline">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <input 
+            type="radio"
+            name="startedAt"
+            checked="checked"
+            value = "false"
+            [(ngModel)]="offer.actionOngoing"
+            required>
+          </span>
+          <input 
+            type="date"
+            class="form-control"
+            min="2018-01-01"
+            name="started"
+            [(ngModel)]="offer.startedAt"
+            #startedAtDate="ngModel"
+            [disabled]="offer.actionOngoing"
+            required>
+        </div>
+      </div>
+      <span class="form-text text-muted" *ngIf="actionOngoing.value==='false'&& !startedAtDate.valid">Podaj datę.</span>
+    </div>
+    <div class="col-sm-3">
+      <div class="form-check form-check-inline">
+          <input
+          type="radio"
+          value=true
+          name="startedAt"
+          [(ngModel)]="offer.actionOngoing"
+          #actionOngoing="ngModel"
+          required>
+          Akcja już trwa
+      </div>
+    </div>
+    <div class="col-sm-3">Określ datę rozpoczęcia akcji.</div>
+  </div>
+  <div class="form-group row ">
+    <label for="finishedAt" class="col-sm-3 col-form-label">Dzień zakończenia:</label>
+    <div class="col-sm-3">
+      <div class="form-check form-check-inline">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <input
+            type="radio"
+            name="finishedAt"
+            checked="checked"
+            [(ngModel)]="offer.constantCoop"
+            value=false>
+          </span>
+          <input 
+            type="date"
+            class="form-control"
+            min="2018-01-01"
+            id="finishedAt" name="finished"
+            [(ngModel)]="offer.finishedAt"
+            #finishedAt="ngModel"
+            [disabled]="offer.constantCoop"
+            required>
+        </div>
+      </div>
+      <span class="form-text text-muted" *ngIf="constantCoop.value==='false' &&!finishedAt.valid">Podaj datę.</span>
+    </div>
+      <div class="col-sm-3">
+      <div class="form-check">
+          <input  
+          type="radio"
+          value="true"
+          name="finishedAt"
+          [(ngModel)]="offer.constantCoop"
+          #constantCoop="ngModel">Akcja nie kończy się (ciągła współpraca)
+      </div>
+    </div>
+    <div class="col-sm-3">Określ datę zakończenia akcji (w formacie RRRR-MM-DD).</div>
+  </div>
+  <div class="form-group row">
+    <label for="startedAt" class="col-sm-3 col-form-label">Rekrutacja:</label>
+    <div class="col-sm-6">
+      <div class="form-check form-check-inline">
+        <div class="card">
+          <h5 class="card-header">Rekrutacja podstawowa</h5>
+          <div class="card-body">
+            <div class="form-group row">
+              <label for="recruitmentStartDate" class="col-sm-3 col-form-label">Początek:</label>
+              <div class="col-sm-9">
+                <input 
+                type="date"
+                min="2018-01-01"
+                class="form-control"
+                id="recruitmentStartDate" name="recruitmentStartDate"
+                [(ngModel)]="offer.recruitmentStartDate"
+                #recruitmentStartDate="ngModel">
+                <!-- <span class="form-text text-muted" *ngIf="!recruitmentStartDate.valid">To pole jest obowiązkowe.</span> -->
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="recruitmentEndDate" class="col-sm-3 col-form-label">Koniec:</label>
+              <div class="col-sm-9">
+                <input 
+                type="date"
+                class="form-control"
+                minlength="3"
+                maxlength="150"
+                id="recruitmentEndDate" name="recruitmentEndDate"
+                [(ngModel)]="offer.recruitmentEndDate"
+                #recruitmentEndDate="ngModel">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="volunteersLimit" class="col-sm-3 col-form-label">Limit wolontariuszy:</label>
+              <div class="col-sm-6">
+                <input 
+                  type="number"
+                  class="form-control"
+                  placeholder="0" 
+                  min="0"
+                  id="volunteersLimit" name="volunteersLimit"
+                  [(ngModel)]="offer.volunteersLimit"
+                  #volunteersLimit="ngModel">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-check form-check-inline">
+        <div class="card">
+          <h5 class="card-header">Rekrutacja rezerwowa</h5>
+          <div class="card-body">
+            <div class="form-group row">
+              <label for="reserveRecruitmentStartDate" class="col-sm-3 col-form-label">Początek:</label>
+              <div class="col-sm-9">
+                <input 
+                type="date"
+                class="form-control"
+                minlength="3"
+                maxlength="150"
+                id="reserveRecruitmentStartDate" name="reserveRecruitmentStartDate"
+                [(ngModel)]="offer.reserveRecruitmentStartDate"
+                #reserveRecruitmentStartDate="ngModel">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="reserveRecruitmentEndDate" class="col-sm-3 col-form-label">Koniec:</label>
+              <div class="col-sm-9">
+                <input 
+                type="date"
+                class="form-control"
+                minlength="3"
+                maxlength="150"
+                id="reserveRecruitmentEndDate" name="reserveRecruitmentEndDate"
+                [(ngModel)]="offer.reserveRecruitmentEndDate"
+                #reserveRecruitmentEndDate="ngModel">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="reserveVolunteersLimit" class="col-sm-3 col-form-label">Limit wolontariuszy:</label>
+              <div class="col-sm-6">
+                <input 
+                  type="number"
+                  class="form-control"
+                  placeholder="0" 
+                  min="0"
+                  id="reserveVolunteersLimit" name="reserveVolunteersLimit"
+                  [(ngModel)]="offer.reserveVolunteersLimit"
+                  #reserveVolunteersLimit="ngModel">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="col-sm-3">Określ ramy czasowe (w formacie RRRR-MM-DD) oraz liczbę wolontariuszy, odpowiednio dla rezerwacji podstawowej i rozerwowej.</div>
+  </div>
+  <div class="form-group row">
+    <label for="description" class="col-sm-3 col-form-label">Opis oferty:</label>
+    <div class="col-sm-6">
+      <textarea
+        type="text"
+        class="form-control"
+        placeholder="Opis oferty..." 
+        minlength="3"
+        maxlength="500"
+        id="description" name="description"
+        [(ngModel)]="offer.description"
+        #description="ngModel"
+        required>
+      </textarea>
+      <span class="form-text text-muted" *ngIf="!description.valid &&description.touched">To pole jest obowiązkowe.</span>
+    </div>
+    <div class="col-sm-3">Postaraj się dokładnie opisać akcję.</div>
+  </div>
+  <div class="form-group row">
+      <label for="timeCommitment" class="col-sm-3 col-form-label">Wymagania czasowe:</label>
+      <div class="col-sm-6">
+        <input 
+          type="text"
+          class="form-control"
+          placeholder="Wymagania czasowe..." 
+          minlength="3"
+          maxlength="150"
+          id="timeCommitment" name="timeCommitment"
+          [(ngModel)]="offer.timeCommitment"
+          #timeCommitment="ngModel"
+          required>
+        <span class="form-text text-muted" *ngIf="!timeCommitment.valid &&timeCommitment.touched">To pole jest obowiązkowe.</span>
+      </div>
+      <div class="col-sm-3">Określ wymagania czasowe - ile godzin pracy w ciągu dnia wymaga dana akcja.</div>
+    </div>
+  <div class="form-group row">
+    <label for="benefits" class="col-sm-3 col-form-label">Korzyści:</label>
+    <div class="col-sm-6">
+      <textarea
+        type="text"
+        class="form-control"
+        placeholder="Korzyści dla wolontariusza..." 
+        minlength="3"
+        maxlength="500"
+        id="benefits" name="benefits"
+        [(ngModel)]="offer.benefits"
+        #benefits="ngModel"
+        required>
+      </textarea>
+      <span class="form-text text-muted" *ngIf="!benefits.valid &&benefits.touched">To pole jest obowiązkowe.</span>
+    </div>
+    <div class="col-sm-3">Określ korzyści płynące z udziału w akcji.</div>
+  </div>
+  <div class="form-group row">
+    <label for="requirements" class="col-sm-3 col-form-label">Wymagania:</label>
+    <div class="col-sm-6">
+      <input 
+        type="text"
+        class="form-control"
+        placeholder="Wymagania wobec wolontariusza..." 
+        minlength="3"
+        maxlength="150"
+        id="requirements" name="requirements"
+        [(ngModel)]="offer.requirements"
+        #requirements="ngModel"
+        required>
+    </div>
+    <div class="col-sm-3">Określ warunki, jakie musi spełnić kandydat, aby wziąć udział w akcji.</div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <div *ngIf="!edit; else saveChanges">
+      <button type="submit" name="submit" class="btn btn-primary">Zapisz ofertę</button>
+    </div>
+    <ng-template #saveChanges>
+      <button type="submit" name="submit" class="btn btn-primary">Zapisz zmiany</button>
+    </ng-template>
+  </div>
+</form>

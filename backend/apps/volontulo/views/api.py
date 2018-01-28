@@ -22,6 +22,7 @@ from apps.volontulo import serializers
 from apps.volontulo.authentication import CsrfExemptSessionAuthentication
 from apps.volontulo.lib.email import send_mail
 from apps.volontulo.models import Organization
+from apps.volontulo.serializers import CreateOffer
 from apps.volontulo.serializers import OrganizationContact
 from apps.volontulo.views import logged_as_admin
 
@@ -54,6 +55,16 @@ def login_view(request):
         }).data,
         status=status.HTTP_400_BAD_REQUEST,
     )
+
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def create_offer(request):
+    """REST API view for current user."""
+    # offer = request.data
+    # offer.save()
+    serializer = CreateOffer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    return Response(None, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
