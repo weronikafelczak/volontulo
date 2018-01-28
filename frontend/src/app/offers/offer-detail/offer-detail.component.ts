@@ -39,6 +39,8 @@ export class OfferDetailComponent implements OnInit {
   
     this.isUserOrgMember$ = this.offer$
      .combineLatest(this.user$, (offer, user): boolean => {
+       console.log(offer.organization.id);
+       console.log(user.organizations);
        if (offer === null || user === null) {
          return false
        } else { 

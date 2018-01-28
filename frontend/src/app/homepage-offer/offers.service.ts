@@ -49,9 +49,9 @@ export class OffersService {
   }
 
   postOffer(offer: Offer) {
+    console.log(offer)
     return this.http.post(`${environment.apiRoot}/offers/create`, offer)
     .map(response => {
-      console.log("here!")
       if (response.status === 201) {
         return 'success';
       }

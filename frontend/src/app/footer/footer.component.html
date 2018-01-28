@@ -19,7 +19,7 @@
         <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link" href="{{ djangoRoot }}/register">Załóż konto</a>
-            <a class="nav-link" href="{{ djangoRoot }}/offers/create">Dodaj nową ofertę</a>
+            <a class="nav-link" [routerLink]="['offers', 'create']">Dodaj nową ofertę</a>
             <a class="nav-link" href="{{ djangoRoot }}/organizations">Lista organizacji i instytucji</a>
             <a class="nav-link" [routerLink]="['/faq-organizations']">FAQ dla organizacji i instytucji</a>
             <a class="nav-link" [routerLink]="['/office']">Przyjdź na dyżur</a>

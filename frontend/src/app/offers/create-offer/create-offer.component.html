@@ -43,7 +43,7 @@
         [(ngModel)]="offer.organization"
         #organization="ngModel"
         required>
-        <option  *ngFor="let organization of user['organizations']" >
+        <option  *ngFor="let organization of user['organizations']" [ngValue]="organization" >
           {{ organization.name }}</option>
       </select>
       <span class="form-text text-muted" *ngIf="!organization.valid &&organization.touched">To pole jest obowiązkowe.</span>
