@@ -1,5 +1,16 @@
+<!--TODO verify if user has organizations and is admin -->
+<div *ngIf="isAdmin; else hasOrg">
+  <p>Administrator nie może tworzyć nowych ofert.</p>
+</div>
+<ng-template #hasOrg>
+  <ng-container *ngIf="!hasOrganization; else offerForm">
+  <p>Aby dodać ofertę musisz posiadać organizację.
+    <a href="{{ djangoRoot }}/organizations/create">Możesz ją założyć tutaj</a>
+  </p>
+  </ng-container>
+</ng-template>
+<ng-template #offerForm>
 <h2>{{ createOrEdit }} oferty:</h2>
-<!-- OPCJE ADMINA -->
 <form #offerForm="ngForm" (ngSubmit)="onSubmit(offer)" ngNativeValidate>
   <div class="form-group row">
     <label for="title" class="col-sm-3 col-form-label">Tytuł oferty:</label>
@@ -61,12 +72,12 @@
             type="radio"
             name="startedAt"
             checked="checked"
-            value = "false"
+            value = false
             [(ngModel)]="offer.actionOngoing"
             required>
           </span>
           <input 
-            type="date"
+            type="datetime"
             class="form-control"
             min="2018-01-01"
             name="started"
@@ -106,7 +117,7 @@
             value=false>
           </span>
           <input 
-            type="date"
+            type="datetime"
             class="form-control"
             min="2018-01-01"
             id="finishedAt" name="finished"
@@ -141,7 +152,7 @@
               <label for="recruitmentStartDate" class="col-sm-3 col-form-label">Początek:</label>
               <div class="col-sm-9">
                 <input 
-                type="date"
+                type="datetime"
                 min="2018-01-01"
                 class="form-control"
                 id="recruitmentStartDate" name="recruitmentStartDate"
@@ -154,7 +165,7 @@
               <label for="recruitmentEndDate" class="col-sm-3 col-form-label">Koniec:</label>
               <div class="col-sm-9">
                 <input 
-                type="date"
+                type="datetime"
                 class="form-control"
                 minlength="3"
                 maxlength="150"
@@ -187,7 +198,7 @@
               <label for="reserveRecruitmentStartDate" class="col-sm-3 col-form-label">Początek:</label>
               <div class="col-sm-9">
                 <input 
-                type="date"
+                type="datetime"
                 class="form-control"
                 minlength="3"
                 maxlength="150"
@@ -200,7 +211,7 @@
               <label for="reserveRecruitmentEndDate" class="col-sm-3 col-form-label">Koniec:</label>
               <div class="col-sm-9">
                 <input 
-                type="date"
+                type="datetime"
                 class="form-control"
                 minlength="3"
                 maxlength="150"
@@ -306,3 +317,4 @@
     </ng-template>
   </div>
 </form>
+</ng-template>

@@ -62,15 +62,21 @@ def create_offer(request):
     """Saving new offer"""
     organization = request.data.get('organization')
     Offer.objects.create(
-        organization=get_object_or_404(Organization, id=organization['id']),
-        description=request.data.get('description'),
-        requirements=request.data.get('requirements'),
-        time_commitment=request.data.get('time_commitment'),
+        action_ongoing=request.data.get('actionOngoing'),
         benefits=request.data.get('benefits'),
-        location=request.data.get('location'),
-        title=request.data.get('title'),
-        started_at=request.data.get('started_at'),
+        constant_coop=request.data.get('constantCoop'),
+        description=request.data.get('description'),
         finished_at=request.data.get('finished_at'),
+        location=request.data.get('location'),
+        organization=get_object_or_404(Organization, id=organization['id']),
+        recruitment_end_date=request.data.get('recruitmentEndDate'),
+        recruitment_start_date=request.data.get('recruitmentStartDate'),
+        requirements=request.data.get('requirements'),
+        reserve_volunteers_limit=request.data.get('reserveVolunteersLimit'),
+        started_at=request.data.get('started_at'),
+        time_commitment=request.data.get('time_commitment'),
+        title=request.data.get('title'),
+        volunteers_limit=request.data.get('volunteersLimit'),
     )
     # serializer = CreateOffer(data=request.data)
     # serializer.is_valid(raise_exception=True)
