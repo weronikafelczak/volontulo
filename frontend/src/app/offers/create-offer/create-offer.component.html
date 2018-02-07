@@ -67,7 +67,7 @@
       <div class="form-check form-check-inline">
         <div class="input-group">
           <input 
-            type="date"
+            type="datetime"
             class="form-control"
             min="2018-01-01"
             name="startedAt"
@@ -137,8 +137,9 @@
                 class="form-control"
                 id="recruitmentStartDate" name="recruitmentStartDate"
                 [(ngModel)]="offer.recruitmentStartDate"
-                #recruitmentStartDate="ngModel">
-                <!-- <span class="form-text text-muted" *ngIf="!recruitmentStartDate.valid">To pole jest obowiązkowe.</span> -->
+                #recruitmentStartDate="ngModel"
+                required>
+                <span class="form-text text-muted" *ngIf="recruitmentStartDate.touched &&!recruitmentStartDate.valid">To pole jest obowiązkowe.</span>
               </div>
             </div>
             <div class="form-group row">
@@ -151,7 +152,9 @@
                 maxlength="150"
                 id="recruitmentEndDate" name="recruitmentEndDate"
                 [(ngModel)]="offer.recruitmentEndDate"
-                #recruitmentEndDate="ngModel">
+                #recruitmentEndDate="ngModel"
+                required>
+                <span class="form-text text-muted" *ngIf="recruitmentEndDate.touched && !recruitmentEndDate.valid">To pole jest obowiązkowe.</span>
               </div>
             </div>
             <div class="form-group row">
@@ -180,8 +183,6 @@
                 <input 
                 type="datetime"
                 class="form-control"
-                minlength="3"
-                maxlength="150"
                 id="reserveRecruitmentStartDate" name="reserveRecruitmentStartDate"
                 [(ngModel)]="offer.reserveRecruitmentStartDate"
                 #reserveRecruitmentStartDate="ngModel">
@@ -193,8 +194,6 @@
                 <input 
                 type="datetime"
                 class="form-control"
-                minlength="3"
-                maxlength="150"
                 id="reserveRecruitmentEndDate" name="reserveRecruitmentEndDate"
                 [(ngModel)]="offer.reserveRecruitmentEndDate"
                 #reserveRecruitmentEndDate="ngModel">
