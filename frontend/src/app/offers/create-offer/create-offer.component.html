@@ -66,37 +66,26 @@
     <div class="col-sm-3">
       <div class="form-check form-check-inline">
         <div class="input-group">
-          <span class="input-group-addon">
-            <input 
-            type="radio"
-            name="startedAt"
-            checked="checked"
-            value = false
-            [(ngModel)]="offer.actionOngoing"
-            required>
-          </span>
           <input 
-            type="datetime"
+            type="date"
             class="form-control"
             min="2018-01-01"
-            name="started"
+            name="startedAt"
             [(ngModel)]="offer.startedAt"
-            #startedAtDate="ngModel"
-            [disabled]="offer.actionOngoing"
+            #startedAt="ngModel"
             required>
         </div>
       </div>
-      <span class="form-text text-muted" *ngIf="actionOngoing.value==='false'&& !startedAtDate.valid">Podaj datę.</span>
+      <span class="form-text text-muted" *ngIf="startedAt.touched && !startedAt.valid">Podaj datę.</span>
     </div>
     <div class="col-sm-3">
       <div class="form-check form-check-inline">
           <input
           type="radio"
           value=true
-          name="startedAt"
+          name="actionOngoing"
           [(ngModel)]="offer.actionOngoing"
-          #actionOngoing="ngModel"
-          required>
+          #actionOngoing="ngModel">
           Akcja już trwa
       </div>
     </div>
@@ -107,33 +96,25 @@
     <div class="col-sm-3">
       <div class="form-check form-check-inline">
         <div class="input-group">
-          <span class="input-group-addon">
-            <input
-            type="radio"
-            name="finishedAt"
-            checked="checked"
-            [(ngModel)]="offer.constantCoop"
-            value=false>
-          </span>
           <input 
             type="datetime"
             class="form-control"
             min="2018-01-01"
-            id="finishedAt" name="finished"
+            id="finishedAt"
+            name="finishedAt"
             [(ngModel)]="offer.finishedAt"
             #finishedAt="ngModel"
-            [disabled]="offer.constantCoop"
             required>
         </div>
       </div>
-      <span class="form-text text-muted" *ngIf="constantCoop.value==='false' &&!finishedAt.valid">Podaj datę.</span>
+      <span class="form-text text-muted" *ngIf="finishedAt.touched &&!finishedAt.valid">Podaj datę (w formacie RRRR-MM-DD).</span>
     </div>
       <div class="col-sm-3">
       <div class="form-check">
           <input  
           type="radio"
           value="true"
-          name="finishedAt"
+          name="constantCoop"
           [(ngModel)]="offer.constantCoop"
           #constantCoop="ngModel">Akcja nie kończy się (ciągła współpraca)
       </div>

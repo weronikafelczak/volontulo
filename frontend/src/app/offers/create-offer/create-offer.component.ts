@@ -55,12 +55,14 @@ export class CreateOfferComponent implements OnInit {
         })
       }
     });
-
-
-
   }
 
   onSubmit(offer){
+    // TODO - delete those when we decide what date format we want to have
+    offer.startedAt = offer.startedAt + "T00:00:00Z";
+    offer.finishedAt = offer.finishedAt + "T00:00:00Z";
+    
+    
     if(this.edit==true){
       this.offersService.editOffer(offer, offer.id)
       .subscribe();
@@ -68,7 +70,6 @@ export class CreateOfferComponent implements OnInit {
       this.offersService.postOffer(offer)
       .subscribe();
     }
-
   }
 
 }
