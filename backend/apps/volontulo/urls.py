@@ -42,6 +42,7 @@ urlpatterns = [
         api_views.current_user,
         name='current_user'
     ),
+
     # homepage:
     url(r'^o$', views.homepage, name='homepage'),
 

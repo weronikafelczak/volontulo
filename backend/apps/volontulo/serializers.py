@@ -5,7 +5,7 @@
 """
 
 from django.contrib.auth.models import User
-from django.db.models.fields import DateField, IntegerField
+
 from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework.fields import CharField, EmailField
