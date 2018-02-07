@@ -79,6 +79,7 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
             'reserve_volunteers_limit',
         )
 
+
     def get_image(self, obj):
         """Returns main image's url for an offer."""
         image = (
@@ -88,6 +89,14 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
         return self.context['request'].build_absolute_uri(
             location=image.path.url
         ) if image else None
+
+
+    def create(self, obj):
+        # import pdb; pdb.set_trace()
+        obj["organization_id"] = self.context["request"].data["organization"]["id"]
+        return obj
+       
+
 
     @staticmethod
     def get_slug(obj):

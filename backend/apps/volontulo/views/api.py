@@ -96,9 +96,6 @@ class OfferViewSet(viewsets.ModelViewSet):
             return models.Offer.objects.get_for_administrator()
         return models.Offer.objects.get_weightened()
 
-    def create(self, request):
-        return super(OfferViewSet, self).create(request)
-
     def update(self, request, pk=None):
         return super(OfferViewSet, self).update(request, pk)
 
