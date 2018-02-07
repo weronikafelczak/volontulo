@@ -56,32 +56,6 @@ def login_view(request):
         status=status.HTTP_400_BAD_REQUEST,
     )
 
-@api_view(['POST'])
-@permission_classes((AllowAny,))
-def create_offer(request):
-    """Saving new offer"""
-    organization = request.data.get('organization')
-    Offer.objects.create(
-        action_ongoing=request.data.get('actionOngoing'),
-        benefits=request.data.get('benefits'),
-        constant_coop=request.data.get('constantCoop'),
-        description=request.data.get('description'),
-        finished_at=request.data.get('finished_at'),
-        location=request.data.get('location'),
-        organization=get_object_or_404(Organization, id=organization['id']),
-        recruitment_end_date=request.data.get('recruitmentEndDate'),
-        recruitment_start_date=request.data.get('recruitmentStartDate'),
-        requirements=request.data.get('requirements'),
-        reserve_volunteers_limit=request.data.get('reserveVolunteersLimit'),
-        started_at=request.data.get('started_at'),
-        time_commitment=request.data.get('time_commitment'),
-        title=request.data.get('title'),
-        volunteers_limit=request.data.get('volunteersLimit'),
-    )
-    # serializer = CreateOffer(data=request.data)
-    # serializer.is_valid(raise_exception=True)
-    return Response(None, status=status.HTTP_200_OK)
-
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -108,6 +82,7 @@ def current_user(request):
     return Response(None, status=status.HTTP_200_OK)
 
 
+@authentication_classes((CsrfExemptSessionAuthentication,))
 class OfferViewSet(viewsets.ModelViewSet):
 
     """REST API offers viewset."""
@@ -120,6 +95,12 @@ class OfferViewSet(viewsets.ModelViewSet):
         if logged_as_admin(self.request):
             return models.Offer.objects.get_for_administrator()
         return models.Offer.objects.get_weightened()
+
+    def create(self, request):
+        return super(OfferViewSet, self).create(request)
+
+    def update(self, request, pk=None):
+        return super(OfferViewSet, self).update(request, pk)
 
 
 class OrganizationViewSet(viewsets.ModelViewSet):

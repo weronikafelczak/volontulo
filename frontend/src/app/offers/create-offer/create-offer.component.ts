@@ -20,7 +20,7 @@ export class CreateOfferComponent implements OnInit {
   offer: Offer = new Offer;
   user: User;
   isAdmin = false;
-  hasOrganization = true;
+  hasOrganization = false;
 
   constructor(
     private authService: AuthService,
@@ -35,6 +35,10 @@ export class CreateOfferComponent implements OnInit {
     .subscribe(
       (response) => {
         this.user = response;
+        if(this.user !== null){
+          this.isAdmin = this.user["isAdministrator"];
+          this.hasOrganization = this.user["organizations"].length > 0;
+        }
       }
     );
 
@@ -52,11 +56,19 @@ export class CreateOfferComponent implements OnInit {
       }
     });
 
+
+
   }
 
   onSubmit(offer){
-    this.offersService.postOffer(offer)
-    .subscribe();
+    if(this.edit==true){
+      this.offersService.editOffer(offer, offer.id)
+      .subscribe();
+    } else {
+      this.offersService.postOffer(offer)
+      .subscribe();
+    }
+
   }
 
 }

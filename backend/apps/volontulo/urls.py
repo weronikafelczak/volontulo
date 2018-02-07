@@ -42,11 +42,6 @@ urlpatterns = [
         api_views.current_user,
         name='current_user'
     ),
-    url(
-        r'^api/offers/create',
-        api_views.create_offer,
-        name='create_offer'
-    ),
     # homepage:
     url(r'^o$', views.homepage, name='homepage'),
 

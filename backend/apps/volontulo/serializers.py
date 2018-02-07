@@ -40,6 +40,13 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
 
     """REST API offers serializer."""
 
+    start_finish_error = """Data rozpoczęcia akcji nie może być
+        późniejsza, niż data zakończenia"""
+    recruitment_error = """Data rozpoczęcia rekrutacji
+        nie może być późniejsza, niż data zakończenia"""
+    reserve_recruitment_error = """Data rozpoczęcia rekrutacji
+        rezerwowej nie może być późniejsza, niż data zakończenia"""
+
     slug = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     organization = OrganizationSerializer(many=False, read_only=True)
@@ -87,6 +94,25 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
         """Returns slugified title."""
         return slugify(obj.title)
 
+    def validate(self, data):
+        self._validate_start_finish(data['started_at'],
+                                 data['finished_at'],
+                                 self.start_finish_error)
+        self._validate_start_finish(data['recruitment_start_date'],
+                                 data['recruitment_end_date'],
+                                 self.recruitment_error)
+        self._validate_start_finish(data['reserve_recruitment_start_date'],
+                                 data['reserve_recruitment_end_date'],
+                                 self.reserve_recruitment_error)
+        return data
+
+    def _validate_start_finish(self, start_slug, end_slug, error_desc):
+        """Validation for date fields."""
+        start_field_value = start_slug
+        end_field_value = end_slug
+        if start_field_value and end_field_value:
+            if start_field_value > end_field_value:
+                raise serializers.ValidationError(error_desc)
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -124,29 +150,3 @@ class OrganizationContact(serializers.Serializer):
                          trim_whitespace=True)
     message = CharField(required=True, min_length=2, max_length=500,
                         trim_whitespace=True)
-
-class CreateOffer(serializers.Serializer):
-    """Serializer for creating a new offer"""
-    organization =CharField(required=True, min_length=2, max_length=150,
-                     trim_whitespace=True)
-    description = CharField(required=True, min_length=2, max_length=150,
-                     trim_whitespace=True)
-    requirements = CharField(required=True, min_length=2, max_length=150,
-                     trim_whitespace=True)
-    time_commitment = CharField(required=True, min_length=2, max_length=150,
-                     trim_whitespace=True)
-    benefits = CharField(required=True, min_length=2, max_length=150,
-                     trim_whitespace=True)
-    location = CharField(required=True, min_length=2, max_length=150,
-                     trim_whitespace=True)
-    title = CharField(required=True, min_length=2, max_length=150,
-                     trim_whitespace=True)
-    # started_at = DateField()
-    # finished_at = CharField(required=True, min_length=2, max_length=150,
-    #                  trim_whitespace=True)
-    # recruitment_start_date = CharField(required=True, min_length=2, max_length=150,
-    #                  trim_whitespace=True)
-    # recruitment_end_date =CharField(required=True, min_length=2, max_length=150,
-    #                  trim_whitespace=True)
-    # volunteers_limit = CharField(required=True, min_length=1, max_length=150,
-    #                  trim_whitespace=True)

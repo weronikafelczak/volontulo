@@ -50,7 +50,16 @@ export class OffersService {
 
   postOffer(offer: Offer) {
     console.log(offer)
-    return this.http.post(`${environment.apiRoot}/offers/create`, offer)
+    return this.http.post(`${environment.apiRoot}/offers/`, offer, { withCredentials: true })
+    .map(response => {
+      if (response.status === 201) {
+        return 'success';
+      }
+    })
+  }
+
+  editOffer(offer: Offer, id) {
+    return this.http.put(`${environment.apiRoot}/offers/${id}/`, offer, { withCredentials: true })
     .map(response => {
       if (response.status === 201) {
         return 'success';
