@@ -9,7 +9,7 @@
   </ng-container>
 </ng-template>
 <ng-template #offerForm>
-<h2>{{ createOrEdit }} oferty:</h2>
+<h2>{{ inEditMode ? "Edycja" : "Tworzenie" }} oferty:</h2>
 <form #offerForm="ngForm" (ngSubmit)="onSubmit(offer)" ngNativeValidate>
   <div class="form-group row">
     <label for="title" class="col-sm-3 col-form-label">Tytuł oferty:</label>

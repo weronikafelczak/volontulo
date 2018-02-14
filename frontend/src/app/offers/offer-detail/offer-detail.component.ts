@@ -29,9 +29,9 @@ export class OfferDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user$ = this.authService.user$
+    this.user$ = this.authService.user$;
 
-    this.offer$ = this.offersService.offer$
+    this.offer$ = this.offersService.offer$;
 
     this.activatedRoute.params
     .switchMap(params => this.offersService.getOffer(params.offerId))
@@ -39,11 +39,13 @@ export class OfferDetailComponent implements OnInit {
   
     this.isUserOrgMember$ = this.offer$
      .combineLatest(this.user$, (offer, user): boolean => {
-       if (offer === null || user === null) {
-         return false
-       } else { 
-         return user.organizations.filter(organ => organ.id === offer.organization.id).length > 0
-        }
+       console.log(user, offer);
+      if (offer && user) {
+          const filteredOrganizations = user.organizations.filter(organ => organ.id === offer.organization.id);
+          return filteredOrganizations.length > 0;
+          }
+      return false;
      });
   }
 }
+

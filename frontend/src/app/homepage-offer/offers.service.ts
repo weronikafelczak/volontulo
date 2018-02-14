@@ -48,8 +48,7 @@ export class OffersService {
     return `${environment.djangoRoot}/offers/${offer.slug}/${offer.id}/join`;
   }
 
-  postOffer(offer: Offer) {
-    console.log(offer)
+  createOffer(offer: Offer): Observable<string>  {
     return this.http.post(`${environment.apiRoot}/offers/`, offer, { withCredentials: true })
     .map(response => {
       if (response.status === 201) {
@@ -58,7 +57,7 @@ export class OffersService {
     })
   }
 
-  editOffer(offer: Offer, id) {
+  editOffer(offer: Offer, id: number): Observable<string>  {
     return this.http.put(`${environment.apiRoot}/offers/${id}/`, offer, { withCredentials: true })
     .map(response => {
       if (response.status === 201) {

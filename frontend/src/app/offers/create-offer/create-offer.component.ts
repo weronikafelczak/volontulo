@@ -14,12 +14,11 @@ import { environment } from 'environments/environment';
   styleUrls: ['./create-offer.component.scss']
 })
 export class CreateOfferComponent implements OnInit {
-  createOrEdit = 'Tworzenie';
   djangoRoot: string;
-  edit = false;
+  public inEditMode: boolean = false;
   offer: Offer = new Offer;
   user: User;
-  isAdmin = false;
+  isAdmin: boolean = false;
   hasOrganization = false;
 
   constructor(
@@ -33,9 +32,9 @@ export class CreateOfferComponent implements OnInit {
   ngOnInit() {
     this.authService.user$
     .subscribe(
-      (response) => {
+      response => {
         this.user = response;
-        if(this.user !== null){
+        if(this.user){
           this.isAdmin = this.user["isAdministrator"];
           this.hasOrganization = this.user["organizations"].length > 0;
         }
@@ -44,38 +43,37 @@ export class CreateOfferComponent implements OnInit {
 
     this.route.params
     .subscribe(
-      (params) => {
+      params => {
         if (params.offerId !== undefined){
         this.offersService.getOffer(params.offerId)
         .subscribe(
           response => {
           this.offer = response;
-          this.edit = true;
-          this.createOrEdit = "Edycja";
+          this.inEditMode = true;
         })
       }
     });
   }
 
-  onSubmit(offer){
+  onSubmit(offer: Offer){
     // TODO - delete those when we decide what date format we want to have
     offer.startedAt = offer.startedAt + "T00:00:00Z";
     offer.finishedAt = offer.finishedAt + "T00:00:00Z";
     offer.reserveRecruitmentEndDate = offer.reserveRecruitmentEndDate + "T00:00:00Z";
     offer.reserveRecruitmentStartDate = offer.reserveRecruitmentStartDate + "T00:00:00Z";
 
-    if(offer.reserveRecruitmentEndDate == undefined) {
+    if(!offer.reserveRecruitmentEndDate) {
       offer.reserveRecruitmentEndDate = null
     }
-    if(offer.reserveRecruitmentStartDate == undefined) {
+    if(!offer.reserveRecruitmentStartDate) {
       offer.reserveRecruitmentStartDate = null
     }
     
-    if(this.edit==true){
+    if(this.inEditMode){
       this.offersService.editOffer(offer, offer.id)
       .subscribe();
     } else {
-      this.offersService.postOffer(offer)
+      this.offersService.createOffer(offer)
       .subscribe();
     }
   }
