@@ -77,5 +77,4 @@ export class CreateOfferComponent implements OnInit {
       .subscribe();
     }
   }
-
 }

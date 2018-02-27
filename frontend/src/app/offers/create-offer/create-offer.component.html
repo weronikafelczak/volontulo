@@ -10,7 +10,7 @@
 </ng-template>
 <ng-template #offerForm>
 <h2>{{ inEditMode ? "Edycja" : "Tworzenie" }} oferty:</h2>
-<form #offerForm="ngForm" (ngSubmit)="onSubmit(offer)" ngNativeValidate>
+<form #offerForm="ngForm" (ngSubmit)="onSubmit(offer)">
   <div class="form-group row">
     <label for="title" class="col-sm-3 col-form-label">Tytuł oferty:</label>
     <div class="col-sm-6">
@@ -67,6 +67,7 @@
       <div class="form-check form-check-inline">
         <div class="input-group">
           <input 
+            id="startedAt"
             type="datetime"
             class="form-control"
             min="2018-01-01"
@@ -288,12 +289,7 @@
     <div class="col-sm-3">Określ warunki, jakie musi spełnić kandydat, aby wziąć udział w akcji.</div>
   </div>
   <div class="d-flex justify-content-center">
-    <div *ngIf="!edit; else saveChanges">
-      <button type="submit" name="submit" class="btn btn-primary">Zapisz ofertę</button>
-    </div>
-    <ng-template #saveChanges>
-      <button type="submit" name="submit" class="btn btn-primary">Zapisz zmiany</button>
-    </ng-template>
+      <button type="submit" name="submit" class="btn btn-primary">Zapisz {{ inEditMode ? "zmiany" : "ofertę" }}</button>
   </div>
 </form>
 </ng-template>

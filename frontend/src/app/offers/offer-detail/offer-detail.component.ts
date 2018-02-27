@@ -39,7 +39,6 @@ export class OfferDetailComponent implements OnInit {
   
     this.isUserOrgMember$ = this.offer$
      .combineLatest(this.user$, (offer, user): boolean => {
-       console.log(user, offer);
       if (offer && user) {
           const filteredOrganizations = user.organizations.filter(organ => organ.id === offer.organization.id);
           return filteredOrganizations.length > 0;
