@@ -5,12 +5,14 @@
 """
 
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework.fields import CharField, EmailField
 
 from apps.volontulo import models
+from apps.volontulo.models import Organization
 
 
 class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
@@ -36,6 +38,17 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
         return slugify(obj.name)
 
 
+
+class OrganizationField(serializers.Field):
+    
+    def to_representation(self, obj):
+        return OrganizationSerializer(obj, context=self.context).data
+
+
+    def to_internal_value(self, data):
+        return get_object_or_404(Organization, id = data["id"])
+
+
 class OfferSerializer(serializers.HyperlinkedModelSerializer):
 
     """REST API offers serializer."""
@@ -49,7 +62,7 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
 
     slug = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
-    organization = OrganizationSerializer(many=False, read_only=True)
+    organization = OrganizationField()
 
     class Meta:
         model = models.Offer
@@ -89,13 +102,6 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
         return self.context['request'].build_absolute_uri(
             location=image.path.url
         ) if image else None
-
-
-    def create(self, obj):
-        # import pdb; pdb.set_trace()
-        obj["organization_id"] = self.context["request"].data["organization"]["id"]
-        return obj
-       
 
 
     @staticmethod

@@ -59,14 +59,16 @@ export class CreateOfferComponent implements OnInit {
     // TODO - delete those when we decide what date format we want to have
     offer.startedAt = offer.startedAt + "T00:00:00Z";
     offer.finishedAt = offer.finishedAt + "T00:00:00Z";
-    offer.reserveRecruitmentEndDate = offer.reserveRecruitmentEndDate + "T00:00:00Z";
-    offer.reserveRecruitmentStartDate = offer.reserveRecruitmentStartDate + "T00:00:00Z";
 
     if(!offer.reserveRecruitmentEndDate) {
       offer.reserveRecruitmentEndDate = null
+    } else {
+      offer.reserveRecruitmentEndDate = offer.reserveRecruitmentEndDate + "T00:00:00Z";
     }
     if(!offer.reserveRecruitmentStartDate) {
       offer.reserveRecruitmentStartDate = null
+    } else {
+      offer.reserveRecruitmentStartDate = offer.reserveRecruitmentStartDate + "T00:00:00Z";
     }
     
     if(this.inEditMode){
@@ -77,4 +79,5 @@ export class CreateOfferComponent implements OnInit {
       .subscribe();
     }
   }
+
 }
