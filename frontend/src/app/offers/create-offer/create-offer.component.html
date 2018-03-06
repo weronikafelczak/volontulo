@@ -53,7 +53,7 @@
         [(ngModel)]="offer.organization"
         #organization="ngModel"
         required>
-        <option  *ngFor="let organization of user['organizations']" [ngValue]="organization" >
+        <option  *ngFor="let organization of user['organizations']" [ngValue]="organization">
           {{ organization.name }}</option>
       </select>
       <span class="form-text text-muted" *ngIf="!organization.valid &&organization.touched">To pole jest obowiązkowe.</span>
@@ -67,8 +67,8 @@
       <div class="form-check form-check-inline">
         <div class="input-group">
           <input 
-            id="startedAt"
             type="datetime"
+            id="startedAt"
             class="form-control"
             min="2018-01-01"
             name="startedAt"

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import 'rxjs/add/operator/filter';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Offer } from 'app/homepage-offer/offers.model';
 import { AuthService } from 'app/auth.service';
 import { User } from 'app/user';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 import { OffersService } from 'app/homepage-offer/offers.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { environment } from 'environments/environment';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'volontulo-create-offer',
@@ -14,23 +15,22 @@ import { environment } from 'environments/environment';
   styleUrls: ['./create-offer.component.scss']
 })
 export class CreateOfferComponent implements OnInit {
-  djangoRoot: string;
+  public djangoRoot = environment.djangoRoot;
   public inEditMode: boolean = false;
-  offer: Offer = new Offer;
-  user: User;
-  isAdmin: boolean = false;
-  hasOrganization = false;
+  public offer: Offer = new Offer;
+  public user: User;
+  public isAdmin: boolean = false;
+  public hasOrganization = false;
+  public userSubscription: Subscription;
 
   constructor(
     private authService: AuthService,
     private offersService: OffersService,
     private route: ActivatedRoute,
-  ) {
-      this.djangoRoot = environment.djangoRoot;
-  }
+  ) {}
 
   ngOnInit() {
-    this.authService.user$
+    this.userSubscription = this.authService.user$
     .subscribe(
       response => {
         this.user = response;
@@ -42,23 +42,25 @@ export class CreateOfferComponent implements OnInit {
     );
 
     this.route.params
-    .subscribe(
-      params => {
-        if (params.offerId !== undefined){
-        this.offersService.getOffer(params.offerId)
-        .subscribe(
-          response => {
-          this.offer = response;
-          this.inEditMode = true;
-        })
-      }
+    .map(params => params.offerId)
+    .filter(offerId => offerId !== undefined)
+    .switchMap(offerId => this.offersService.getOffer(offerId))
+    .subscribe(response => {
+      this.offer = response;
+      this.inEditMode = true;
     });
+  }
+
+  ngOnDestroy(){
+    this.userSubscription.unsubscribe();
   }
 
   onSubmit(offer: Offer){
     // TODO - delete those when we decide what date format we want to have
     offer.startedAt = offer.startedAt + "T00:00:00Z";
     offer.finishedAt = offer.finishedAt + "T00:00:00Z";
+    offer.recruitmentStartDate = offer.recruitmentStartDate + "T00:00:00Z";
+    offer.recruitmentEndDate = offer.recruitmentEndDate + "T00:00:00Z";
 
     if(!offer.reserveRecruitmentEndDate) {
       offer.reserveRecruitmentEndDate = null
@@ -79,5 +81,4 @@ export class CreateOfferComponent implements OnInit {
       .subscribe();
     }
   }
-
 }
