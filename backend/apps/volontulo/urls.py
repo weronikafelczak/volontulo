@@ -23,8 +23,6 @@ handler404 = 'apps.volontulo.views.page_not_found'
 handler500 = 'apps.volontulo.views.server_error'
 
 urlpatterns = [
-    url(r'^$', views.homepage_redirect, name='homepage_redirect'),
-
     # api:
     url(r'^api/', include(router.urls)),
     url(
@@ -42,28 +40,24 @@ urlpatterns = [
         api_views.current_user,
         name='current_user'
     ),
-
-    # homepage:
-    url(r'^o$', views.homepage, name='homepage'),
+    url(
+        r'^api/password-reset$',
+        api_views.password_reset,
+        name='password_reset'
+    ),
+    url(
+        r'^api/password-reset/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>.+)$',
+        api_views.password_reset_confirm,
+        name='password_reset_confirm'
+    ),
 
     # login and loggged user space:
-    url(r'^o/login$', auth_views.login, name='login'),
     url(r'^o/logout$', auth_views.logout, name='logout'),
     url(r'^o/register$', auth_views.Register.as_view(), name='register'),
     url(
         r'^o/activate/(?P<uuid>[-0-9A-Za-z]+)$',
         auth_views.activate,
         name='activate'
-    ),
-    url(
-        r'^o/password-reset$',
-        auth_views.password_reset,
-        name='password_reset'
-    ),
-    url(
-        r'^o/password-reset/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>.+)$',
-        auth_views.password_reset_confirm,
-        name='password_reset_confirm'
     ),
     url(r'^o/me$', views.logged_user_profile, name='logged_user_profile'),
     # me/edit

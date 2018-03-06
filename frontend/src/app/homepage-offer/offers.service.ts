@@ -1,12 +1,11 @@
-import { Offer } from './offers.model';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 
 import { environment } from '../../environments/environment';
-
+import { Offer } from './offers.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 @Injectable()
@@ -14,30 +13,21 @@ export class OffersService {
   private url = `${environment.apiRoot}/offers/`;
   private _offer$ = new BehaviorSubject<Offer>(null);
   public offer$ = this._offer$.asObservable();
-  constructor (private http: Http) { }
 
-  getOffers() {
-    return this.http.get(this.url, { withCredentials: true } )
-      .map((res: Response) => res.json())
-      .map(offers => {
-        for (const offer of offers) {
-          this.loadDefaultImage(offer);
-        }
-        return offers;
-      });
+  constructor (private http: HttpClient) { }
+
+  getOffers(): Observable<Offer[]> {
+    return this.http.get<Offer[]>(this.url)
+      .map(offers => offers.map(offer => this.loadDefaultImage(offer)));
   }
 
   getOffer(id: number): Observable<Offer> {
-    return this.http.get(`${this.url}${id}/`, { withCredentials: true })
-      .map(response => {
-        this._offer$.next(response.json());
-        this.loadDefaultImage(response.json());
-        return response.json();}
-      );
+    return this.http.get<Offer>(`${this.url}${id}/`)
+      .map(offer => this.loadDefaultImage(offer));
   }
 
   loadDefaultImage(offer: Offer): Offer {
-    if (offer.image === null) {
+    if (!offer.image) {
         offer.image = 'assets/img/banner/volontulo_baner.png';
         this._offer$.next(offer);
     }
@@ -48,23 +38,22 @@ export class OffersService {
     return `${environment.djangoRoot}/offers/${offer.slug}/${offer.id}/join`;
   }
 
-  createOffer(offer: Offer): Observable<string>  {
+  createOffer(offer: Offer)  {
     return this.http.post(`${environment.apiRoot}/offers/`, offer, { withCredentials: true })
     .map(response => {
-      if (response.status === 201) {
+      if (response === 201) {
         return 'success';
       }
     })
   }
 
-  editOffer(offer: Offer, id: number): Observable<string>  {
+  editOffer(offer: Offer, id: number) {
     return this.http.put(`${environment.apiRoot}/offers/${id}/`, offer, { withCredentials: true })
     .map(response => {
-      if (response.status === 201) {
+      if (response === 201) {
         return 'success';
       }
     })
   }
-
 
 }

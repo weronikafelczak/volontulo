@@ -4,88 +4,27 @@
 .. module:: auth
 """
 
+from django.conf import settings
 from django.contrib import auth
 from django.contrib import messages
-from django.contrib.auth import views as auth_views
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 from django.db.utils import IntegrityError
 from django.shortcuts import redirect
 from django.shortcuts import render
-from django.utils.http import is_safe_url
 from django.views.generic import View
 
 from apps.volontulo.forms import UserForm
-from apps.volontulo.lib.email import FROM_ADDRESS
 from apps.volontulo.lib.email import send_mail
 from apps.volontulo.models import UserProfile
 
 
-def login(request):
-    """Login view.
-
-    :param request: WSGIRequest instance
-    """
-    if request.user.is_authenticated():
-        messages.success(
-            request,
-            'Jesteś już zalogowany.'
-        )
-        return redirect('homepage')
-
-    redirect_to = request.POST.get('next', request.GET.get('next', 'homepage'))
-    user_form = UserForm()
-
-    if request.method == 'POST':
-        username = request.POST.get('email')
-        password = request.POST.get('password')
-        user = auth.authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                auth.login(request, user)
-                messages.success(
-                    request,
-                    'Poprawnie zalogowano'
-                )
-
-                # Ensure the user-originating redirection url is safe.
-                if not is_safe_url(url=redirect_to, host=request.get_host()):
-                    redirect_to = reverse('homepage')
-
-                return redirect(redirect_to)
-            else:
-                messages.info(
-                    request,
-                    'Konto jest nieaktywne, skontaktuj się z administratorem.'
-                )
-        else:
-            messages.error(
-                request,
-                'Nieprawidłowy email lub hasło!'
-            )
-    return render(
-        request,
-        'auth/login.html',
-        {
-            'user_form': user_form,
-            'next': redirect_to,
-        }
-    )
-
-
-@login_required
 def logout(request):
     """Logout view.
 
     :param request: WSGIRequest instance
     """
     auth.logout(request)
-    messages.info(
-        request,
-        "Użytkownik został wylogowany!"
-    )
-    return redirect('homepage')
+    return redirect(settings.ANGULAR_ROOT)
 
 
 class Register(View):
@@ -99,11 +38,7 @@ class Register(View):
         :param user_form: UserForm instance
         """
         if request.user.is_authenticated():
-            messages.success(
-                request,
-                'Jesteś już zalogowany.'
-            )
-            return redirect('homepage')
+            return redirect(settings.ANGULAR_ROOT)
 
         return render(
             request,
@@ -140,8 +75,8 @@ class Register(View):
                 username=username,
                 email=username,
                 password=password,
+                is_active=False,
             )
-            user.is_active = False
             user.save()
             profile = UserProfile(user=user)
             ctx['uuid'] = profile.uuid
@@ -174,7 +109,7 @@ class Register(View):
             'aktywacyjny. Aby w pełni wykorzystać konto należy je aktywować '
             'poprzez kliknięcie linku lub wklejenie go w przeglądarce.'
         )
-        return redirect('homepage')
+        return redirect(settings.ANGULAR_ROOT)
 
 
 def activate(request, uuid):
@@ -192,28 +127,4 @@ def activate(request, uuid):
             request,
             """Brak użytkownika spełniającego wymagane kryteria."""
         )
-    return redirect('homepage')
-
-
-def password_reset(request):
-    """View responsible for password reset."""
-    return auth_views.password_reset(
-        request,
-        template_name='auth/password_reset.html',
-        post_reset_redirect='login',
-        from_email=FROM_ADDRESS,
-        subject_template_name='emails/password_reset.subject',
-        email_template_name='emails/password_reset.txt',
-        html_email_template_name='emails/password_reset.html',
-    )
-
-
-def password_reset_confirm(request, uidb64, token):
-    """Landing page for password reset."""
-    return auth_views.password_reset_confirm(
-        request,
-        uidb64,
-        token,
-        template_name='auth/password_reset_confirm.html',
-        post_reset_redirect='login',
-    )
+    return redirect(settings.ANGULAR_ROOT)

@@ -9,6 +9,7 @@ import { OffersService } from '../../homepage-offer/offers.service';
 import { User } from 'app/user';
 import { AuthService } from 'app/auth.service';
 import { Organization } from 'app/organization/organization.model';
+import { combineLatest } from 'rxjs/operators/combineLatest';
 
 @Component({
   selector: 'volontulo-offer-detail',
@@ -37,14 +38,15 @@ export class OfferDetailComponent implements OnInit {
     .switchMap(params => this.offersService.getOffer(params.offerId))
     .subscribe();
   
+
     this.isUserOrgMember$ = this.offer$
-     .combineLatest(this.user$, (offer, user): boolean => {
-      if (offer && user) {
-          const filteredOrganizations = user.organizations.filter(organ => organ.id === offer.organization.id);
-          return filteredOrganizations.length > 0;
-          }
-      return false;
-     });
+    .pipe(combineLatest(this.user$, (offer, user): boolean =>{
+        if (offer && user) {
+            const filteredOrganizations = user.organizations.filter(organ => organ.id === offer.organization.id);
+            return filteredOrganizations.length > 0;
+            }
+        return false;
+       }));
   }
 }
 

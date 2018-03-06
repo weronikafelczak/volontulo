@@ -9,8 +9,6 @@ particular script using Python 2.
 
 import contextlib
 import os
-import random
-import string
 import sys
 
 from fabric.api import cd
@@ -49,7 +47,7 @@ def update():
 
     # Django app refresh:
     with cd('/var/www/volontulo'):
-        run('git checkout {}'.format(env_vars[env.host_string]['git_branch']))
+        run('git checkout -f {}'.format(env_vars[env.host_string]['git_branch']))
         run('git pull')
 
     with contextlib.nested(
@@ -80,10 +78,13 @@ def update():
         cd('/var/www/volontulo/frontend'),
     ):
         run('npm install .')
-        run('ng build --prod --env={}'.format(env.host_string))
+        run('./node_modules/.bin/ng build --prod --env={}'.format(env.host_string))
+        run('./node_modules/.bin/ng build --prod --env={} --app 1 --output-hashing=false'.format(env.host_string))
+        run('./node_modules/.bin/webpack --config webpack.server.config.js --progress --colors')
 
     run('systemctl restart uwsgi.service')
     run('systemctl restart nginx')
+    run('systemctl restart pm2-www-data.service')
 
 
 def install():
@@ -92,7 +93,11 @@ def install():
     # ensure that we have secrets configured:
     sys.path.insert(0, os.path.dirname(__file__))
     try:
-        from secrets import VOLONTULO_SENTRY_DSN
+        from secrets import (
+            CFP_ADMIN_PASSWORD,
+            VOLONTULO_SENTRY_DSN,
+            WRK_ADMIN_PASSWORD,
+        )
     except ImportError:
         print("Missing secrets")
         raise
@@ -100,6 +105,7 @@ def install():
     # Sytem upgrade:
     run('apt-get update -y')
     run('apt-get -o Dpkg::Options::="--force-confold" upgrade -y')
+    run('apt-get install -y python-minimal')  # <- old fronted npm install requires python 2 executable
 
     # Secrets:
     run('apt-get install -y pwgen')
@@ -124,17 +130,32 @@ def install():
     with cd('/var/www'):
         run('git clone https://github.com/CodeForPoznan/volontulo.git')
     with cd('/var/www/volontulo'):
-        run('git checkout {}'.format(env_vars[env.host_string]['git_branch']))
+        run('git checkout -f {}'.format(env_vars[env.host_string]['git_branch']))
 
     # Install proper Node:
-    run('wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash')
-    run('echo "export NVM_DIR=\"$HOME/.nvm\"" >> ~/.bash_profile')
+    run('echo "export NVM_DIR=\"/var/www/.nvm\"" >> ~/.bash_profile')
+    run('source ~/.bash_profile')
+    run('wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash')
     run('echo \'[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"\' >> ~/.bash_profile')
     run('echo \'[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"\' >> ~/.bash_profile')
     run('source ~/.bash_profile')
     run('nvm install {}'.format(NODE_VERSION))
+
+    # Install pm2
     with prefix('nvm use {}'.format(NODE_VERSION)):
-        run('npm install -g @angular/cli --unsafe-perm')
+        run('npm install -g pm2')
+    with cd('/var'):
+        run('chown www-data:www-data www')
+    with contextlib.nested(
+        prefix('nvm use {}'.format(NODE_VERSION)),
+        cd('/var/www/volontulo/frontend'),
+    ):
+        run('npm install .')
+        run('./node_modules/.bin/ng build --prod --env={}'.format(env.host_string))
+        run('./node_modules/.bin/ng build --prod --env={} --app 1 --output-hashing=false'.format(env.host_string))
+        run('./node_modules/.bin/webpack --config webpack.server.config.js --progress --colors')
+        run("sudo -u www-data bash -c 'export PATH=/var/www/.nvm/versions/node/v{}/bin:$PATH && export HOME=/var/www  && export VOLONTULO_PM2_HOST=127.0.0.1 && pm2 start dist/server && pm2 save'".format(NODE_VERSION))
+        run("env PATH=$PATH:/var/www/.nvm/versions/node/v{}/bin /var/www/.nvm/versions/node/v{}/lib/node_modules/pm2/bin/pm2 startup ubuntu -u www-data --hp /var/www".format(NODE_VERSION, NODE_VERSION))
 
     # Install virtualenv:
     run('apt-get install -y python3-pip')
@@ -254,7 +275,12 @@ server {{
     }}
 
     location / {{
-        try_files $uri /index.html;
+        proxy_pass http://localhost:4200;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
     }}
 }}
 """.format(env.host_string))
@@ -273,6 +299,5 @@ server {{
         prefix('workon volontulo'),
         cd('/var/www/volontulo/backend'),
     ):
-        django_admin_pass = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(64))
-        run('echo "from django.contrib.auth import get_user_model; User = get_user_model(); u = User(username=\'admin\', is_staff=True, is_superuser=True); u.set_password(\'{}\'); u.save()" | python manage.py shell'.format(django_admin_pass))
-        print('Django Admin Password: {}'.format(django_admin_pass))
+        run('python manage.py create_admin hello@codeforpoznan.pl {} --django-admin'.format(CFP_ADMIN_PASSWORD))
+        run('python manage.py create_admin wolontariat@wrk.org.pl {}'.format(WRK_ADMIN_PASSWORD))
