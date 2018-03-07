@@ -1,8 +1,8 @@
+import { Image } from './image.model'
 import { Organization } from '../organization/organization.model';
 
-export class Offer {
+export class BaseOffer {
     id: number;
-    image: string | null | undefined;
     location: string;
     organization: Organization;
     slug: string;
@@ -23,4 +23,12 @@ export class Offer {
     constantCoop: boolean;
     volunteersLimit: number;
     reserveVolunteersLimit: number;
+}
+
+export class ApiOffer extends BaseOffer {
+    image: string;
+}
+
+export class AppOffer extends BaseOffer {
+    image: Image;
 }

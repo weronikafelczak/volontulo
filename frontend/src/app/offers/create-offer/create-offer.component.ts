@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/filter';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Offer } from 'app/homepage-offer/offers.model';
+import { AppOffer, ApiOffer } from 'app/homepage-offer/offers.model';
 import { AuthService } from 'app/auth.service';
 import { User } from 'app/user';
 import { Observable } from 'rxjs/Observable';
@@ -8,6 +8,7 @@ import { OffersService } from 'app/homepage-offer/offers.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs/Subscription';
+import { FileReaderEvent, FileReaderEventTarget } from '../../models';
 
 @Component({
   selector: 'volontulo-create-offer',
@@ -16,11 +17,13 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class CreateOfferComponent implements OnInit {
   public djangoRoot = environment.djangoRoot;
-  public inEditMode: boolean = false;
-  public offer: Offer = new Offer;
-  public user: User;
-  public isAdmin: boolean = false;
+  public file: File;
   public hasOrganization = false;
+  public inEditMode: boolean = false;
+  public isAdmin: boolean = false;
+  public offer: AppOffer = new AppOffer;
+  public reader = new FileReader();
+  public user: User;
   public userSubscription: Subscription;
 
   constructor(
@@ -45,6 +48,7 @@ export class CreateOfferComponent implements OnInit {
     .map(params => params.offerId)
     .filter(offerId => offerId !== undefined)
     .switchMap(offerId => this.offersService.getOffer(offerId))
+    // .map(offer: ApiOffer =>  )
     .subscribe(response => {
       this.offer = response;
       this.inEditMode = true;
@@ -55,7 +59,8 @@ export class CreateOfferComponent implements OnInit {
     this.userSubscription.unsubscribe();
   }
 
-  onSubmit(offer: Offer){
+
+  onSubmit(offer: AppOffer){
     // TODO - delete those when we decide what date format we want to have
     offer.startedAt = offer.startedAt + "T00:00:00Z";
     offer.finishedAt = offer.finishedAt + "T00:00:00Z";
@@ -81,4 +86,17 @@ export class CreateOfferComponent implements OnInit {
       .subscribe();
     }
   }
+
+  onFileSelected(event) {
+    this.file = event.target.files[0];
+    this.reader.readAsDataURL(this.file)
+    this.reader.onloadend = (a: FileReaderEvent) =>
+     {
+      this.offer.image = {
+        content: (a.currentTarget as FileReaderEventTarget).result,
+        filename: "image.jpg",
+      }
+     }
+  }
+
 }

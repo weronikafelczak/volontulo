@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { Offer } from './offers.model';
+import { ApiOffer } from './offers.model';
 import { OffersService } from './offers.service';
 import { OrganizationService } from '../organization/organization.service';
+import { OnChanges }  from '@angular/core';
 
 @Component({
   selector: 'volontulo-homepage-offer',
@@ -12,6 +13,8 @@ import { OrganizationService } from '../organization/organization.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomepageOfferComponent {
-  @Input() offer: Offer;
+  @Input() offer: ApiOffer;
+
+
 }
 
