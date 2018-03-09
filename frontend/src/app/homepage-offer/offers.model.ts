@@ -30,5 +30,5 @@ export class ApiOffer extends BaseOffer {
 }
 
 export class AppOffer extends BaseOffer {
-    image: Image;
+    image: Image | null;
 }

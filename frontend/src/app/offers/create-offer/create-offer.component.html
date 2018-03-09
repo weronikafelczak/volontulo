@@ -10,7 +10,7 @@
 </ng-template>
 <ng-template #offerForm>
 <h2>{{ inEditMode ? "Edycja" : "Tworzenie" }} oferty:</h2>
-<form #offerForm="ngForm" (ngSubmit)="onSubmit(offer)">
+<form (ngSubmit)="onSubmit(offer)" [formGroup]="form">
   <div class="form-group row">
     <label for="title" class="col-sm-3 col-form-label">Tytuł oferty:</label>
     <div class="col-sm-6">
@@ -18,13 +18,12 @@
         type="text"
         class="form-control"
         placeholder="Tytuł oferty..." 
-        minlength="3"
-        maxlength="150"
-        id="title" name="title"
-        [(ngModel)]="offer.title"
-        #title="ngModel"
+        id="title"
+        formControlName ="title"
         required>
-      <span class="form-text text-muted" *ngIf="!title.valid &&title.touched">To pole jest obowiązkowe.</span>
+      <span class="form-text text-muted" 
+      *ngIf="!form.get('title').valid && form.get('title').touched">
+        To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Określ, jak oferta będzie nazywać się w systemie, staraj się być dokładnym.</div>
   </div>
@@ -35,13 +34,12 @@
         type="text"
         class="form-control"
         placeholder="Miejsce odbywania wolontariatu..." 
-        minlength="3"
-        maxlength="150"
-        id="location" name="location"
-        [(ngModel)]="offer.location"
-        #location="ngModel"
+        id="location" 
+        formControlName="location"
         required>
-      <span class="form-text text-muted" *ngIf="!location.valid &&location.touched">To pole jest obowiązkowe.</span>
+        <span class="form-text text-muted" 
+        *ngIf="!form.get('location').valid && form.get('location').touched">
+          To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Określ, w jakim miejscu odbywać się będzie wolontariat.</div>
   </div>
@@ -49,15 +47,16 @@
     <label for="organization" class="col-sm-3 col-form-label">Z ramienia organizacji:</label>
     <div class="col-sm-6">
       <select class="form-control"
-        id="organization" name="organization"
-        [(ngModel)]="offer.organization"
-        #organization="ngModel"
+        id="organization"
+        formControlName="organization"
         required>
         <option  *ngFor="let organization of user['organizations']" [ngValue]="organization">
           {{ organization.name }}</option>
       </select>
-      <span class="form-text text-muted" *ngIf="!organization.valid &&organization.touched">To pole jest obowiązkowe.</span>
-    </div>
+      <span class="form-text text-muted" 
+      *ngIf="!form.get('organization').valid && form.get('organization').touched">
+        To pole jest obowiązkowe.</span>
+   </div>
     <div class="col-sm-3">Określ organizację odpowiedzialną za wolontariat.</div>
   </div>
   <h3>Realizacja akcji:</h3>
@@ -71,22 +70,21 @@
             id="startedAt"
             class="form-control"
             min="2018-01-01"
-            name="startedAt"
-            [(ngModel)]="offer.startedAt"
-            #startedAt="ngModel"
+            formControlName="startedAt"
             required>
         </div>
       </div>
-      <span class="form-text text-muted" *ngIf="startedAt.touched && !startedAt.valid">Podaj datę.</span>
+      <span class="form-text text-muted" 
+      *ngIf="!form.get('startedAt').valid && form.get('startedAt').touched">
+        To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">
       <div class="form-check form-check-inline">
           <input
           type="radio"
           value=true
-          name="actionOngoing"
-          [(ngModel)]="offer.actionOngoing"
-          #actionOngoing="ngModel">
+          id="actionOngoing"
+          formControlName="actionOngoing">
           Akcja już trwa
       </div>
     </div>
@@ -100,24 +98,23 @@
           <input 
             type="datetime"
             class="form-control"
-            min="2018-01-01"
             id="finishedAt"
-            name="finishedAt"
-            [(ngModel)]="offer.finishedAt"
-            #finishedAt="ngModel"
+            formControlName="finishedAt"
             required>
         </div>
       </div>
-      <span class="form-text text-muted" *ngIf="finishedAt.touched &&!finishedAt.valid">Podaj datę (w formacie RRRR-MM-DD).</span>
-    </div>
+      <span class="form-text text-muted" 
+      *ngIf="!form.get('finishedAt').valid && form.get('finishedAt').touched">
+        To pole jest obowiązkowe.</span>
+      </div>
       <div class="col-sm-3">
       <div class="form-check">
           <input  
           type="radio"
           value="true"
-          name="constantCoop"
-          [(ngModel)]="offer.constantCoop"
-          #constantCoop="ngModel">Akcja nie kończy się (ciągła współpraca)
+          id="constantCoop"
+          formControlName="constantCoop">
+          Akcja nie kończy się (ciągła współpraca)
       </div>
     </div>
     <div class="col-sm-3">Określ datę zakończenia akcji (w formacie RRRR-MM-DD).</div>
@@ -134,14 +131,13 @@
               <div class="col-sm-9">
                 <input 
                 type="datetime"
-                min="2018-01-01"
                 class="form-control"
-                id="recruitmentStartDate" name="recruitmentStartDate"
-                [(ngModel)]="offer.recruitmentStartDate"
-                #recruitmentStartDate="ngModel"
+                id="recruitmentStartDate"
+                formControlName="recruitmentStartDate"
                 required>
-                <span class="form-text text-muted" *ngIf="recruitmentStartDate.touched &&!recruitmentStartDate.valid">To pole jest obowiązkowe.</span>
-              </div>
+                <span class="form-text text-muted" 
+                *ngIf="!form.get('recruitmentStartDate').valid && form.get('recruitmentStartDate').touched">
+                  To pole jest obowiązkowe.</span>             </div>
             </div>
             <div class="form-group row">
               <label for="recruitmentEndDate" class="col-sm-3 col-form-label">Koniec:</label>
@@ -149,14 +145,13 @@
                 <input 
                 type="datetime"
                 class="form-control"
-                minlength="3"
-                maxlength="150"
-                id="recruitmentEndDate" name="recruitmentEndDate"
-                [(ngModel)]="offer.recruitmentEndDate"
-                #recruitmentEndDate="ngModel"
+                id="recruitmentEndDate"
+                formControlName="recruitmentEndDate"
                 required>
-                <span class="form-text text-muted" *ngIf="recruitmentEndDate.touched && !recruitmentEndDate.valid">To pole jest obowiązkowe.</span>
-              </div>
+                <span class="form-text text-muted" 
+                *ngIf="!form.get('recruitmentEndDate').valid && form.get('recruitmentEndDate').touched">
+                  To pole jest obowiązkowe.</span>
+                </div>
             </div>
             <div class="form-group row">
               <label for="volunteersLimit" class="col-sm-3 col-form-label">Limit wolontariuszy:</label>
@@ -164,11 +159,8 @@
                 <input 
                   type="number"
                   class="form-control"
-                  placeholder="0" 
-                  min="0"
-                  id="volunteersLimit" name="volunteersLimit"
-                  [(ngModel)]="offer.volunteersLimit"
-                  #volunteersLimit="ngModel">
+                  id="volunteersLimit"
+                  formControlName="volunteersLimit">
               </div>
             </div>
           </div>
@@ -184,9 +176,8 @@
                 <input 
                 type="datetime"
                 class="form-control"
-                id="reserveRecruitmentStartDate" name="reserveRecruitmentStartDate"
-                [(ngModel)]="offer.reserveRecruitmentStartDate"
-                #reserveRecruitmentStartDate="ngModel">
+                id="reserveRecruitmentStartDate"
+                formControlName="reserveRecruitmentStartDate">
               </div>
             </div>
             <div class="form-group row">
@@ -195,9 +186,8 @@
                 <input 
                 type="datetime"
                 class="form-control"
-                id="reserveRecruitmentEndDate" name="reserveRecruitmentEndDate"
-                [(ngModel)]="offer.reserveRecruitmentEndDate"
-                #reserveRecruitmentEndDate="ngModel">
+                id="reserveRecruitmentEndDate"
+                formControlName="eserveRecruitmentEndDate">
               </div>
             </div>
             <div class="form-group row">
@@ -206,11 +196,9 @@
                 <input 
                   type="number"
                   class="form-control"
-                  placeholder="0" 
-                  min="0"
-                  id="reserveVolunteersLimit" name="reserveVolunteersLimit"
-                  [(ngModel)]="offer.reserveVolunteersLimit"
-                  #reserveVolunteersLimit="ngModel">
+                  id="reserveVolunteersLimit"
+                  formControlName="reserveVolunteersLimit"
+                  >
               </div>
             </div>
           </div>
@@ -226,31 +214,30 @@
         type="text"
         class="form-control"
         placeholder="Opis oferty..." 
-        minlength="3"
-        maxlength="500"
-        id="description" name="description"
-        [(ngModel)]="offer.description"
-        #description="ngModel"
+        id="description"
+        formControlName="description"
         required>
       </textarea>
-      <span class="form-text text-muted" *ngIf="!description.valid &&description.touched">To pole jest obowiązkowe.</span>
+      <span class="form-text text-muted" 
+      *ngIf="!form.get('description').valid && form.get('description').touched">
+        To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Postaraj się dokładnie opisać akcję.</div>
   </div>
   <div class="form-group row">
       <label for="timeCommitment" class="col-sm-3 col-form-label">Wymagania czasowe:</label>
       <div class="col-sm-6">
-        <input 
+        <textarea
           type="text"
           class="form-control"
           placeholder="Wymagania czasowe..." 
-          minlength="3"
-          maxlength="150"
-          id="timeCommitment" name="timeCommitment"
-          [(ngModel)]="offer.timeCommitment"
-          #timeCommitment="ngModel"
+          id="timeCommitment"
+          formControlName="timeCommitment"
           required>
-        <span class="form-text text-muted" *ngIf="!timeCommitment.valid &&timeCommitment.touched">To pole jest obowiązkowe.</span>
+        </textarea>
+        <span class="form-text text-muted" 
+        *ngIf="!form.get('timeCommitment').valid && form.get('timeCommitment').touched">
+          To pole jest obowiązkowe.</span>
       </div>
       <div class="col-sm-3">Określ wymagania czasowe - ile godzin pracy w ciągu dnia wymaga dana akcja.</div>
     </div>
@@ -261,40 +248,53 @@
         type="text"
         class="form-control"
         placeholder="Korzyści dla wolontariusza..." 
-        minlength="3"
-        maxlength="500"
-        id="benefits" name="benefits"
-        [(ngModel)]="offer.benefits"
-        #benefits="ngModel"
+        id="benefits"
+        formControlName="benefits"
         required>
       </textarea>
-      <span class="form-text text-muted" *ngIf="!benefits.valid &&benefits.touched">To pole jest obowiązkowe.</span>
+      <span class="form-text text-muted" 
+      *ngIf="!form.get('benefits').valid && form.get('benefits').touched">
+        To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Określ korzyści płynące z udziału w akcji.</div>
   </div>
   <div class="form-group row">
     <label for="requirements" class="col-sm-3 col-form-label">Wymagania:</label>
     <div class="col-sm-6">
-      <input 
+      <textarea
         type="text"
         class="form-control"
         placeholder="Wymagania wobec wolontariusza..." 
-        minlength="3"
-        maxlength="150"
-        id="requirements" name="requirements"
-        [(ngModel)]="offer.requirements"
-        #requirements="ngModel"
+        id="requirements"
+        formControlName="requirements"
         required>
+        </textarea>
+        <span class="form-text text-muted" 
+        *ngIf="!form.get('requirements').valid && form.get('requirements').touched">
+          To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Określ warunki, jakie musi spełnić kandydat, aby wziąć udział w akcji.</div>
   </div>
   <div class="form-group row">
-    <label for="requirements" class="col-sm-3 col-form-label">Zdjęcie:</label>
+    <label for="image" class="col-sm-3 col-form-label">Zdjęcie:</label>
     <div class="col-sm-6">
-      <input 
-        type="file"
-        class="form-control"
-        (change)="onFileSelected($event)">
+      <div *ngIf="offer.image.content">
+          Podgląd:
+          <img class="card-img" src="{{ offer.image.content }}">
+      </div>
+      <div class="input-group">
+        <button type="button" class="btn btn-secondary">
+            <label for="image" class="btn">Wybierz plik z komputera</label>
+        </button>
+        <input 
+          type="file"
+          id="image"
+          class="form-control"
+          (change)="onFileSelected($event)"
+          accept="image/x-png,image/jpeg"
+          style="visibility:hidden;"
+          >
+      </div>
     </div>
     <div class="col-sm-3">Dodaj zdjęcie, które będzie wyświetlane w ofercie.</div>
   </div>

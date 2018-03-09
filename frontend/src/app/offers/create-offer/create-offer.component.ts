@@ -1,6 +1,7 @@
 import 'rxjs/add/operator/filter';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AppOffer, ApiOffer } from 'app/homepage-offer/offers.model';
+import 'rxjs/add/operator/do'; 
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AppOffer, ApiOffer, BaseOffer } from 'app/homepage-offer/offers.model';
 import { AuthService } from 'app/auth.service';
 import { User } from 'app/user';
 import { Observable } from 'rxjs/Observable';
@@ -9,6 +10,10 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs/Subscription';
 import { FileReaderEvent, FileReaderEventTarget } from '../../models';
+import { NgForm, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { Validators } from '@angular/forms';
+import { Image } from 'app/homepage-offer/image.model';
 
 @Component({
   selector: 'volontulo-create-offer',
@@ -25,14 +30,36 @@ export class CreateOfferComponent implements OnInit {
   public reader = new FileReader();
   public user: User;
   public userSubscription: Subscription;
+  public form: FormGroup;
 
   constructor(
     private authService: AuthService,
     private offersService: OffersService,
     private route: ActivatedRoute,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit() {
+    this.form = this.fb.group({
+      title: ['', Validators.required],
+      location: ['', Validators.required],
+      organization: ['', Validators.required],
+      startedAt: ['', Validators.required],
+      actionOngoing: ['', Validators.required],
+      finishedAt: ['', Validators.required],
+      constantCoop: [],
+      recruitmentStartDate: ['', Validators.required],
+      recruitmentEndDate: ['', Validators.required],
+      volunteersLimit: [],
+      reserveRecruitmentStartDate: [],
+      reserveRecruitmentEndDate: [],
+      reserveVolunteersLimit: [],
+      description: ['', Validators.required],
+      timeCommitment: ['', Validators.required],
+      benefits: ['', Validators.required],
+      requirements: ['', Validators.required],
+      image: [],
+    })
     this.userSubscription = this.authService.user$
     .subscribe(
       response => {
@@ -48,10 +75,14 @@ export class CreateOfferComponent implements OnInit {
     .map(params => params.offerId)
     .filter(offerId => offerId !== undefined)
     .switchMap(offerId => this.offersService.getOffer(offerId))
-    // .map(offer: ApiOffer =>  )
-    .subscribe(response => {
-      this.offer = response;
+    .do(offer => this.toDataUrl(offer.image, (base64) => this.offer.image = {
+      content: base64,
+      filename: 'image.jpg'
+    }))
+    .subscribe((response: BaseOffer) => {
+      this.offer = response as AppOffer;
       this.inEditMode = true;
+      this.form.patchValue(this.offer);
     });
   }
 
@@ -59,14 +90,35 @@ export class CreateOfferComponent implements OnInit {
     this.userSubscription.unsubscribe();
   }
 
+  toDataUrl(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            callback(reader.result);
+        }
+        reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+}
 
   onSubmit(offer: AppOffer){
     // TODO - delete those when we decide what date format we want to have
     offer.startedAt = offer.startedAt + "T00:00:00Z";
     offer.finishedAt = offer.finishedAt + "T00:00:00Z";
-    offer.recruitmentStartDate = offer.recruitmentStartDate + "T00:00:00Z";
-    offer.recruitmentEndDate = offer.recruitmentEndDate + "T00:00:00Z";
 
+    if(!offer.recruitmentEndDate) {
+      offer.recruitmentEndDate = null
+    } else {
+      offer.recruitmentEndDate = offer.recruitmentEndDate + "T00:00:00Z";
+    }
+    if(!offer.recruitmentStartDate) {
+      offer.recruitmentStartDate = null
+    } else {
+      offer.recruitmentStartDate = offer.recruitmentStartDate + "T00:00:00Z";
+    }
     if(!offer.reserveRecruitmentEndDate) {
       offer.reserveRecruitmentEndDate = null
     } else {
@@ -77,12 +129,13 @@ export class CreateOfferComponent implements OnInit {
     } else {
       offer.reserveRecruitmentStartDate = offer.reserveRecruitmentStartDate + "T00:00:00Z";
     }
-    
+
+    this.form.value.image = this.offer.image;
     if(this.inEditMode){
-      this.offersService.editOffer(offer, offer.id)
+      this.offersService.editOffer(this.form.value, offer.id)
       .subscribe();
     } else {
-      this.offersService.createOffer(offer)
+      this.offersService.createOffer(this.form.value)
       .subscribe();
     }
   }
@@ -98,5 +151,4 @@ export class CreateOfferComponent implements OnInit {
       }
      }
   }
-
 }
