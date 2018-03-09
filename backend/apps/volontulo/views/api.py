@@ -3,16 +3,18 @@
 """
 .. module:: api
 """
-
+from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.messages import get_messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.decorators import api_view, detail_route
 from rest_framework.decorators import authentication_classes
@@ -63,14 +65,15 @@ def login_view(request):
     )
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes((AllowAny,))
 def logout_view(request):
     """REST API logout view."""
     if request.user.is_authenticated():
         logout(request)
-        return Response(None, status=status.HTTP_200_OK)
-    return Response(None, status=status.HTTP_400_BAD_REQUEST)
+        messages.success(request, 'Wylogowano')
+        return Response({}, status=status.HTTP_200_OK)
+    return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -137,12 +140,33 @@ def password_reset_confirm(request, uidb64, token):
 
 
 @authentication_classes((CsrfExemptSessionAuthentication,))
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def messages_view(request):
+    """REST API view with Django messages."""
+    return Response(
+        serializers.MessageSerializer(get_messages(request), many=True).data,
+        status=status.HTTP_200_OK
+    )
+
+
 class OfferViewSet(viewsets.ModelViewSet):
 
     """REST API offers viewset."""
 
     serializer_class = serializers.OfferSerializer
     permission_classes = (permissions.OfferPermission,)
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = (
+        'finished_at',
+        'location',
+        'organization',
+        'organization__id',
+        'organization__name',
+        'requirements',
+        'started_at',
+        'recruitment_end_date'
+        )
 
     def get_queryset(self):
         """Queryset depends on user role."""
@@ -180,3 +204,20 @@ class OrganizationViewSet(viewsets.ModelViewSet):
             serializer.validated_data,
         )
         return Response({}, status=status.HTTP_201_CREATED)
+
+    @staticmethod
+    @detail_route(methods=['GET'], permission_classes=(AllowAny,))
+    # pylint: disable=invalid-name
+    def offers(request, pk):
+        """ Endpoint to get offers for organization """
+        organization = get_object_or_404(Organization, id=pk)
+        if logged_as_admin(request):
+            offers = organization.offer_set.get_for_administrator()
+        else:
+            offers = organization.offer_set.get_weightened()
+        return Response(
+            serializers.OfferSerializer(
+                offers,
+                many=True,
+                context={'request': request}).data,
+            status=status.HTTP_200_OK)
