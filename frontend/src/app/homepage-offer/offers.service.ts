@@ -18,8 +18,7 @@ export class OffersService {
 
   getOffers(): Observable<ApiOffer[]> {
     return this.http.get<ApiOffer[]>(this.url)
-      .map(offers =>
-        { 
+      .map(offers => {
         return offers.map(offer => this.loadDefaultImage(offer))
       });
   }

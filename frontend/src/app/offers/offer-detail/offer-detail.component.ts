@@ -37,10 +37,9 @@ export class OfferDetailComponent implements OnInit {
     this.activatedRoute.params
     .switchMap(params => this.offersService.getOffer(params.offerId))
     .subscribe();
-  
 
     this.isUserOrgMember$ = this.offer$
-    .pipe(combineLatest(this.user$, (offer, user): boolean =>{
+    .pipe(combineLatest(this.user$, (offer, user): boolean => {
         if (offer && user) {
             const filteredOrganizations = user.organizations.filter(organ => organ.id === offer.organization.id);
             return filteredOrganizations.length > 0;

@@ -8,10 +8,10 @@ export interface SuccessOrFailureAction extends Action {
 }
 
 export interface FileReaderEventTarget extends EventTarget {
-  result:string
+  result: string
 }
 
 export interface FileReaderEvent extends ProgressEvent {
   target: FileReaderEventTarget;
-  getMessage():string;
+  getMessage(): string;
 }

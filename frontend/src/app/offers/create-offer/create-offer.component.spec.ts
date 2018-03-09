@@ -1,6 +1,11 @@
+import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
 
+import { AuthService } from '../../auth.service';
 import { CreateOfferComponent } from './create-offer.component';
+import { OffersService } from '../../homepage-offer/offers.service';
 
 describe('CreateOfferComponent', () => {
   let component: CreateOfferComponent;
@@ -8,7 +13,27 @@ describe('CreateOfferComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateOfferComponent ]
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+      ],
+      declarations: [ CreateOfferComponent ],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: new Subject()
+          },
+        },
+      {
+        provide: AuthService,
+        useValue: {}
+      },
+      {
+        provide: OffersService,
+        useValue: {},
+      }
+    ],
     })
     .compileComponents();
   }));

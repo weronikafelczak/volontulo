@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/do'; 
+import 'rxjs/add/operator/do';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AppOffer, ApiOffer, BaseOffer } from 'app/homepage-offer/offers.model';
 import { AuthService } from 'app/auth.service';
@@ -20,12 +20,12 @@ import { Image } from 'app/homepage-offer/image.model';
   templateUrl: './create-offer.component.html',
   styleUrls: ['./create-offer.component.scss']
 })
-export class CreateOfferComponent implements OnInit {
+export class CreateOfferComponent implements OnInit, OnDestroy {
   public djangoRoot = environment.djangoRoot;
   public file: File;
   public hasOrganization = false;
-  public inEditMode: boolean = false;
-  public isAdmin: boolean = false;
+  public inEditMode = false;
+  public isAdmin = false;
   public offer: AppOffer = new AppOffer;
   public reader = new FileReader();
   public user: User;
@@ -60,16 +60,19 @@ export class CreateOfferComponent implements OnInit {
       requirements: ['', Validators.required],
       image: [],
     })
-    this.userSubscription = this.authService.user$
-    .subscribe(
-      response => {
-        this.user = response;
-        if(this.user){
-          this.isAdmin = this.user["isAdministrator"];
-          this.hasOrganization = this.user["organizations"].length > 0;
+
+    if (this.authService.user$) {
+      this.userSubscription = this.authService.user$
+      .subscribe(
+        response => {
+          this.user = response;
+          if (this.user) {
+            this.isAdmin = this.user['isAdministrator'];
+            this.hasOrganization = this.user['organizations'].length > 0;
+          }
         }
-      }
-    );
+      );
+  }
 
     this.route.params
     .map(params => params.offerId)
@@ -86,14 +89,16 @@ export class CreateOfferComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(){
-    this.userSubscription.unsubscribe();
+  ngOnDestroy() {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   toDataUrl(url, callback) {
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.onload = function() {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onloadend = function() {
             callback(reader.result);
         }
@@ -104,34 +109,34 @@ export class CreateOfferComponent implements OnInit {
     xhr.send();
 }
 
-  onSubmit(offer: AppOffer){
+  onSubmit(offer: AppOffer) {
     // TODO - delete those when we decide what date format we want to have
-    offer.startedAt = offer.startedAt + "T00:00:00Z";
-    offer.finishedAt = offer.finishedAt + "T00:00:00Z";
+    offer.startedAt = offer.startedAt + 'T00:00:00Z';
+    offer.finishedAt = offer.finishedAt + 'T00:00:00Z';
 
-    if(!offer.recruitmentEndDate) {
+    if (!offer.recruitmentEndDate) {
       offer.recruitmentEndDate = null
     } else {
-      offer.recruitmentEndDate = offer.recruitmentEndDate + "T00:00:00Z";
+      offer.recruitmentEndDate = offer.recruitmentEndDate + 'T00:00:00Z';
     }
-    if(!offer.recruitmentStartDate) {
+    if (!offer.recruitmentStartDate) {
       offer.recruitmentStartDate = null
     } else {
-      offer.recruitmentStartDate = offer.recruitmentStartDate + "T00:00:00Z";
+      offer.recruitmentStartDate = offer.recruitmentStartDate + 'T00:00:00Z';
     }
-    if(!offer.reserveRecruitmentEndDate) {
+    if (!offer.reserveRecruitmentEndDate) {
       offer.reserveRecruitmentEndDate = null
     } else {
-      offer.reserveRecruitmentEndDate = offer.reserveRecruitmentEndDate + "T00:00:00Z";
+      offer.reserveRecruitmentEndDate = offer.reserveRecruitmentEndDate + 'T00:00:00Z';
     }
-    if(!offer.reserveRecruitmentStartDate) {
+    if (!offer.reserveRecruitmentStartDate) {
       offer.reserveRecruitmentStartDate = null
     } else {
-      offer.reserveRecruitmentStartDate = offer.reserveRecruitmentStartDate + "T00:00:00Z";
+      offer.reserveRecruitmentStartDate = offer.reserveRecruitmentStartDate + 'T00:00:00Z';
     }
 
     this.form.value.image = this.offer.image;
-    if(this.inEditMode){
+    if (this.inEditMode) {
       this.offersService.editOffer(this.form.value, offer.id)
       .subscribe();
     } else {
@@ -143,11 +148,10 @@ export class CreateOfferComponent implements OnInit {
   onFileSelected(event) {
     this.file = event.target.files[0];
     this.reader.readAsDataURL(this.file)
-    this.reader.onloadend = (a: FileReaderEvent) =>
-     {
+    this.reader.onloadend = (a: FileReaderEvent) => {
       this.offer.image = {
         content: (a.currentTarget as FileReaderEventTarget).result,
-        filename: "image.jpg",
+        filename: 'image.jpg',
       }
      }
   }
