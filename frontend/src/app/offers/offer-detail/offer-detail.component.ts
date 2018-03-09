@@ -38,6 +38,7 @@ export class OfferDetailComponent implements OnInit {
     .switchMap(params => this.offersService.getOffer(params.offerId))
     .subscribe();
 
+    if (this.offer$) {
     this.isUserOrgMember$ = this.offer$
     .pipe(combineLatest(this.user$, (offer, user): boolean => {
         if (offer && user) {
@@ -46,6 +47,7 @@ export class OfferDetailComponent implements OnInit {
             }
         return false;
        }));
+      }
   }
 }
 
