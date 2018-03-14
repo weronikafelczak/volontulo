@@ -7,7 +7,7 @@ import { AuthService } from '../../auth.service';
 import { CreateOfferComponent } from './create-offer.component';
 import { OffersService } from '../../homepage-offer/offers.service';
 
-describe('CreateOfferComponent', () => {
+fdescribe('CreateOfferComponent', () => {
   let component: CreateOfferComponent;
   let fixture: ComponentFixture<CreateOfferComponent>;
 
@@ -27,7 +27,9 @@ describe('CreateOfferComponent', () => {
         },
       {
         provide: AuthService,
-        useValue: {}
+        useValue: {
+          user$: new Subject(),
+        }
       },
       {
         provide: OffersService,
@@ -46,5 +48,5 @@ describe('CreateOfferComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
+  });this
 });
