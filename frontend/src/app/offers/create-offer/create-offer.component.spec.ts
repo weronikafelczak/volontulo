@@ -7,7 +7,7 @@ import { AuthService } from '../../auth.service';
 import { CreateOfferComponent } from './create-offer.component';
 import { OffersService } from '../../homepage-offer/offers.service';
 
-fdescribe('CreateOfferComponent', () => {
+describe('CreateOfferComponent', () => {
   let component: CreateOfferComponent;
   let fixture: ComponentFixture<CreateOfferComponent>;
 
