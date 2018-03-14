@@ -27,7 +27,7 @@
     </div>
     <div class="col-sm-3">Określ, jak oferta będzie nazywać się w systemie, staraj się być dokładnym.</div>
   </div>
-  <div class="form-group row">
+<div class="form-group row">
     <label for="location" class="col-sm-3 col-form-label">Miejsce odbywania wolontariatu:</label>
     <div class="col-sm-6">
       <input 
@@ -43,15 +43,16 @@
     </div>
     <div class="col-sm-3">Określ, w jakim miejscu odbywać się będzie wolontariat.</div>
   </div>
-  <div class="form-group row">
+ <div class="form-group row">
     <label for="organization" class="col-sm-3 col-form-label">Z ramienia organizacji:</label>
     <div class="col-sm-6">
-      <select class="form-control"
+      <select
+        class="form-control"
         id="organization"
-        formControlName="organization"
         required>
-        <option  *ngFor="let organization of user['organizations']" [ngValue]="organization">
-          {{ organization.name }}</option>
+        <option>dupa</option>
+        <option  *ngFor="let organization of user.organizations" [value]="organization">
+          {{ organization?.name }}</option>
       </select>
       <span class="form-text text-muted" 
       *ngIf="!form.get('organization').valid && form.get('organization').touched">
@@ -60,7 +61,7 @@
     <div class="col-sm-3">Określ organizację odpowiedzialną za wolontariat.</div>
   </div>
   <h3>Realizacja akcji:</h3>
-  <div class="form-group row">
+   <div class="form-group row">
     <label for="startedAt" class="col-sm-3 col-form-label">Dzień rozpoczęcia:</label>
     <div class="col-sm-3">
       <div class="form-check form-check-inline">
@@ -90,7 +91,7 @@
     </div>
     <div class="col-sm-3">Określ datę rozpoczęcia akcji.</div>
   </div>
-  <div class="form-group row ">
+   <div class="form-group row ">
     <label for="finishedAt" class="col-sm-3 col-form-label">Dzień zakończenia:</label>
     <div class="col-sm-3">
       <div class="form-check form-check-inline">
@@ -241,7 +242,7 @@
       </div>
       <div class="col-sm-3">Określ wymagania czasowe - ile godzin pracy w ciągu dnia wymaga dana akcja.</div>
     </div>
-  <div class="form-group row">
+ <div class="form-group row">
     <label for="benefits" class="col-sm-3 col-form-label">Korzyści:</label>
     <div class="col-sm-6">
       <textarea
@@ -275,24 +276,23 @@
     </div>
     <div class="col-sm-3">Określ warunki, jakie musi spełnić kandydat, aby wziąć udział w akcji.</div>
   </div>
-  <div class="form-group row">
+    <div class="form-group row">
     <label for="image" class="col-sm-3 col-form-label">Zdjęcie:</label>
     <div class="col-sm-6">
-      <div *ngIf="offer.image.content">
+      <div *ngIf="offer?.image?.content">
           Podgląd:
           <img class="card-img" src="{{ offer.image.content }}">
       </div>
       <div class="input-group">
         <button type="button" class="btn btn-secondary">
-            <label for="image" class="btn">Wybierz plik z komputera</label>
+            <label for="image">Wybierz plik z komputera</label>
         </button>
         <input 
           type="file"
           id="image"
-          class="form-control"
+          class="hidden"
           (change)="onFileSelected($event)"
           accept="image/x-png,image/jpeg"
-          style="visibility:hidden;"
           >
       </div>
     </div>
@@ -300,6 +300,6 @@
   </div>
   <div class="d-flex justify-content-center">
       <button type="submit" name="submit" class="btn btn-primary">Zapisz {{ inEditMode ? "zmiany" : "ofertę" }}</button>
-  </div>
+ </div>
 </form>
 </ng-template>

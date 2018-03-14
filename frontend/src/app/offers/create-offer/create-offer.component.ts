@@ -14,6 +14,7 @@ import { NgForm, FormGroup } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Image } from 'app/homepage-offer/image.model';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'volontulo-create-offer',
@@ -61,18 +62,14 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
       image: [],
     })
 
-    if (this.authService.user$) {
       this.userSubscription = this.authService.user$
       .subscribe(
         response => {
           this.user = response;
-          if (this.user) {
             this.isAdmin = this.user['isAdministrator'];
             this.hasOrganization = this.user['organizations'].length > 0;
           }
-        }
       );
-  }
 
     this.route.params
     .map(params => params.offerId)
