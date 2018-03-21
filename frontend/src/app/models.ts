@@ -1,9 +1,5 @@
-export interface Action {
-  result: any;
-}
-
-export interface SuccessOrFailureAction extends Action {
-  result: 'success' | 'failure'
+export interface SuccessOrFailureAction {
+  success: boolean;
   message?: string;
 }
 

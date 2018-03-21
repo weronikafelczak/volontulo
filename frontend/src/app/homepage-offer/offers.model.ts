@@ -23,6 +23,8 @@ export class BaseOffer {
     constantCoop: boolean;
     volunteersLimit: number;
     reserveVolunteersLimit: number;
+    actionStatus: string;
+    offerStatus: string;
 }
 
 export class ApiOffer extends BaseOffer {

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
 import { ApiOffer, AppOffer } from './offers.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+import { loadDefaultImage } from './offer.utils';
 
 @Injectable()
 export class OffersService {
@@ -18,22 +18,25 @@ export class OffersService {
 
   getOffers(): Observable<ApiOffer[]> {
     return this.http.get<ApiOffer[]>(this.url)
-      .map(offers => {
-        return offers.map(offer => this.loadDefaultImage(offer))
-      });
+      .map(offers => offers.map(offer => loadDefaultImage(offer)));
   }
+
+//   getOffer(id: number): Observable<ApiOffer> {
+//     return this.http.get<ApiOffer>(`${this.url}${id}/`)
+//       .map(offer => this.loadDefaultImage(offer));
+//   }
+
+//   loadDefaultImage(offer: ApiOffer): ApiOffer {
+//     if (!offer.image) {
+//         offer.image = 'assets/img/banner/volontulo_baner.png';
+//         this._offer$.next(offer);
+//     }
+//     return offer;
+// }
 
   getOffer(id: number): Observable<ApiOffer> {
     return this.http.get<ApiOffer>(`${this.url}${id}/`)
-      .map(offer => this.loadDefaultImage(offer));
-  }
-
-  loadDefaultImage(offer: ApiOffer): ApiOffer {
-    if (!offer.image) {
-        offer.image = 'assets/img/banner/volontulo_baner.png';
-        this._offer$.next(offer);
-    }
-    return offer;
+      .map(offer => loadDefaultImage(offer));
   }
 
   getJoinViewUrl(offer: ApiOffer): string {
