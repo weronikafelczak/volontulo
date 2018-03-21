@@ -13,15 +13,19 @@ class OfferPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
         """We are accepting only safe methods for now."""
-        if view.action in ('create', 'update'):
-            return request.user.is_authenticated()
-        return request.method in permissions.SAFE_METHODS
-
+        return request.method in permissions.SAFE_METHODS or (
+            request.method in ('POST', 'PUT') and
+            request.user.is_authenticated()
+        )
 
     def has_object_permission(self, request, view, obj):
-        if view.action == 'update':
-            return obj.organization in request.user.userprofile.organizations.all()
-        return request.method in permissions.SAFE_METHODS
+        user = request.user
+        return request.method in permissions.SAFE_METHODS or (
+            user.is_authenticated() and (
+                user.userprofile.is_administrator or
+                obj.organization in user.userprofile.organizations.all()
+            )
+        )
 
 
 class OrganizationPermission(permissions.BasePermission):
