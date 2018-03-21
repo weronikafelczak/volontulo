@@ -18,6 +18,6 @@ html {
   font-size: $base-font-size;
 }
 
-.hidden {
+input[type=file] {
   visibility: hidden;
 }

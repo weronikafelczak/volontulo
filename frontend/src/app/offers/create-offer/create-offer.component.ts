@@ -151,4 +151,9 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
       }
      }
   }
+
+  isFormInputInvalid(inputStringId: string): boolean {
+    const input = this.form.get(inputStringId);
+    return !input.valid && input.touched;
+  }
 }

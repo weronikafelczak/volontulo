@@ -22,7 +22,7 @@
         formControlName ="title"
         required>
       <span class="form-text text-muted" 
-      *ngIf="!form.get('title').valid && form.get('title').touched">
+      *ngIf="isFormInputInvalid('title')">
         To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Określ, jak oferta będzie nazywać się w systemie, staraj się być dokładnym.</div>
@@ -38,7 +38,7 @@
         formControlName="location"
         required>
         <span class="form-text text-muted" 
-        *ngIf="!form.get('location').valid && form.get('location').touched">
+        *ngIf="isFormInputInvalid('location')">
           To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Określ, w jakim miejscu odbywać się będzie wolontariat.</div>
@@ -54,7 +54,7 @@
           {{ organization?.name }}</option>
       </select>
       <span class="form-text text-muted" 
-      *ngIf="!form.get('organization').valid && form.get('organization').touched">
+      *ngIf="isFormInputInvalid('location')">
         To pole jest obowiązkowe.</span>
    </div>
     <div class="col-sm-3">Określ organizację odpowiedzialną za wolontariat.</div>
@@ -75,7 +75,7 @@
         </div>
       </div>
       <span class="form-text text-muted" 
-      *ngIf="!form.get('startedAt').valid && form.get('startedAt').touched">
+      *ngIf="isFormInputInvalid('startedAt')">
         To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">
@@ -104,7 +104,7 @@
         </div>
       </div>
       <span class="form-text text-muted" 
-      *ngIf="!form.get('finishedAt').valid && form.get('finishedAt').touched">
+      *ngIf="isFormInputInvalid('finishedAt')">
         To pole jest obowiązkowe.</span>
       </div>
       <div class="col-sm-3">
@@ -136,7 +136,7 @@
                 formControlName="recruitmentStartDate"
                 required>
                 <span class="form-text text-muted" 
-                *ngIf="!form.get('recruitmentStartDate').valid && form.get('recruitmentStartDate').touched">
+                *ngIf="isFormInputInvalid('recruitmentStartDate')">
                   To pole jest obowiązkowe.</span>             </div>
             </div>
             <div class="form-group row">
@@ -149,7 +149,7 @@
                 formControlName="recruitmentEndDate"
                 required>
                 <span class="form-text text-muted" 
-                *ngIf="!form.get('recruitmentEndDate').valid && form.get('recruitmentEndDate').touched">
+                *ngIf="isFormInputInvalid('recruitmentEndDate')">
                   To pole jest obowiązkowe.</span>
                 </div>
             </div>
@@ -187,7 +187,7 @@
                 type="datetime"
                 class="form-control"
                 id="reserveRecruitmentEndDate"
-                formControlName="eserveRecruitmentEndDate">
+                formControlName="reserveRecruitmentEndDate">
               </div>
             </div>
             <div class="form-group row">
@@ -219,7 +219,7 @@
         required>
       </textarea>
       <span class="form-text text-muted" 
-      *ngIf="!form.get('description').valid && form.get('description').touched">
+      *ngIf="isFormInputInvalid('description')">
         To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Postaraj się dokładnie opisać akcję.</div>
@@ -236,7 +236,7 @@
           required>
         </textarea>
         <span class="form-text text-muted" 
-        *ngIf="!form.get('timeCommitment').valid && form.get('timeCommitment').touched">
+        *ngIf="isFormInputInvalid('timeCommitment')">
           To pole jest obowiązkowe.</span>
       </div>
       <div class="col-sm-3">Określ wymagania czasowe - ile godzin pracy w ciągu dnia wymaga dana akcja.</div>
@@ -253,7 +253,7 @@
         required>
       </textarea>
       <span class="form-text text-muted" 
-      *ngIf="!form.get('benefits').valid && form.get('benefits').touched">
+      *ngIf="isFormInputInvalid('benefits')">
         To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Określ korzyści płynące z udziału w akcji.</div>
@@ -270,7 +270,7 @@
         required>
         </textarea>
         <span class="form-text text-muted" 
-        *ngIf="!form.get('requirements').valid && form.get('requirements').touched">
+        *ngIf="isFormInputInvalid('requirements')">
           To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Określ warunki, jakie musi spełnić kandydat, aby wziąć udział w akcji.</div>
@@ -289,7 +289,6 @@
         <input 
           type="file"
           id="image"
-          class="hidden"
           (change)="onFileSelected($event)"
           accept="image/x-png,image/jpeg"
           >
