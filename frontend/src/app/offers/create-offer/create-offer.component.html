@@ -70,7 +70,7 @@
       <div class="form-check form-check-inline">
         <div class="input-group">
           <input 
-            type="datetime"
+            type="date"
             id="startedAt"
             class="form-control"
             min="2018-01-01"
@@ -100,7 +100,7 @@
       <div class="form-check form-check-inline">
         <div class="input-group">
           <input 
-            type="datetime"
+            type="date"
             class="form-control"
             id="finishedAt"
             formControlName="finishedAt"
@@ -121,7 +121,7 @@
           Akcja nie kończy się (ciągła współpraca)
       </div>
     </div>
-    <div class="col-sm-3">Określ datę zakończenia akcji (w formacie RRRR-MM-DD).</div>
+    <div class="col-sm-3">Określ datę zakończenia akcji.</div>
   </div>
   <div class="form-group row">
     <label for="startedAt" class="col-sm-3 col-form-label">Rekrutacja:</label>
@@ -134,7 +134,7 @@
               <label for="recruitmentStartDate" class="col-sm-3 col-form-label">Początek:</label>
               <div class="col-sm-9">
                 <input 
-                type="datetime"
+                type="date"
                 class="form-control"
                 id="recruitmentStartDate"
                 formControlName="recruitmentStartDate"
@@ -145,7 +145,7 @@
               <label for="recruitmentEndDate" class="col-sm-3 col-form-label">Koniec:</label>
               <div class="col-sm-9">
                 <input 
-                type="datetime"
+                type="date"
                 class="form-control"
                 id="recruitmentEndDate"
                 formControlName="recruitmentEndDate"
@@ -159,6 +159,7 @@
                   type="number"
                   class="form-control"
                   id="volunteersLimit"
+                  min=0
                   formControlName="volunteersLimit">
               </div>
             </div>
@@ -173,7 +174,7 @@
               <label for="reserveRecruitmentStartDate" class="col-sm-3 col-form-label">Początek:</label>
               <div class="col-sm-9">
                 <input 
-                type="datetime"
+                type="date"
                 class="form-control"
                 id="reserveRecruitmentStartDate"
                 formControlName="reserveRecruitmentStartDate">
@@ -183,7 +184,7 @@
               <label for="reserveRecruitmentEndDate" class="col-sm-3 col-form-label">Koniec:</label>
               <div class="col-sm-9">
                 <input 
-                type="datetime"
+                type="date"
                 class="form-control"
                 id="reserveRecruitmentEndDate"
                 formControlName="reserveRecruitmentEndDate">
@@ -196,6 +197,7 @@
                   type="number"
                   class="form-control"
                   id="reserveVolunteersLimit"
+                  min=0
                   formControlName="reserveVolunteersLimit"
                   >
               </div>
@@ -204,7 +206,7 @@
         </div>
       </div>
       </div>
-      <div class="col-sm-3">Określ ramy czasowe (w formacie RRRR-MM-DD) oraz liczbę wolontariuszy, odpowiednio dla rezerwacji podstawowej i rozerwowej.</div>
+      <div class="col-sm-3">Określ ramy czasowe oraz liczbę wolontariuszy, odpowiednio dla rezerwacji podstawowej i rozerwowej.</div>
   </div>
   <div class="form-group row">
     <label for="description" class="col-sm-3 col-form-label">Opis oferty:</label>
