@@ -48,5 +48,5 @@ describe('CreateOfferComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });this
+  })
 });

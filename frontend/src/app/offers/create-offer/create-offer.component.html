@@ -9,6 +9,9 @@
   </ng-container>
 </ng-template>
 <ng-template #offerForm>
+    <ngb-alert *ngIf="error" type="danger">
+      Wypełnij brakujące pola.
+    </ngb-alert>
 <h2>{{ inEditMode ? "Edycja" : "Tworzenie" }} oferty:</h2>
 <form (ngSubmit)="onSubmit(offer)" [formGroup]="form">
   <div class="form-group row">
@@ -49,12 +52,13 @@
       <select
         class="form-control"
         id="organization"
+        formControlName="organization"
         required>
-        <option  *ngFor="let organization of user.organizations" [value]="organization">
+        <option  *ngFor="let organization of user.organizations" [ngValue]="organization">
           {{ organization?.name }}</option>
       </select>
       <span class="form-text text-muted" 
-      *ngIf="isFormInputInvalid('location')">
+      *ngIf="isFormInputInvalid('organization')">
         To pole jest obowiązkowe.</span>
    </div>
     <div class="col-sm-3">Określ organizację odpowiedzialną za wolontariat.</div>
@@ -82,8 +86,8 @@
       <div class="form-check form-check-inline">
           <input
           type="radio"
-          value=true
           id="actionOngoing"
+          value="true"
           formControlName="actionOngoing">
           Akcja już trwa
       </div>
@@ -111,8 +115,8 @@
       <div class="form-check">
           <input  
           type="radio"
-          value="true"
           id="constantCoop"
+          value="true"
           formControlName="constantCoop">
           Akcja nie kończy się (ciągła współpraca)
       </div>
@@ -134,10 +138,8 @@
                 class="form-control"
                 id="recruitmentStartDate"
                 formControlName="recruitmentStartDate"
-                required>
-                <span class="form-text text-muted" 
-                *ngIf="isFormInputInvalid('recruitmentStartDate')">
-                  To pole jest obowiązkowe.</span>             </div>
+                >
+                </div>
             </div>
             <div class="form-group row">
               <label for="recruitmentEndDate" class="col-sm-3 col-form-label">Koniec:</label>
@@ -147,10 +149,7 @@
                 class="form-control"
                 id="recruitmentEndDate"
                 formControlName="recruitmentEndDate"
-                required>
-                <span class="form-text text-muted" 
-                *ngIf="isFormInputInvalid('recruitmentEndDate')">
-                  To pole jest obowiązkowe.</span>
+                >
                 </div>
             </div>
             <div class="form-group row">
@@ -266,12 +265,8 @@
         class="form-control"
         placeholder="Wymagania wobec wolontariusza..." 
         id="requirements"
-        formControlName="requirements"
-        required>
+        formControlName="requirements">
         </textarea>
-        <span class="form-text text-muted" 
-        *ngIf="isFormInputInvalid('requirements')">
-          To pole jest obowiązkowe.</span>
     </div>
     <div class="col-sm-3">Określ warunki, jakie musi spełnić kandydat, aby wziąć udział w akcji.</div>
   </div>

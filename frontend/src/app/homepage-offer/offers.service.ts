@@ -21,19 +21,6 @@ export class OffersService {
       .map(offers => offers.map(offer => loadDefaultImage(offer)));
   }
 
-//   getOffer(id: number): Observable<ApiOffer> {
-//     return this.http.get<ApiOffer>(`${this.url}${id}/`)
-//       .map(offer => this.loadDefaultImage(offer));
-//   }
-
-//   loadDefaultImage(offer: ApiOffer): ApiOffer {
-//     if (!offer.image) {
-//         offer.image = 'assets/img/banner/volontulo_baner.png';
-//         this._offer$.next(offer);
-//     }
-//     return offer;
-// }
-
   getOffer(id: number): Observable<ApiOffer> {
     return this.http.get<ApiOffer>(`${this.url}${id}/`)
       .map(offer => loadDefaultImage(offer));
@@ -44,11 +31,12 @@ export class OffersService {
   }
 
   createOffer(offer: AppOffer)  {
-    return this.http.post(`${environment.apiRoot}/offers/`, offer, { withCredentials: true });
+    return this.http.post(`${environment.apiRoot}/offers/`, offer, { withCredentials: true, observe: 'response' })
+
   }
 
   editOffer(offer: AppOffer, id: number) {
-    return this.http.put(`${environment.apiRoot}/offers/${id}/`, offer, { withCredentials: true });
+    return this.http.put(`${environment.apiRoot}/offers/${id}/`, offer, { withCredentials: true, observe: 'response' });
   }
 
 }
