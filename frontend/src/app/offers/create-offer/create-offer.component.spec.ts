@@ -1,6 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Subject } from 'rxjs/Subject';
 
 import { AuthService } from '../../auth.service';
@@ -15,9 +18,12 @@ describe('CreateOfferComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
+        HttpClientTestingModule,
         ReactiveFormsModule,
+        RouterTestingModule,
       ],
       declarations: [ CreateOfferComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         {
           provide: ActivatedRoute,

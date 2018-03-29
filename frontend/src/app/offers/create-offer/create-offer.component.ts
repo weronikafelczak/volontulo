@@ -67,7 +67,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
 
       this.userSubscription = this.authService.user$
       .subscribe(user => {
-        if(user) {
+        if (user) {
           this.user = user;
           this.isAdmin = user['isAdministrator'];
           this.hasOrganization = user['organizations'].length > 0;
@@ -91,26 +91,26 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
   }
 
 // Temporary fix to make editing work properly, to delete after we fix datetime issue
-  removeTime(){
+  removeTime() {
     this.offer.startedAt = this.offer.startedAt.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
     this.offer.finishedAt = this.offer.finishedAt.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
-    if(this.offer.recruitmentEndDate){
+    if (this.offer.recruitmentEndDate) {
       this.offer.recruitmentEndDate = this.offer.recruitmentEndDate.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
     };
-    if(this.offer.recruitmentStartDate){
+    if (this.offer.recruitmentStartDate) {
       this.offer.recruitmentStartDate = this.offer.recruitmentStartDate.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
     };
-    if(this.offer.reserveRecruitmentEndDate){
+    if (this.offer.reserveRecruitmentEndDate) {
       this.offer.reserveRecruitmentEndDate = this.offer.reserveRecruitmentEndDate.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
     }
-    if(this.offer.reserveRecruitmentStartDate){
+    if (this.offer.reserveRecruitmentStartDate) {
       this.offer.reserveRecruitmentStartDate = this.offer.reserveRecruitmentStartDate.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
     }
     return this.offer;
   }
 
   // TODO - delete when we decide what date format we want to have
-  addTime(){
+  addTime() {
     this.form.value.startedAt = this.form.value.startedAt + 'T00:00:00Z';
     this.form.value.finishedAt = this.form.value.finishedAt + 'T00:00:00Z';
 
@@ -134,7 +134,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     };
   }
 
-  toDataUrl(url, callback){
+  toDataUrl(url, callback) {
     const reader = new FileReader();
     this.http.get(url, {responseType: 'blob'})
     .subscribe(response => {
@@ -146,26 +146,26 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
   };
 
   onSubmit(offer: AppOffer) {
-    if(this.form.valid){
+    if (this.form.valid) {
       this.addTime()
     }
-    if(this.offer.image){
+    if (this.offer.image) {
       this.form.value.image = { ...this.offer.image };
-      this.form.value.image.content = this.form.value.image.content.replace(/.*,/, "");
+      this.form.value.image.content = this.form.value.image.content.replace(/.*,/, '');
     }
     if (this.inEditMode) {
       this.offersService.editOffer(this.form.value, offer.id)
       .subscribe(
         response => {
-        if(response.status === 200){
-        this.router.navigate(["offers/" + response.body["slug"] + "/" + response.body["id"]])
+        if (response.status === 200) {
+        this.router.navigate(['offers/' + response.body['slug'] + '/' + response.body['id']])
       }});
     } else {
       this.offersService.createOffer(this.form.value)
       .subscribe(
-        response =>{
-          if(response.status === 201){
-          this.router.navigate(["offers/" + response.body['slug'] + "/" + response.body["id"]])
+        response => {
+          if (response.status === 201) {
+          this.router.navigate(['offers/' + response.body['slug'] + '/' + response.body['id']])
         }},
         err => {
           this.error = true
@@ -177,7 +177,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
   onFileSelected(event) {
     const file = event.target.files[0];
     this.reader.onloadend = (a: FileReaderEvent) => {
-      if(file.size > 1048576){
+      if (file.size > 1048576) {
         return this.isFileToBig = true;
       }
       this.offer.image = {

@@ -8,15 +8,12 @@ import base64
 import io
 
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
-
 from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.fields import CharField, EmailField
 
 from apps.volontulo import models
-from apps.volontulo.models import Organization
 
 
 class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
@@ -199,25 +196,6 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
         """Returns slugified title."""
         return slugify(obj.title)
 
-    def validate(self, data):
-        self._validate_start_finish(data['started_at'],
-                                 data['finished_at'],
-                                 self.start_finish_error)
-        self._validate_start_finish(data['recruitment_start_date'],
-                                 data['recruitment_end_date'],
-                                 self.recruitment_error)
-        self._validate_start_finish(data['reserve_recruitment_start_date'],
-                                 data['reserve_recruitment_end_date'],
-                                 self.reserve_recruitment_error)
-        return data
-
-    def _validate_start_finish(self, start_slug, end_slug, error_desc):
-        """Validation for date fields."""
-        start_field_value = start_slug
-        end_field_value = end_slug
-        if start_field_value and end_field_value:
-            if start_field_value > end_field_value:
-                raise serializers.ValidationError(error_desc)
 
 class UserSerializer(serializers.ModelSerializer):
 
