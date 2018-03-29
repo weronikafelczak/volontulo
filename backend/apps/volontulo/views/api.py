@@ -30,7 +30,6 @@ from apps.volontulo import serializers
 from apps.volontulo.authentication import CsrfExemptSessionAuthentication
 from apps.volontulo.lib.email import send_mail
 from apps.volontulo.models import Organization
-from apps.volontulo.models import Offer
 from apps.volontulo.serializers import \
     OrganizationContactSerializer, UsernameSerializer, PasswordSerializer
 from apps.volontulo.views import logged_as_admin
@@ -184,9 +183,6 @@ class OfferViewSet(viewsets.ModelViewSet):
                 Q(organization__in=user.userprofile.organizations.all())
             )
         return qs.filter(offer_status='published')
-
-    def update(self, request, pk=None):
-        return super(OfferViewSet, self).update(request, pk)
 
 
 class OrganizationViewSet(viewsets.ModelViewSet):

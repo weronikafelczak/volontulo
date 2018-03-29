@@ -190,7 +190,6 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
                 instance_image.save()
         return instance
 
-
     @staticmethod
     def get_slug(obj):
         """Returns slugified title."""
