@@ -11,8 +11,6 @@ import { loadDefaultImage } from './offer.utils';
 @Injectable()
 export class OffersService {
   private url = `${environment.apiRoot}/offers/`;
-  private _offer$ = new BehaviorSubject<ApiOffer>(null);
-  public offer$ = this._offer$.asObservable();
 
   constructor (private http: HttpClient) { }
 

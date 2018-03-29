@@ -54,7 +54,7 @@
         id="organization"
         formControlName="organization"
         required>
-        <option  *ngFor="let organization of user.organizations" [ngValue]="organization">
+        <option  *ngFor="let organization of user?.organizations" [ngValue]="organization">
           {{ organization?.name }}</option>
       </select>
       <span class="form-text text-muted" 

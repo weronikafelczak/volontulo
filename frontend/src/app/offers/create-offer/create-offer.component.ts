@@ -15,6 +15,7 @@ import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Image } from 'app/homepage-offer/image.model';
 import { Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'volontulo-create-offer',
   templateUrl: './create-offer.component.html',
@@ -37,6 +38,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     private offersService: OffersService,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
+    private http: HttpClient,
     private router: Router,
   ) {}
 
@@ -63,13 +65,13 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     })
 
       this.userSubscription = this.authService.user$
-      .subscribe(
-        response => {
-          this.user = response;
-            this.isAdmin = this.user['isAdministrator'];
-            this.hasOrganization = this.user['organizations'].length > 0;
-          }
-      );
+      .subscribe(user => {
+        if(user) {
+          this.user = user;
+          this.isAdmin = user['isAdministrator'];
+          this.hasOrganization = user['organizations'].length > 0;
+        }
+     });
 
     this.activatedRoute.params
     .map(params => params.offerId)
@@ -128,36 +130,33 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
-    }
+    };
   }
 
-  toDataUrl(url, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-        const reader = new FileReader();
-        reader.onloadend = function() {
-            callback(reader.result);
-        }
-        reader.readAsDataURL(xhr.response);
-    };
-    xhr.open('GET', url);
-    xhr.responseType = 'blob';
-    xhr.send();
-}
+  toDataUrl(url, callback){
+    const reader = new FileReader();
+    this.http.get(url, {responseType: 'blob'})
+    .subscribe(response => {
+      reader.onloadend = function() {
+          callback(reader.result)
+      }
+      reader.readAsDataURL(response);
+    })
+  };
 
   onSubmit(offer: AppOffer) {
     if(this.form.valid){
       this.addTime()
     }
     if(this.offer.image){
-      this.form.value.image = this.offer.image;
-      this.form.value.image.content = this.form.value.image.content.replace(/^data:image\/[a-z]+;base64,/, "");
+      this.form.value.image = { ...this.offer.image };
+      this.form.value.image.content = this.form.value.image.content.replace(/.*,/, "");
     }
     if (this.inEditMode) {
       this.offersService.editOffer(this.form.value, offer.id)
       .subscribe(
         response => {
-        if(response.status === 201){
+        if(response.status === 200){
         this.router.navigate(["offers/" + response.body["slug"] + "/" + response.body["id"]])
       }});
     } else {
