@@ -78,10 +78,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     .map(params => params.offerId)
     .filter(offerId => offerId !== undefined)
     .switchMap(offerId => this.offersService.getOffer(offerId))
-    .do(offer => this.toDataUrl(offer.image, (base64) => this.offer.image = {
-      content: base64,
-      filename: 'image.jpg'
-    }))
+    .do(offer => this.toDataUrl(offer.image))
     .subscribe((response: BaseOffer) => {
       this.offer = response as AppOffer;
       this.inEditMode = true;
@@ -134,13 +131,16 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     };
   }
 
-  toDataUrl(url, callback) {
+  toDataUrl(url) {
     const reader = new FileReader();
     this.http.get(url, {responseType: 'blob'})
     .subscribe(response => {
-      reader.onloadend = function() {
-          callback(reader.result)
+      reader.onloadend = () => {
+        this.offer.image = {
+        content: reader.result,
+        filename: 'image.jpg'
       }
+    }
       reader.readAsDataURL(response);
     })
   };
@@ -156,20 +156,14 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     if (this.inEditMode) {
       this.offersService.editOffer(this.form.value, offer.id)
       .subscribe(
-        response => {
-        if (response.status === 200) {
-        this.router.navigate(['offers/' + response.body['slug'] + '/' + response.body['id']])
-      }});
+        (response: ApiOffer) => this.router.navigate(['offers/' + response.slug + '/' + response.id]),
+        err => this.error = true
+    );
     } else {
       this.offersService.createOffer(this.form.value)
       .subscribe(
-        response => {
-          if (response.status === 201) {
-          this.router.navigate(['offers/' + response.body['slug'] + '/' + response.body['id']])
-        }},
-        err => {
-          this.error = true
-        }
+        (response: ApiOffer) => this.router.navigate(['offers/' + response.slug + '/' + response.id]),
+        err => this.error = true
       );
     }
   }

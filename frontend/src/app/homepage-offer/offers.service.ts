@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { environment } from '../../environments/environment';
 import { ApiOffer, AppOffer } from './offers.model';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { loadDefaultImage } from './offer.utils';
 
 @Injectable()
@@ -29,12 +28,11 @@ export class OffersService {
   }
 
   createOffer(offer: AppOffer)  {
-    return this.http.post(`${environment.apiRoot}/offers/`, offer, { withCredentials: true, observe: 'response' })
-
+    return this.http.post(`${environment.apiRoot}/offers/`, offer)
   }
 
   editOffer(offer: AppOffer, id: number) {
-    return this.http.put(`${environment.apiRoot}/offers/${id}/`, offer, { withCredentials: true, observe: 'response' });
+    return this.http.put(`${environment.apiRoot}/offers/${id}/`, offer);
   }
 
 }
