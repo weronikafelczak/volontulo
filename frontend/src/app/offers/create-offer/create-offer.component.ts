@@ -16,6 +16,7 @@ import { Validators } from '@angular/forms';
 import { Image } from 'app/homepage-offer/image.model';
 import { Response } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'volontulo-create-offer',
   templateUrl: './create-offer.component.html',
