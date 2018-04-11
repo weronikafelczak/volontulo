@@ -7,7 +7,9 @@
 import base64
 import io
 
+from dateutil import parser
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
@@ -50,7 +52,7 @@ class OrganizationField(serializers.Field):
     def to_internal_value(self, data):
         """Transform  serializer representation into internal value."""
         try:
-            return models.Organization.objects.get(pk=data['id'])
+            return models.Organization.objects.get(pk=data)
         except (TypeError, KeyError):
             raise serializers.ValidationError(
                 "Wartość organizacji ma zły format. "
@@ -122,7 +124,14 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
             'volunteers_limit',
             'reserve_volunteers_limit',
         )
-
+    date_fields = [
+        'started_at',
+        'finished_at',
+        'recruitment_end_date', 
+        'recruitment_start_date',
+        'reserve_recruitment_start_date',
+        'reserve_recruitment_end_date'
+    ]
     start_finish_error = (
         "Data rozpoczęcia akcji nie może być "
         "późniejsza, niż data zakończenia"
@@ -135,6 +144,15 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
         "Data rozpoczęcia rekrutacji "
         "rezerwowej nie może być późniejsza, niż data zakończenia"
     )
+
+    def to_internal_value(self, data):
+        for field in self.date_fields:
+            if data.get(field):
+                try:
+                    data[field] = str(parser.parse(data[field]))
+                except (ValueError, TypeError):
+                    raise ValidationError([field, "improper format"], code=None)
+        return super().to_internal_value(data) 
 
     def validate(self, attrs):
         data = super(OfferSerializer, self).validate(attrs)

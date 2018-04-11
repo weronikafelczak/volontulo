@@ -77,11 +77,6 @@ urlpatterns = [
         name='offers_accept'
     ),
     url(
-        r'^o/offers/create$',
-        offers_views.OffersCreate.as_view(),
-        name='offers_create'
-    ),
-    url(
         r'^o/offers/reorder/(?P<id_>[0-9]+)?$',
         offers_views.OffersReorder.as_view(),
         name='offers_reorder'
@@ -90,11 +85,6 @@ urlpatterns = [
         r'^o/offers/archived$',
         offers_views.OffersArchived.as_view(),
         name='offers_archived'
-    ),
-    url(
-        r'^o/offers/(?P<slug>[\w-]+)/(?P<id_>[0-9]+)/edit$',
-        offers_views.OffersEdit.as_view(),
-        name='offers_edit'
     ),
     url(
         r'^o/offers/(?P<slug>[\w-]+)/(?P<id_>[0-9]+)/join$',
