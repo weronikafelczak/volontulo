@@ -52,7 +52,7 @@ class OrganizationField(serializers.Field):
     def to_internal_value(self, data):
         """Transform  serializer representation into internal value."""
         try:
-            return models.Organization.objects.get(pk=data)
+            return models.Organization.objects.get(pk=data['id'])
         except (TypeError, KeyError):
             raise serializers.ValidationError(
                 "Wartość organizacji ma zły format. "

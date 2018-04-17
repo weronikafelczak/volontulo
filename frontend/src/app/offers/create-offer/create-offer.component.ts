@@ -83,46 +83,24 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     .subscribe((response: BaseOffer) => {
       this.offer = response as AppOffer;
       this.inEditMode = true;
-      this.offer = this.removeTime();
-      this.form.patchValue(this.offer);
+    //  TODO remove fixDate, replace this temporary solution with datetimepicker
+      this.form.patchValue({
+        ...this.offer,
+        startedAt: this.offer.startedAt.split('T')[0],
+        finishedAt: this.offer.finishedAt.split('T')[0],
+      });
+      this.fixDate('recruitmentStartDate');
+      this.fixDate('recruitmentEndDate');
+      this.fixDate('reserveRecruitmentStartDate');
+      this.fixDate('reserveRecruitmentEndDate');
     });
   }
 
-// Temporary fix to make editing work properly, to delete after we fix datetime issue
-  removeTime() {
-    this.offer.startedAt = this.offer.startedAt.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
-    this.offer.finishedAt = this.offer.finishedAt.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
-    if (this.offer.recruitmentEndDate) {
-      this.offer.recruitmentEndDate = this.offer.recruitmentEndDate.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
-    };
-    if (this.offer.recruitmentStartDate) {
-      this.offer.recruitmentStartDate = this.offer.recruitmentStartDate.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
-    };
-    if (this.offer.reserveRecruitmentEndDate) {
-      this.offer.reserveRecruitmentEndDate = this.offer.reserveRecruitmentEndDate.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
-    }
-    if (this.offer.reserveRecruitmentStartDate) {
-      this.offer.reserveRecruitmentStartDate = this.offer.reserveRecruitmentStartDate.replace(/T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]Z$/, '');
-    }
-    return this.offer;
-  }
-
-  // TODO - delete when we decide what date format we want to have
-  addTime() {
-    this.form.value.startedAt = this.form.value.startedAt + 'T00:00:00Z';
-    this.form.value.finishedAt = this.form.value.finishedAt + 'T00:00:00Z';
-
-    if (this.form.value.recruitmentEndDate) {
-      this.form.value.recruitmentEndDate = this.form.value.recruitmentEndDate + 'T00:00:00Z';
-    }
-    if (this.form.value.recruitmentStartDate) {
-      this.form.value.recruitmentStartDate = this.form.value.recruitmentStartDate + 'T00:00:00Z';
-    }
-    if (this.form.value.reserveRecruitmentEndDate) {
-      this.form.value.reserveRecruitmentEndDate = this.form.value.reserveRecruitmentEndDate + 'T00:00:00Z';
-    }
-    if (this.form.value.reserveRecruitmentStartDate) {
-      this.form.value.reserveRecruitmentStartDate = this.form.value.reserveRecruitmentStartDate + 'T00:00:00Z';
+  fixDate(value){
+    if(this.offer[value]){
+      this.form.patchValue({
+        [value]: this.offer[value].split('T')[0]
+      })
     }
   }
 
@@ -147,8 +125,8 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
   };
 
   onSubmit(offer: AppOffer) {
-    if (this.form.valid) {
-      this.addTime()
+    if (!this.form.valid) {
+      return
     }
     if (this.offer.image) {
       this.form.value.image = { ...this.offer.image };
