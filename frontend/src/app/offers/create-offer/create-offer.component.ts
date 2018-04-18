@@ -83,25 +83,8 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     .subscribe((response: BaseOffer) => {
       this.offer = response as AppOffer;
       this.inEditMode = true;
-    //  TODO remove fixDate, replace this temporary solution with datetimepicker
-      this.form.patchValue({
-        ...this.offer,
-        startedAt: this.offer.startedAt.split('T')[0],
-        finishedAt: this.offer.finishedAt.split('T')[0],
-      });
-      this.fixDate('recruitmentStartDate');
-      this.fixDate('recruitmentEndDate');
-      this.fixDate('reserveRecruitmentStartDate');
-      this.fixDate('reserveRecruitmentEndDate');
+      this.form.patchValue(this.offer);
     });
-  }
-
-  fixDate(value){
-    if(this.offer[value]){
-      this.form.patchValue({
-        [value]: this.offer[value].split('T')[0]
-      })
-    }
   }
 
   ngOnDestroy() {
