@@ -6,17 +6,17 @@
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.admin.models import ADDITION, CHANGE
+from django.contrib.admin.models import ADDITION
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseForbidden
+from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from django.views.generic import View
 
 from apps.volontulo.forms import (
-    CreateOfferForm, OfferApplyForm, OfferImageForm
+    CreateOfferForm, OfferApplyForm
 )
 from apps.volontulo.lib.email import send_mail
 from apps.volontulo.models import Offer, OfferImage, UserProfile

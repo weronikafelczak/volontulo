@@ -127,7 +127,7 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
     date_fields = [
         'started_at',
         'finished_at',
-        'recruitment_end_date', 
+        'recruitment_end_date',
         'recruitment_start_date',
         'reserve_recruitment_start_date',
         'reserve_recruitment_end_date'
@@ -151,8 +151,9 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
                 try:
                     data[field] = str(parser.parse(data[field]))
                 except (ValueError, TypeError):
-                    raise ValidationError([field, "improper format"], code=None)
-        return super().to_internal_value(data) 
+                    raise ValidationError(
+                        [field, "improper format"], code=None)
+        return super().to_internal_value(data)
 
     def validate(self, attrs):
         data = super(OfferSerializer, self).validate(attrs)
