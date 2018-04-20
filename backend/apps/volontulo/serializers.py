@@ -40,6 +40,12 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
         """Returns slugified name."""
         return slugify(obj.name)
 
+    def create(self, validated_data):
+        """Adds created organization to user's organizations list"""
+        org = super(OrganizationSerializer, self).create(validated_data)
+        org.userprofiles.add(self.context['request'].user.userprofile)
+        return org
+
 
 class OrganizationField(serializers.Field):
 
@@ -221,10 +227,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     is_administrator = serializers.SerializerMethodField()
     organizations = serializers.SerializerMethodField()
+    phone_no = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = (
+            'first_name',
+            'last_name',
+            'phone_no',
+            'email',
             'is_administrator',
             'organizations',
             'username',
@@ -239,6 +250,11 @@ class UserSerializer(serializers.ModelSerializer):
         """Returns organizations that user belongs to."""
         qs = obj.userprofile.organizations.all()
         return OrganizationSerializer(qs, many=True, context=self.context).data
+
+    @staticmethod
+    def get_phone_no(obj):
+        """Returns user's phone number."""
+        return obj.userprofile.phone_no
 
 
 # pylint: disable=abstract-method
