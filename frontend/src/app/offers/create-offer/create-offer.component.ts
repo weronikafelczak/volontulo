@@ -1,16 +1,14 @@
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AppOffer, ApiOffer, BaseOffer } from 'app/homepage-offer/offers.model';
 import { AuthService } from 'app/auth.service';
 import { User } from 'app/user';
-import { Observable } from 'rxjs/Observable';
 import { OffersService } from 'app/homepage-offer/offers.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { environment } from 'environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { FileReaderEvent, FileReaderEventTarget } from '../../models';
-import { NgForm, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Image } from 'app/homepage-offer/image.model';
@@ -23,7 +21,6 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./create-offer.component.scss']
 })
 export class CreateOfferComponent implements OnInit, OnDestroy {
-  public djangoRoot = environment.djangoRoot;
   public hasOrganization = false;
   public inEditMode = false;
   public isAdmin = false;
@@ -101,7 +98,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
         this.offer.image = {
         content: reader.result,
         filename: 'image.jpg'
-      }
+      } as Image;
     }
       reader.readAsDataURL(response);
     })
@@ -139,7 +136,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
       this.offer.image = {
         content: (a.currentTarget as FileReaderEventTarget).result,
         filename: 'image.jpg',
-      }
+      } as Image;
      }
      this.reader.readAsDataURL(file)
     this.isFileToBig = false;

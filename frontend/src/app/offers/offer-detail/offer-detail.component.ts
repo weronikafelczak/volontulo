@@ -8,7 +8,6 @@ import { ApiOffer } from '../../homepage-offer/offers.model';
 import { OffersService } from '../../homepage-offer/offers.service';
 import { User } from 'app/user';
 import { AuthService } from 'app/auth.service';
-import { Organization } from 'app/organization/organization.model';
 import { combineLatest } from 'rxjs/operators/combineLatest';
 
 @Component({
