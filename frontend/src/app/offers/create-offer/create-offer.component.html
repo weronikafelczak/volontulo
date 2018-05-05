@@ -4,7 +4,7 @@
 <ng-template #hasOrg>
   <ng-container *ngIf="!hasOrganization; else offerForm">
   <p>Aby dodać ofertę musisz posiadać organizację.
-    <a [routerLink]="['organizations/create']">Możesz ją założyć tutaj</a>
+    <a [routerLink]="['/organizations/create']">Możesz ją założyć tutaj</a>
   </p>
   </ng-container>
 </ng-template>
