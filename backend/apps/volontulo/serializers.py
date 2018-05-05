@@ -96,6 +96,8 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
         nie może być późniejsza, niż data zakończenia"""
     reserve_recruitment_error = """Data rozpoczęcia rekrutacji
         rezerwowej nie może być późniejsza, niż data zakończenia"""
+    recruitment_start_finish_error = """Rekrutacja rezerwowa
+        nie może zacząć się przed podstawową"""
 
     slug = serializers.SerializerMethodField()
     image = OfferImageField(source='images', allow_null=True, required=False)
@@ -171,6 +173,9 @@ class OfferSerializer(serializers.HyperlinkedModelSerializer):
         self._validate_start_finish(data, 'reserve_recruitment_start_date',
                                     'reserve_recruitment_end_date',
                                     self.reserve_recruitment_error)
+        self._validate_start_finish(data, 'recruitment_start_date',
+                                    'reserve_recruitment_start_date',
+                                    self.recruitment_start_finish_error)
         return data
 
     def validate_organization(self, organization):
