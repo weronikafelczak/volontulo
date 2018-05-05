@@ -116,13 +116,13 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
       this.offersService.editOffer(this.form.value, offer.id)
       .subscribe(
         (response: ApiOffer) => this.router.navigate(['offers/' + response.slug + '/' + response.id]),
-        err => this.error = true
+        err => this.error = err.error.nonFieldErrors
     );
     } else {
       this.offersService.createOffer(this.form.value)
       .subscribe(
         (response: ApiOffer) => this.router.navigate(['offers/' + response.slug + '/' + response.id]),
-        err => this.error = true
+        err => this.error = err.error.nonFieldErrors
       );
     }
   }

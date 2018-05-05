@@ -10,7 +10,7 @@
 </ng-template>
 <ng-template #offerForm>
     <ngb-alert *ngIf="error" type="danger">
-      Wypełnij brakujące pola.
+      {{ error }}
     </ngb-alert>
 <h2>{{ inEditMode ? "Edycja" : "Tworzenie" }} oferty:</h2>
 <form (ngSubmit)="onSubmit(offer)" [formGroup]="form">
