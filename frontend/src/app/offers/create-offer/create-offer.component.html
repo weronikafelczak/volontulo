@@ -9,7 +9,7 @@
   </ng-container>
 </ng-template>
 <ng-template #offerForm>
-    <ngb-alert *ngIf="error" type="danger">
+    <ngb-alert *ngIf="error" type="danger" [dismissible]="false">
       {{ error }}
     </ngb-alert>
 <h2>{{ inEditMode ? "Edycja" : "Tworzenie" }} oferty:</h2>

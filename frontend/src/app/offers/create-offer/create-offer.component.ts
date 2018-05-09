@@ -26,7 +26,6 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
   public isAdmin = false;
   public isFileToBig = false;
   public offer: AppOffer = new AppOffer;
-  public reader = new FileReader();
   public user: User;
   public userSubscription: Subscription;
   public form: FormGroup;
@@ -90,7 +89,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     };
   }
 
-  toDataUrl(url) {
+  private toDataUrl(url) {
     const reader = new FileReader();
     this.http.get(url, {responseType: 'blob'})
     .subscribe(response => {
@@ -128,8 +127,9 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
   }
 
   onFileSelected(event) {
+    const reader = new FileReader();
     const file = event.target.files[0];
-    this.reader.onloadend = (a: FileReaderEvent) => {
+    reader.onloadend = (a: FileReaderEvent) => {
       if (file.size > 1048576) {
         return this.isFileToBig = true;
       }
@@ -138,7 +138,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
         filename: 'image.jpg',
       } as Image;
      }
-     this.reader.readAsDataURL(file)
+    reader.readAsDataURL(file)
     this.isFileToBig = false;
   }
 
