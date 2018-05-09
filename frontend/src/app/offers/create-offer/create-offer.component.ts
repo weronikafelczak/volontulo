@@ -12,7 +12,6 @@ import { FormGroup } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Image } from 'app/homepage-offer/image.model';
-import { Response } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
