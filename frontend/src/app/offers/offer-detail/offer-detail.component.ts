@@ -17,7 +17,6 @@ import { combineLatest } from 'rxjs/operators/combineLatest';
 })
 export class OfferDetailComponent implements OnInit {
   public offer$: Observable<ApiOffer>;
-  public djangoRoot = environment.djangoRoot;
   public getJoinViewUrl = this.offersService.getJoinViewUrl;
   isUserOrgMember$: Observable<boolean>;
   user$: Observable<User | null>;
