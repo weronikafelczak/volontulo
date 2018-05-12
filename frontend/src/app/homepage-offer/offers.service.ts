@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs/Observable';
 
 import { environment } from '../../environments/environment';
@@ -13,7 +15,10 @@ import { Offer } from './offers.model';
 export class OffersService {
   private url = `${environment.apiRoot}/offers/`;
 
-  constructor (private http: HttpClient) { }
+  constructor (
+    private http: HttpClient,
+    private router: Router,
+  ) { }
 
   getOffers(): Observable<Offer[]> {
     return this.http.get<Offer[]>(this.url)
@@ -22,7 +27,11 @@ export class OffersService {
 
   getOffer(id: number): Observable<Offer> {
     return this.http.get<Offer>(`${this.url}${id}/`)
-      .map(offer => loadDefaultImage(offer));
+    .catch(error => {
+      this.router.navigate(['page-404']);
+      return Observable.of(error);
+   })
+    .map(offer => loadDefaultImage(offer));
   }
 
   getJoinViewUrl(offer: Offer): string {

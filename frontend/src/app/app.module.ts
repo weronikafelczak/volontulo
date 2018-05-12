@@ -13,7 +13,6 @@ import { environment } from '../environments/environment';
 import { OffersService } from './homepage-offer/offers.service';
 import { AppComponent } from './app.component';
 import { OrganizationCreateComponent } from './organization/organization-create/organization-create.component';
-import { RedirectComponent } from './redirect.component';
 import { UserService } from './user.service';
 import { WindowFactory, WindowService } from './window.service';
 import { OrganizationService } from './organization/organization.service';
@@ -38,6 +37,7 @@ import { FaqOrganizationsComponent } from './static/faq-organizations.component'
 import { OrganizationContactComponent } from './organization/organization-contact/organization-contact.component';
 import { OrganizationComponent } from './organization/organization.component';
 import { OfficeComponent } from './static/office/office.component';
+import { Page404Component } from './static/page-404/page-404.component';
 import { FaqVolunteersComponent } from './static/faq-volunteers.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordResetConfirmComponent } from './password-reset/password-reset-confirm.component';
@@ -114,8 +114,12 @@ const appRoutes: Routes = [
     component: PasswordResetComponent,
   },
   {
+    path: 'page-404',
+    component: Page404Component,
+  },
+  {
     path: '**',
-    component: RedirectComponent
+    component: Page404Component,
   },
 ];
 
@@ -124,7 +128,6 @@ registerLocaleData(localePl);
 @NgModule({
   declarations: [
     AppComponent,
-    RedirectComponent,
     HomePageComponent,
     HeaderComponent,
     FooterComponent,
@@ -144,6 +147,7 @@ registerLocaleData(localePl);
     OrganizationComponent,
     OfficeComponent,
     FaqVolunteersComponent,
+    Page404Component,
     PasswordResetComponent,
     PasswordResetConfirmComponent,
     MessagesComponent,

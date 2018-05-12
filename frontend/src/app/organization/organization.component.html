@@ -1,4 +1,4 @@
-<div *ngIf="organization$ | async; else noOrganization">
+<div *ngIf="organization$ | async">
   <volontulo-organization-details *ngIf="organization$ | async as organization"
   [organization]="organization"
   [isUserOrgMember]="isUserOrgMember$ | async">
@@ -14,8 +14,3 @@
   [isUserOrgMember]="isUserOrgMember$ | async">
 </volontulo-organization-offers-list>
 </div>
-<ng-template #noOrganization>
-  <div class="container mt-3">
-    <h3>Nie znaleziono organizacji.</h3>
-  </div>
-</ng-template>

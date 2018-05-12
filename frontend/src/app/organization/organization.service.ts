@@ -1,7 +1,9 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/catch';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
@@ -27,10 +29,18 @@ export class OrganizationService {
   public offers$: Observable<Offer[]> = this.offersEvent.asObservable();
   public createOrEditOrganization$: Observable<CreateOrEditOrganization> = this.createOrganizationEvent.asObservable();
 
-  constructor(private http: HttpClient) { }
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) { }
 
   getOrganization(id: number): Observable<Organization> {
     return this.http.get<Organization>(`${this.url}${id}/`)
+      .catch(error => {
+        this.router.navigate(['page-404']);
+        return Observable.of(error);
+      })
       .map(organization => {
         this.organizationEvent.next(organization);
         return organization;
