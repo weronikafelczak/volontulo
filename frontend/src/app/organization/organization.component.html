@@ -1,4 +1,4 @@
-<div *ngIf="organization$ | async">
+<div *ngIf="organization$ | async; else notFound">
   <volontulo-organization-details *ngIf="organization$ | async as organization"
   [organization]="organization"
   [isUserOrgMember]="isUserOrgMember$ | async">
@@ -14,3 +14,6 @@
   [isUserOrgMember]="isUserOrgMember$ | async">
 </volontulo-organization-offers-list>
 </div>
+<ng-template #notFound>
+  <volontulo-page-404></volontulo-page-404>
+</ng-template>

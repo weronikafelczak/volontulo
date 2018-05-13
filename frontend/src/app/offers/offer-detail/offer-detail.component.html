@@ -1,4 +1,4 @@
-<div class="container" *ngIf="offer$ | async as offer">
+<div class="container" *ngIf="offer$ | async as offer; else notFound">
     <div class="card bg-light mb-3 text-white">
         <img class="card-img" src="{{ offer.image }}" alt="{{ offer.title }}">
         <div class="card-img-overlay">
@@ -65,3 +65,6 @@
          </div>
     </div>
 </div>
+<ng-template #notFound>
+    <volontulo-page-404></volontulo-page-404>
+</ng-template>

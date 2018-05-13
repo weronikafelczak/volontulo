@@ -36,10 +36,9 @@ export class OrganizationComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       params => {
         this.organizationService.getOrganization(params.organizationId)
-        .subscribe(response => {
-          if (response.id) {
-            this.organizationService.getOffersForOrganization(params.organizationId);
-          }}
+        .subscribe(
+          response => this.organizationService.getOffersForOrganization(params.organizationId),
+          error => {}
         );
       }
     );
