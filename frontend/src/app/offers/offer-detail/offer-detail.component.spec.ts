@@ -6,6 +6,7 @@ import { IconComponent } from '../../icon/icon.component';
 import { IconLabelComponent } from '../../icon-label/icon-label.component';
 import { OfferDetailComponent } from './offer-detail.component';
 import { OffersService } from '../../homepage-offer/offers.service';
+import { Page404Component } from '../../static/page-404/page-404.component'
 
 describe('OfferDetailComponent', () => {
   let component: OfferDetailComponent;
@@ -17,6 +18,7 @@ describe('OfferDetailComponent', () => {
         OfferDetailComponent,
         IconLabelComponent,
         IconComponent,
+        Page404Component
       ],
       providers: [
         {
