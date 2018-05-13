@@ -22,7 +22,7 @@ export class OffersService {
 
   getOffer(id: number): Observable<Offer> {
     return this.http.get<Offer>(`${this.url}${id}/`)
-    .map(offer => loadDefaultImage(offer));
+      .map(offer => loadDefaultImage(offer));
   }
 
   getJoinViewUrl(offer: Offer): string {

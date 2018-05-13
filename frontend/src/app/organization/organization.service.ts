@@ -28,9 +28,7 @@ export class OrganizationService {
   public createOrEditOrganization$: Observable<CreateOrEditOrganization> = this.createOrganizationEvent.asObservable();
 
 
-  constructor(
-    private http: HttpClient,
-  ) { }
+  constructor(private http: HttpClient) { }
 
   getOrganization(id: number): Observable<Organization> {
     return this.http.get<Organization>(`${this.url}${id}/`)
