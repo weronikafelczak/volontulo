@@ -177,5 +177,3 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     return startedAtError || finishedAtError ? validationError : null;
   }
 }
-
-
