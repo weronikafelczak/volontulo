@@ -156,24 +156,19 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     const actionOngoing = form.get('actionOngoing').value;
     const finishedAt = form.get('finishedAt').value;
     const constantCoop = form.get('constantCoop').value;
-    let startedAtError: boolean;
-    let finishedAtError: boolean;
+    let hasAnyError = false;
     const validationError = {};
 
     if (startedAt && actionOngoing) {
-      startedAtError = true;
+      hasAnyError = true;
       validationError['startedAtError'] = true;
-    } else {
-      startedAtError = false;
     }
 
     if (finishedAt && constantCoop) {
-      finishedAtError = true;
+      hasAnyError = true;
       validationError['finishedAtError'] = true;
-    } else {
-      finishedAtError = false;
     }
 
-    return startedAtError || finishedAtError ? validationError : null;
+    return hasAnyError ? validationError : null;
   }
 }
