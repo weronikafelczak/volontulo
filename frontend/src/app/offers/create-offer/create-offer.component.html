@@ -65,66 +65,69 @@
   </div>
   <h3>Realizacja akcji:</h3>
    <div class="form-group row">
-    <label for="startedAt" class="col-sm-3 col-form-label">*Dzień rozpoczęcia:</label>
-    <div class="col-sm-3">
-      <div class="form-check form-check-inline">
-        <div class="input-group">
-          <input 
-            placeholder="RRRR-MM-DD"
-            type="datetime"
-            id="startedAt"
-            class="form-control"
-            min="2018-01-01"
-            formControlName="startedAt"
-            required>
+    <label for="startedAt" class="col-sm-3 col-form-label">Dzień rozpoczęcia:</label>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-6">
+            <div class="form-check form-check-inline">
+              <div class="input-group">
+                <input 
+                  placeholder="RRRR-MM-DD"
+                  type="datetime"
+                  id="startedAt"
+                  class="form-control"
+                  formControlName="startedAt">
+              </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-check form-check-inline">
+              <input
+                type="checkbox"
+                id="actionOngoing"
+                formControlName="actionOngoing">
+              Akcja już trwa
+            </div>
         </div>
       </div>
-      <span class="form-text text-muted" 
-      *ngIf="isFormInputInvalid('startedAt')">
-        To pole jest obowiązkowe.</span>
-    </div>
-    <div class="col-sm-3">
-      <div class="form-check form-check-inline">
-          <input
-          type="radio"
-          id="actionOngoing"
-          value="true"
-          formControlName="actionOngoing">
-          Akcja już trwa
-      </div>
+      <span class="form-text text-muted" *ngIf="form.errors?.startedAtError">Jeśli akcja już trwa, nie podawaj daty początkowej.</span>
     </div>
     <div class="col-sm-3">Określ datę rozpoczęcia akcji w formacie RRRR-MM-DD.</div>
   </div>
    <div class="form-group row ">
-    <label for="finishedAt" class="col-sm-3 col-form-label">*Dzień zakończenia:</label>
-    <div class="col-sm-3">
-      <div class="form-check form-check-inline">
-        <div class="input-group">
-          <input 
-            type="datetime"
-            placeholder="RRRR-MM-DD"
-            class="form-control"
-            id="finishedAt"
-            formControlName="finishedAt"
-            required>
+    <label for="finishedAt" class="col-sm-3 col-form-label">Dzień zakończenia:</label>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-check form-check-inline">
+            <div class="input-group">
+              <input 
+                type="datetime"
+                placeholder="RRRR-MM-DD"
+                class="form-control"
+                id="finishedAt"
+                formControlName="finishedAt">
+            </div>
+          </div>
         </div>
-      </div>
-      <span class="form-text text-muted" 
-      *ngIf="isFormInputInvalid('finishedAt')">
-        To pole jest obowiązkowe.</span>
-      </div>
-      <div class="col-sm-3">
-      <div class="form-check">
-          <input  
-          type="radio"
-          id="constantCoop"
-          value="true"
-          formControlName="constantCoop">
-          Akcja nie kończy się (ciągła współpraca)
+        <div class="col-sm-6">
+          <div class="form-check">
+            <input  
+            type="checkbox"
+            id="constantCoop"
+            formControlName="constantCoop">
+            Akcja nie kończy się (ciągła współpraca)
+          </div>
+        </div>
+          <div class="col-sm-12">
+            <span class="form-text text-muted" *ngIf="form.errors?.finishedAtError">
+              Jeśli akcja nie kończy się, nie podawaj daty końcowej.
+            </span>
+          </div>
       </div>
     </div>
-    <div class="col-sm-3">Określ datę zakończenia akcji w formacie RRRR-MM-DD.</div>
-  </div>
+      <div class="col-sm-3">Określ datę zakończenia akcji w formacie RRRR-MM-DD.</div>
+   </div>
   <div class="form-group row">
     <label for="startedAt" class="col-sm-3 col-form-label">Rekrutacja:</label>
     <div class="col-sm-6">

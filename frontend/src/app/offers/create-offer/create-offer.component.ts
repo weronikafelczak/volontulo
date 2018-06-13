@@ -44,9 +44,9 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
       title: ['', Validators.required],
       location: ['', Validators.required],
       organization: ['', Validators.required],
-      startedAt: ['', Validators.required],
-      actionOngoing: [false],
-      finishedAt: ['', Validators.required],
+      startedAt: [],
+      actionOngoing: [],
+      finishedAt: [],
       constantCoop: [false],
       recruitmentStartDate: [null],
       recruitmentEndDate: [null],
@@ -59,7 +59,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
       benefits: ['', Validators.required],
       requirements: [''],
       image: [],
-    })
+    }, {validator: this.areDatesValid})
 
       this.userSubscription = this.authService.user$
       .subscribe(user => {
@@ -145,4 +145,37 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     const input = this.form.get(inputStringId);
     return !input.valid && input.touched || (this.error && !input.valid);
   }
+
+  funkcja(input: string, checkbox): boolean {
+    let inputName = input + 'Error'
+    return inputName = input && checkbox;
+  }
+
+  areDatesValid(form: FormGroup):  {[key: string]: boolean}  {
+    const startedAt = form.get('startedAt').value;
+    const actionOngoing = form.get('actionOngoing').value;
+    const finishedAt = form.get('finishedAt').value;
+    const constantCoop = form.get('constantCoop').value;
+    let startedAtError: boolean;
+    let finishedAtError: boolean;
+    const validationError = {};
+
+    if (startedAt && actionOngoing) {
+      startedAtError = true;
+      validationError['startedAtError'] = true;
+    } else {
+      startedAtError = false;
+    }
+
+    if (finishedAt && constantCoop) {
+      finishedAtError = true;
+      validationError['finishedAtError'] = true;
+    } else {
+      finishedAtError = false;
+    }
+
+    return startedAtError || finishedAtError ? validationError : null;
+  }
 }
+
+
