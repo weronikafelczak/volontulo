@@ -193,9 +193,9 @@
     <div class="form-group row">
       <label for="image" class="col-sm-3 col-form-label">Zdjęcie:</label>
       <div class="col-sm-6">
-        <div *ngIf="offer?.image?.content">
+        <div *ngIf="offer?.image">
           Podgląd:
-          <img class="card-img" src="{{ offer.image.content }}">
+          <img class="card-img" src="{{ offer.image }}">
         </div>
         <div class="input-group">
           <div class="btn btn-secondary">

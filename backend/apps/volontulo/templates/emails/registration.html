@@ -6,12 +6,12 @@
 
 {% block email_content %}
     <center>
-        <img src="{{ protocol }}://{{ domain }}{% static 'volontulo/img/doodle_reg_confirm.png' %}"><br>
+        <img src="{{ protocol }}://{{ domain }}{% static 'volontulo/img/doodle_reg_confirm.png' %}" alt="Potwierdź rejestrację"><br>
         <br>
         <b>Dziękujemy za rejestrację.</b><br>
         <br>
         Zweryfikuj swoje konto na Volontulo wchodząc w poniższy link:<br>
-        <a href="{{ protocol }}://{{ domain }}{% url 'activate' uuid %}">Aktywuj</a>
+        <a href="{{ ANGULAR_ROOT }}/activate/{{ token }}">Aktywuj</a>
     </center>
 {% endblock %}
 

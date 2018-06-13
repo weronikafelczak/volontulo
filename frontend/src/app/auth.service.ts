@@ -2,15 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
-import { environment } from '../environments/environment';
-import { User } from './user.d';
+import { User } from './user';
 import { deepFreeze } from './utils/object.utils';
 import { SuccessOrFailureAction } from './models';
-
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class AuthService {
@@ -18,11 +17,15 @@ export class AuthService {
   private loginUrl = `${environment.apiRoot}/login/`;
   private logoutUrl = `${environment.apiRoot}/logout/`;
   private resetPasswordUrl = `${environment.apiRoot}/password-reset/`;
+  private registerUrl = `${environment.apiRoot}/register/`;
+  private activationUrl = `${environment.apiRoot}/activate/`;
 
-  private changeUserEvent = new BehaviorSubject<User | null>(null);
+  private changeUserEvent = new ReplaySubject<User | null>(1);
   private loginEvent = new Subject<SuccessOrFailureAction>();
   private resetPasswordEvent = new Subject<SuccessOrFailureAction>();
   private confirmResetPasswordEvent = new Subject<SuccessOrFailureAction>();
+  private _currentUserUrl = `${environment.apiRoot}/current-user`;
+  private _currentUser: User;
 
   public user$: Observable<User | null> = this.changeUserEvent.asObservable();
   public login$: Observable<SuccessOrFailureAction> = this.loginEvent.asObservable();
@@ -33,14 +36,18 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
   ) {
-    this.http.get<User>(this.currentUserUrl)
+    this.getUser()
       .subscribe(user => {
-        if (user.username) {
+        if (user) {
           this.changeUserEvent.next(deepFreeze(user));
         } else {
           this.changeUserEvent.next(null);
         }
       });
+  }
+
+  getUser(): Observable<User | null> {
+    return this.http.get<User>(this.currentUserUrl);
   }
 
   setCurrentUser(user: User) {
@@ -83,7 +90,7 @@ export class AuthService {
 
   confirmResetPassword(password: string, uidb64: string, token: string) {
     this.http.post(
-      `${this.resetPasswordUrl}/${uidb64}/${token}`, { password }, { observe: 'response' })
+      `${this.resetPasswordUrl}${uidb64}/${token}/`, { password }, { observe: 'response' })
       .subscribe(
         response => {
           if (response.status === 201) {
@@ -99,6 +106,20 @@ export class AuthService {
         err => {
           this.confirmResetPasswordEvent.next({ success: false, message: err });
         });
+  }
+
+  register(email: string, password: string) {
+    return this.http.post(
+      this.registerUrl,
+      { password, email },
+      { observe: 'response' })
+  }
+
+  activateAccount(uuid: string) {
+    return this.http.post(
+      `${this.activationUrl}${uuid}/`,
+      null,
+      { observe: 'response' });
   }
 
   logout() {

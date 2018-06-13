@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 import { OffersService } from './homepage-offer/offers.service';
 import { AppComponent } from './app.component';
 import { OrganizationCreateComponent } from './organization/organization-create/organization-create.component';
+import { OrganizationsListComponent } from './organizations/organizations-list/organizations-list.component';
 import { RedirectComponent } from './redirect.component';
 import { UserService } from './user.service';
 import { WindowFactory, WindowService } from './window.service';
@@ -43,6 +44,10 @@ import { CreateOfferComponent } from './offers/create-offer/create-offer.compone
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordResetConfirmComponent } from './password-reset/password-reset-confirm.component';
 import { OrganizationOffersListComponent } from './organization/organization-offers-list/organization-offers-list.component';
+import { RegisterComponent } from './register/register.component';
+import { ActivationComponent } from './activation/activation.component';
+import { LoggedInGuard } from './guards/loggedInGuard.service';
+import { LoggedOutGuard } from './guards/loggedOutGuard.service';
 
 Raven.config(environment.sentryDSN).install();
 
@@ -59,11 +64,12 @@ export function ErrorHandlerFactory(): ErrorHandler {
 const appRoutes: Routes = [
   {
     path: '',
-    component: HomePageComponent
+    component: HomePageComponent,
   },
   {
     path: 'organizations/:organizationSlug/:organizationId/edit',
     component: OrganizationCreateComponent,
+    canActivate: [LoggedInGuard],
   },
   {
     path: 'organizations/:organizationSlug/:organizationId',
@@ -73,6 +79,7 @@ const appRoutes: Routes = [
   {
     path: 'organizations/create',
     component: OrganizationCreateComponent,
+    canActivate: [LoggedInGuard],
   },
   {
     path: 'faq-organizations',
@@ -88,15 +95,24 @@ const appRoutes: Routes = [
   },
   {
     path: 'about-us',
-    component: AboutUsComponent
+    component: AboutUsComponent,
   },
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [LoggedOutGuard],
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'activate/:token',
+    component: ActivationComponent
   },
   {
     path: 'regulations',
-    component: RegulationsComponent
+    component: RegulationsComponent,
   },
   {
     path: 'offers/:offerSlug/:offerId',
@@ -105,14 +121,16 @@ const appRoutes: Routes = [
   {
     path: 'offers/create',
     component: CreateOfferComponent,
+    canActivate: [LoggedInGuard],
   },
   {
     path: 'offers/:offerSlug/:offerId/edit',
     component: CreateOfferComponent,
+    canActivate: [LoggedInGuard],
   },
   {
     path: 'organizations',
-    component: OrganizationsComponent
+    component: OrganizationsComponent,
   },
   {
     path: 'password-reset/:uidb64/:token',
@@ -121,6 +139,7 @@ const appRoutes: Routes = [
   {
     path: 'password-reset',
     component: PasswordResetComponent,
+    canActivate: [LoggedOutGuard],
   },
   {
     path: '**',
@@ -158,7 +177,10 @@ registerLocaleData(localePl);
     PasswordResetConfirmComponent,
     MessagesComponent,
     OrganizationOffersListComponent,
+    RegisterComponent,
+    ActivationComponent,
     OrganizationCreateComponent,
+    OrganizationsListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'volontulo' }),
@@ -175,6 +197,8 @@ registerLocaleData(localePl);
     OffersService,
     OrganizationService,
     UserService,
+    LoggedInGuard,
+    LoggedOutGuard,
     { provide: LOCALE_ID, useValue: 'pl' },
     { provide: WindowService, useFactory: WindowFactory, deps: [PLATFORM_ID] },
     { provide: ErrorHandler, useFactory: ErrorHandlerFactory },

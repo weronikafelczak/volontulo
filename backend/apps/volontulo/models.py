@@ -8,7 +8,6 @@ import logging
 import os
 import uuid
 
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import F
@@ -27,20 +26,6 @@ def upload_to_offers(_, filename):
     _, file_extension = os.path.splitext(filename)
     return os.path.join(
         'offers',
-        '{}{}'.format(uuid.uuid4(), file_extension),
-    )
-
-
-def upload_to_profiles(_, filename):
-    """
-    Upload to profiles path.
-
-    This needs to be a full-body func because
-    migrations requires it to be serializable.
-    """
-    _, file_extension = os.path.splitext(filename)
-    return os.path.join(
-        'profiles',
         '{}{}'.format(uuid.uuid4(), file_extension),
     )
 
@@ -156,32 +141,15 @@ class Offer(models.Model):
     reserve_volunteers_limit = models.IntegerField(
         default=0, null=True, blank=True)
     weight = models.IntegerField(default=0, null=True, blank=True)
+    image = models.ImageField(
+        upload_to=upload_to_offers,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         """Offer string representation."""
         return self.title
-
-    def set_main_image(self, is_main):
-        """Set main image flag unsetting other offers images.
-
-        :param is_main: Boolean flag resetting offer main image
-        """
-        if is_main:
-            OfferImage.objects.filter(offer=self).update(is_main=False)
-            return True
-        return False
-
-    def save_offer_image(self, gallery, is_main=False):
-        """Handle image upload for user profile page.
-
-        :param gallery: UserProfile model instance
-        :param userprofile: UserProfile model instance
-        :param is_main: Boolean main image flag
-        """
-        gallery.offer = self
-        gallery.is_main = self.set_main_image(is_main)
-        gallery.save()
-        return self
 
     def create_new(self):
         """Set status while creating new offer."""
@@ -207,41 +175,11 @@ class Offer(models.Model):
             return 'ongoing'
         return 'ongoing'
 
-    def change_status(self, status):
-        """Change offer status.
-
-        :param status: string Offer status
-        """
-        if status in ('published', 'rejected', 'unpublished'):
-            self.offer_status = status
-            self.save()
-        return self
-
-    def unpublish(self):
-        """Unpublish offer."""
-        self.offer_status = 'unpublished'
-        self.save()
-        return self
-
     def publish(self):
         """Publish offer."""
         self.offer_status = 'published'
         Offer.objects.all().update(weight=F('weight') + 1)
         self.weight = 0
-        self.save()
-        return self
-
-    def reject(self):
-        """Reject offer."""
-        self.offer_status = 'rejected'
-        self.save()
-        return self
-
-    def close_offer(self):
-        """Change offer status to close."""
-        self.offer_status = 'unpublished'
-        self.action_status = 'finished'
-        self.recruitment_status = 'closed'
         self.save()
         return self
 
@@ -263,65 +201,9 @@ class UserProfile(models.Model):
     )
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
 
-    def is_admin(self):
-        """Return True if current user is administrator, else return False"""
-        return self.is_administrator
-
     def is_in_organization(self):
         """Return True if current user is in any organization"""
         return self.organizations.exists()
 
-    def is_volunteer(self):
-        """Return True if current user is volunteer, else return False"""
-        return not (self.is_administrator and self.organizations)
-
-    def can_edit_offer(self, offer=None, offer_id=None):
-        """Checks if the user can edit an offer based on its ID"""
-        if offer is None:
-            offer = Offer.objects.get(id=offer_id)
-        return self.is_administrator or self.organizations.filter(
-            id=offer.organization_id).exists()
-
-    def get_avatar(self):
-        """Return avatar for current user."""
-        return UserGallery.objects.filter(
-            userprofile=self,
-            is_avatar=True
-        )
-
-    def clean_images(self):
-        """Clean user images."""
-        images = UserGallery.objects.filter(userprofile=self)
-        for image in images:
-            try:
-                os.remove(os.path.join(settings.MEDIA_ROOT, str(image.image)))
-            except OSError as ex:
-                logger.error(ex)
-
-            image.delete()
-
     def __str__(self):
         return self.user.email
-
-
-class UserGallery(models.Model):
-    """Handling user images."""
-    userprofile = models.ForeignKey(UserProfile, related_name='images')
-    image = models.ImageField(upload_to=upload_to_profiles)
-    is_avatar = models.BooleanField(default=False)
-
-    def __str__(self):
-        """String representation of an image."""
-        return str(self.image)
-
-
-class OfferImage(models.Model):
-    """Handling offer image."""
-    offer = models.ForeignKey(Offer, related_name='images')
-    path = models.ImageField(upload_to=upload_to_offers)
-    is_main = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        """String representation of an image."""
-        return str(self.path)
