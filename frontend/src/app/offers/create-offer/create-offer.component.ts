@@ -146,11 +146,6 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
     return !input.valid && input.touched || (this.error && !input.valid);
   }
 
-  funkcja(input: string, checkbox): boolean {
-    let inputName = input + 'Error'
-    return inputName = input && checkbox;
-  }
-
   areDatesValid(form: FormGroup):  {[key: string]: boolean}  {
     const startedAt = form.get('startedAt').value;
     const actionOngoing = form.get('actionOngoing').value;
