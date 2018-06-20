@@ -85,11 +85,11 @@
               <input type="checkbox" id="constantCoop" formControlName="constantCoop"> Akcja nie kończy się (ciągła współpraca)
             </div>
           </div>
-          <div class="col-sm-12 errors">
-            <span class="form-text text-muted" *ngIf="form.errors?.finishedAtError">
-              Jeśli akcja nie kończy się, nie podawaj daty końcowej.
-            </span>
-          </div>
+        </div>
+        <div class="col-sm-12 errors">
+          <span class="form-text text-muted" *ngIf="form.errors?.finishedAtError">
+            Jeśli akcja nie kończy się, nie podawaj daty końcowej.
+          </span>
         </div>
       </div>
       <div class="col-sm-3">Określ datę zakończenia akcji w formacie RRRR-MM-DD.</div>
