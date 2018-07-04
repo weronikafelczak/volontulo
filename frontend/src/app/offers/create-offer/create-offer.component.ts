@@ -150,7 +150,7 @@ export class CreateOfferComponent implements OnInit, OnDestroy {
       validationErrors['finishedAtError'] = true;
     }
 
-    const hasAnyError = Object.keys(validationErrors).length > 0
+    const hasAnyError = Object.keys(validationErrors).length > 0;
 
     return hasAnyError ? validationErrors : null;
   }
